@@ -1,5 +1,6 @@
 body{
 	padding-top:70px;
+	color:#59595B;
 }
 .code-logo{
 	float: left;
@@ -8,11 +9,20 @@ body{
 .code-logo img{
 	height:auto;
 	width:100px;
-	margin: 20%;
 }
-
+.welcome-text{
+	float:right;
+}
 .tableauPlaceholder{
 	height: 1033px;
 	width: 100%;
 
+}
+
+a{
+	color:#cca349;
+}
+a:focus, a:hover  {
+    color: #7F6221;
+    text-decoration: underline;
 }
