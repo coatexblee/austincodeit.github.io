@@ -19,7 +19,10 @@ body{
 	width: 100%;
 
 }
-
+.tag-line{
+	font-weight:600;
+	font-style:italic;
+}
 a{
 	color:#cca349;
 }
