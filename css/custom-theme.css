@@ -2,6 +2,11 @@
 .code-logo{
 	float: left;
 }
+.code-log img{
+	height:auto;
+	width:100px;
+	margin: 20%;
+}
 
 /*
 
