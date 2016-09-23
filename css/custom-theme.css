@@ -1,8 +1,14 @@
-* {
-  box-sizing: border-box; }
+
 .code-logo{
 	float: left;
 }
+
+/*
+
+* {
+  box-sizing: border-box; }
+
+
 body {
   padding: 0;
   margin: 0;
@@ -245,3 +251,5 @@ a {
 @media screen and (max-width: 42em) {
   .site-footer {
     font-size: 0.9rem; } }
+
+*/
