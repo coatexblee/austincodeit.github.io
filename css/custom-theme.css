@@ -4,6 +4,7 @@ body{
 }
 .code-logo{
 	float: left;
+	padding: 10px;
 }
 
 .code-logo img{
