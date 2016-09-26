@@ -4,12 +4,13 @@ body{
 }
 .code-logo{
 	float: left;
-	padding: 10px;
+	padding: 0px;
 }
 
 .code-logo img{
 	height:auto;
-	width:100px;
+	width:80px;
+	margin-top:10px;
 }
 .welcome-text{
 	float:right;
