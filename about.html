@@ -25,6 +25,7 @@
     <link href="css/custom-theme.css" rel="stylesheet">
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/custom-script.js"></script>
   </head>
   <body>
     <!-- Fixed navbar -->
@@ -44,7 +45,7 @@
             <li><a href="index.html">Home</a></li>
             <li class="active"><a href="#">About</a></li>
             <li><a href="projects.html">Projects</a></li>
-            <li><a href="http://austincodeit.github.io/district-neighborhood-analysis/">Districts</a></li>
+            <li><a href="districts.html">Districts</a></li>
             <li><a href="data.html">Data</a></li>
           </ul>
         </div><!--/.nav-collapse -->
@@ -55,13 +56,35 @@
 		<div class="page-header">
 			<h1>About</h1>
 		</div>
-		<h4>Ongoing projects:</h4>
-		<p>more info on about us...</p>
+		<div class="code-logo">
+			<img src="imgs/coa_code_logo.png" />
+		</div>
+		<p class="text-muted tag-line">"Preserving Austin's Quality of Life"</p>
+		<p>Austin Code is here to keep the community clean and safe. Through the continuous training and an ongoing focus on customer service, 
+		consistency, and transparency, violations around the city will be brought into compliance. If compliance isn't met, Austin Code will 
+		proceed with enforcement actions in order to make sure the community stays livable for everyone in Austin. </p>
+		<h3>Mission</h3>
+		<p>The <b>mission</b> of the City of Austin Code Department is to provide quality education and enforcement of city codes and ordinances so 
+		that Austin will be a more livable city.</p>
+		<h3>History</h3>
+		<p>In 2009, the Austin Code Department was a small division of the Solid Waste Services Department. Now we have grown to over 100 employees,
+		and we are a standalone department with an important responsibility to the community we serve.</p>
+		<h3>Today</h3>
+		<p>The Austin Code Department maintains the balance between code compliance and code enforcement by implementing programs to ensure a minimum standard is met</p>
+		<p>Code Officers identify dangerous and substandard conditions in each of the four districts they are assigned. Dangerous conditions threaten the immediate health
+		and safety of the resident, whereas substandard conditions are issues taht may not be life threatening, but have a negative impact on the community.</p>
+		<p>Through community focused public education programs, stakeholder feedback and face-to-face dialogue, Austin Code gets to know the community we serve.</p>
+		<h3>Why does the Austin Code Deparment Exist?</h3>
+		<p>Austin Code Department exists to make sure city codes and ordinances are met so Austin continues to be one of the safest and most livable cities in the country.</p>
+		<hr style="width:50%" />
+		<p>City codes and ordinances have been created to protect the health, safety, and quality of life for the citizens of Austin. If there is a problem property in your neighborhood,
+		call 3-1-1. And remember, you can always call anonymously.</p>
+	  
 		
 
 		<br><br>
 		<div class="footnote">
-			<span class="label label-default">Last Update: Oct 2016</span>
+			<span class="label label-default">Last Update: <span id="dateString"></span></span>
 		</div>
 		<br><br>
 		
