@@ -2,15 +2,17 @@ body{
 	padding-top:70px;
 	color:#59595B;
 }
+.jumbotron{
+	text-align: center;
+}
 .code-logo{
-	float: left;
 	padding: 0px;
+	margin-top: -20px;
+	text-align: center;
 }
 
 .code-logo img{
-	height:auto;
-	width:80px;
-	margin-top:10px;
+	width:100px;
 }
 .welcome-text{
 	float:right;
@@ -20,9 +22,24 @@ body{
 	width: 100%;
 
 }
+.contact-table-wrapper{
+	
+}
+.contact-table-wrapper table{
+	width:75%;
+	margin: 0 auto;
+}
+.project-imgs{
+		text-align:center;
+}
+.project-imgs img{
+	padding: 10px;
+	margin: 10px;
+}
 .tag-line{
 	font-weight:600;
 	font-style:italic;
+	text-align: center;
 }
 a{
 	color:#cca349;
@@ -30,4 +47,12 @@ a{
 a:focus, a:hover  {
     color: #7F6221;
     text-decoration: underline;
+}
+.carousel{
+	margin:15px;
+	padding:15px;
+}
+.footnote{
+	text-align:center;
+	padding:10px 0 40px 0;
 }
