@@ -5,6 +5,9 @@ body{
 .jumbotron{
 	text-align: center;
 }
+.navbar-inverse{
+	background-image: linear-gradient(to bottom,#59595b ,#222 100%) !important;
+}
 .code-logo{
 	padding: 0px;
 	margin-top: -20px;

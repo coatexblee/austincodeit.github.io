@@ -7,9 +7,8 @@ $(document).ready(function() {
   'use strict';
   
 	var dateString = "Oct 2016";
-	console.log('yo');
-
-	console.log("hello!");
+	
+	console.log("hi! welcome to austin code's github!!!");
 	$("#dateString").html(dateString);
 
  });
