@@ -20,7 +20,9 @@ body{
 	margin-top: -20px;
 	text-align: center;
 }
-
+.page-header{
+	margin-top:0px;
+}
 .code-logo img{
 	width:100px;
 }
@@ -100,8 +102,16 @@ dl.resource-list{
 		background-color: #C1A67A;
 		padding: 5px;
 		border-radius: 5%;
-		
  }
+ 
+ .tweets-col iframe{
+	 height: 500px;
+ }
+ 
+ .news-col{
+	 
+ }
+ 
 /* move special fonts to HTML head for better performance */
 /*@import url('http://fonts.googleapis.com/css?family=Open+Sans:200,300,400,600,700');
 @import url("https://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css");
