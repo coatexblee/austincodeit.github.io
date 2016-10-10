@@ -11,7 +11,7 @@ DrawCharts("N1");  //load N1 when page loads
 				url : "data/textfiles/"+district+"INTRO.txt",
 				dataType: "text",
 				success : function (data) {
-					$(".text1").html(data);
+					$("#about-district-text").html(data);
 				}
 			});
 		
