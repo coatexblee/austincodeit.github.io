@@ -6,12 +6,14 @@ DrawCharts("N1");  //load N1 when page loads
 		
 			DrawCharts(district);
 			document.getElementById("demo").innerHTML = "ACD District " + district;
-			
+			console.log(district);
 			$.ajax({
 				url : "data/textfiles/"+district+"INTRO.txt",
 				dataType: "text",
 				success : function (data) {
 					$("#about-district-text").html(data);
+					console.log('data retrieved');
+					console.log(data);
 				}
 			});
 		
