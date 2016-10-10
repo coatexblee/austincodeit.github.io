@@ -2,6 +2,13 @@ body{
 	padding-top:70px;
 	color:#59595B;
 }
+.container{
+}
+#main{
+    background-color: rgba(255,255,255,0.85);
+	margin-top: -40px;
+	padding: 60px
+}
 .jumbotron{
 	text-align: center;
 }
@@ -59,3 +66,121 @@ a:focus, a:hover  {
 	text-align:center;
 	padding:10px 0 40px 0;
 }
+
+.resource-subjects  {
+	list-style: none;    
+	font-size: 16px;
+}
+.resource-subjects  li{
+	color: #990000;
+}
+.resource-links  {
+	list-style: none;
+}
+.resource-links  li{
+	padding: 10px 0 5px 0;
+}
+.resource-list li{
+	padding: 0px;
+}
+.resource-list dt{
+	padding-top:5px;
+}
+dl.resource-list{
+	padding-left:40px;
+}
+
+#map-page{
+	padding:0px;
+	margin:0px;
+	margin-top:-20px;
+	height: 900px;
+}
+/* move special fonts to HTML head for better performance */
+/*@import url('http://fonts.googleapis.com/css?family=Open+Sans:200,300,400,600,700');
+@import url("https://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css");
+
+
+/* custom template */
+@import url("https://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css");
+
+.box {
+  	bottom: 0; /* increase for footer use */
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    background: url(../imgs/background.jpg) no-repeat;
+    background-size:cover;
+    background-attachment:fixed;
+}
+.btn-info{
+    color: #fff;
+    background-color: #C1A67A;
+    border-color: #C1A67A;
+	background-image: none;
+}
+}
+.divider {
+	margin-top:32px;
+}
+
+#sidebar, #sidebar a {
+    color:#ffffff;
+    background-color:transparent;
+	text-shadow:1px 0 1px #888888;
+	font-size: 18px;
+}
+#sidebar a.logo {
+  display:block;
+  padding:3px;
+  background-color:#fff;
+  color:#777777;
+  height:40px;
+  width:40px;
+  margin:15px;
+  font-size:26px;
+  font-weight:700;
+  text-align:center;
+  text-decoration:none;
+  text-shadow:0 0 0;
+}
+#sidebar-footer {
+  position:absolute;bottom:5px;
+}
+#footer {
+  margin-bottom:20px;
+}
+
+
+
+
+.jumbotron {
+  background-color:transparent;
+}
+
+
+
+.feature i {
+   font-size:3.5em;
+   color:#fff;
+    background: #8E0406;
+    width: 100px;
+    height: 100px;
+   padding:25px;
+    margin-bottom: 10px;
+   -webkit-border-radius:70%;
+   -moz-border-radius:70%;
+   -o-border-radius:70%;
+   border-radius:70%;
+   position: relative;
+	box-shadow: 0 0 0 30px transparent;
+	-webkit-transform: translate3d(2, 2, 2);
+	-moz-transform: translate3d(2, 2, 2);
+	-o-transform: translate3d(2, 2, 2);
+	transform: translate3d(2, 2, 2);
+	-webkit-transition: box-shadow .6s ease-in-out;
+	-moz-transition: box-shadow .6s ease-in-out;
+	-o-transition: box-shadow .6s ease-in-out;
+	transition: box-shadow .6s ease-in-out;
+	}

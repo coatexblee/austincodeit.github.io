@@ -11,23 +11,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>Austin Code's GitHub</title>
-    <!-- old CSS 
-	<link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen" 
-	-->
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap theme -->
     <link href="css/bootstrap-theme.min.css" rel="stylesheet">
     <!-- Custom styles for this template -->
     <link href="css/custom-theme.css" rel="stylesheet">
+    <!-- js files -->
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 	<script type="text/javascript" src="js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="js/custom-script.js"></script>
+	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
   </head>
-  <body>
+  <body class="box">
     <!-- Fixed navbar -->
     <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container">
@@ -42,16 +38,18 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Home</a></li>
+            <li class="active"><a href="index.html">Home</a></li>
             <li><a href="about.html">About</a></li>
-            <li><a href="projects.html">Projects</a></li>
-            <li><a href="districts.html">Districts</a></li>
+            <li><a href="resources.html">Resources</a></li>
+            <li><a href="maps.html">Maps</a></li>
+            <li><a href="demographics.html">Demographics</a></li>
+            <li><a href="news.html">News</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
     </nav>
 
-	<div class="container col-lg-6 col-lg-offset-3 col-md-8 col-md-offset-2" role="main">
+	<div class="container col-lg-6 col-lg-offset-3 col-md-8 col-md-offset-2" id="main" role="main">
 
 		<!-- Main jumbotron for a primary marketing message or call to action -->
 		<div class="jumbotron">
@@ -68,6 +66,7 @@
 		consistency, and transparency, violations around the city will be brought into compliance. If compliance isn't met, Austin Code will 
 		proceed with enforcement actions in order to make sure the community stays livable for everyone in Austin. <a href='about.html'>Read more...</a></p>
 	  
+		<!--
 		<div class="page-header">
 			<h1>Projects</h1>
 		</div>
@@ -79,7 +78,6 @@
 			<img src="imgs/2016-09-23ProjectScreenshots-03.png" alt="ProjectScreenshots-03" class="img-thumbnail">
 			<img src="imgs/2016-09-23ProjectScreenshots-04.png" alt="ProjectScreenshots-04" class="img-thumbnail">
 		</div>
-		<!--
 		<h3>
 			<a href='http://austincodeit.github.io/district-neighborhood-analysis/'>District Neighborhood Analysis</a>
 		</h3>
