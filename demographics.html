@@ -23,7 +23,6 @@
 	<script type="text/javascript" src="js/custom-script.js"></script>
 	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 	<script src="js/chart.js"></script>
-	<script src="js/AutoGenerateCharts.js"></script>
 </head>
   <body class="box">
     <!-- Fixed navbar -->
@@ -50,12 +49,12 @@
         </div><!--/.nav-collapse -->
       </div>
     </nav>
-	<div class="container col-md-10 col-md-offset-1" id="main" role="main">
+	<div class="container col-lg-8 col-md-offset-2 col-md-10 col-md-offset-1 col-xs-12" id="main" role="main">
 		<div class="page-header">
 			<h1>Demographics</h1>	
 		</div >
 		<div class="col-sm-12" id="featured">
-				<div class="dropdown" style="float: right;">
+				<div class="dropdown demo-dropdown" style="float: right;">
 						Change District
 						<select class="form-control" onchange="myFunction(this.value)">
 							<option value="N1">N1</option>
@@ -94,7 +93,7 @@
 							<option value="W8">W8</option>
 						</select>
 				</div>
-				<h4 id="demo"></h4>
+				<p id="demo"></p>
 				<br><br>
 				<!--Charts-->
 				<div class="row"> 
@@ -130,17 +129,12 @@
 				</div>
 				<!--Demographic Indicators-->
 				<div class="row">
-					<h4>About the District</h4>
+					<h2>About</2>
 					<span id="about-district-text"></span>
 				</div>
-			</div><!-- /sm-col -->
-
-		<br><br>
-		<div class="footnote">
-			<span class="label label-default">Last Update: <span id="dateString"></span></span>
+			</div><!-- /sm-col -->		
 		</div>
-		<br><br>
 		
-		</div>
+		<script src="js/AutoGenerateCharts.js"></script>
 	</body>
 </html>

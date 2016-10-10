@@ -1,9 +1,6 @@
 function myFunction(district) {
-	
 	if (!district) { district = "N1"}
-	
 		DrawCharts(district);
-		document.getElementById("demo").innerHTML = "ACD District " + district;
 		console.log(district);
 		$.ajax({
 			url : "data/textfiles/"+district+"INTRO.txt",
@@ -11,12 +8,10 @@ function myFunction(district) {
 			success : function (data) {
 				$("#about-district-text").html(data);
 				console.log('data retrieved');
-				console.log(data);
 			}
 		});
 }
 
-myFunction("N1");  //load N1 when page loads
 function DrawCharts(district) {	
 	
 	if(window.myBar != null){
@@ -127,9 +122,11 @@ function DrawCharts(district) {
 		window.myBar2 = new Chart(document.getElementById("canvas2").getContext("2d")).Pie(barChartData2);
 		
 		
-		document.getElementById("demo").innerHTML = "You are now viewing data for Car District " + district + "."
+		document.getElementById("demo").innerHTML = "You are now viewing data for Car District <b>" + district + "</b>."
 		});
 		
 		
 	}
+	
+myFunction("N1");  //load N1 when page loads
 

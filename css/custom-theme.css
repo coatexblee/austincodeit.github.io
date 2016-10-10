@@ -96,6 +96,12 @@ dl.resource-list{
 	margin-top:-20px;
 	height: 900px;
 }
+.demo-dropdown{
+		background-color: #C1A67A;
+		padding: 5px;
+		border-radius: 5%;
+		
+ }
 /* move special fonts to HTML head for better performance */
 /*@import url('http://fonts.googleapis.com/css?family=Open+Sans:200,300,400,600,700');
 @import url("https://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css");
