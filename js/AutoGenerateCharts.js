@@ -122,7 +122,7 @@ function DrawCharts(district) {
 		window.myBar2 = new Chart(document.getElementById("canvas2").getContext("2d")).Pie(barChartData2);
 		
 		
-		document.getElementById("demo").innerHTML = "You are now viewing data for Car District <b>" + district + "</b>."
+		document.getElementById("demo-text").innerHTML = "Car District <b>" + district + "</b>."
 		});
 		
 		
