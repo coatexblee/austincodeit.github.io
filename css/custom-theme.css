@@ -179,6 +179,6 @@ dl.resource-list{
 		padding: 0px;
 	}
 	.pull-left{
-		float: none;
+		float: none !important;
 	}
 }
