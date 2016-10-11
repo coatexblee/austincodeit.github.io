@@ -12,6 +12,7 @@ body{
 .jumbotron{
 	text-align: center;
 	font-size: 50px;
+	padding:0px;
 }
 .navbar-inverse{
 	background-image: linear-gradient(to bottom,#59595b ,#222 100%) !important;
@@ -20,6 +21,9 @@ body{
 	padding: 0px;
 	margin-top: -20px;
 	text-align: center;
+}
+.code-logo img{
+	margin: 0px
 }
 .page-header{
 	margin-top:0px;
