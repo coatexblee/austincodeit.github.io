@@ -13,6 +13,7 @@ body{
 	text-align: center;
 	font-size: 50px;
 	padding:0px;
+	background-color:transparent;
 }
 .navbar-inverse{
 	background-image: linear-gradient(to bottom,#59595b ,#222 100%) !important;
@@ -123,14 +124,7 @@ dl.resource-list{
 	 
  }
  
-/* move special fonts to HTML head for better performance */
-/*@import url('http://fonts.googleapis.com/css?family=Open+Sans:200,300,400,600,700');
-@import url("https://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css");
-
-
-/* custom template */
-@import url("https://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css");
-
+/* previous CSS */
 .box {
   	bottom: 0; /* increase for footer use */
     left: 0;
@@ -151,42 +145,6 @@ dl.resource-list{
 .divider {
 	margin-top:32px;
 }
-
-#sidebar, #sidebar a {
-    color:#ffffff;
-    background-color:transparent;
-	text-shadow:1px 0 1px #888888;
-	font-size: 18px;
-}
-#sidebar a.logo {
-  display:block;
-  padding:3px;
-  background-color:#fff;
-  color:#777777;
-  height:40px;
-  width:40px;
-  margin:15px;
-  font-size:26px;
-  font-weight:700;
-  text-align:center;
-  text-decoration:none;
-  text-shadow:0 0 0;
-}
-#sidebar-footer {
-  position:absolute;bottom:5px;
-}
-#footer {
-  margin-bottom:20px;
-}
-
-
-
-
-.jumbotron {
-  background-color:transparent;
-}
-
-
 
 .feature i {
    font-size:3.5em;
@@ -211,3 +169,16 @@ dl.resource-list{
 	-o-transition: box-shadow .6s ease-in-out;
 	transition: box-shadow .6s ease-in-out;
 	}
+	
+@media only screen and (max-width: 500px) {
+    #main {
+        padding-left: 0px;
+		padding-right:0px;
+    }
+	.resource-links{
+		padding: 0px;
+	}
+	.pull-left{
+		float: none;
+	}
+}
