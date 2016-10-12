@@ -137,17 +137,19 @@ dl.resource-list {
     background-color: #C1A67A;
     padding: 5px;
     border-radius: 5%;
+    max-width: 140px;
+    margin: 0 auto;
+}
+.dropdown span {
+    color: white;
+    font-weight: 700;
 }
 
 .tweets-col iframe {
     height: 500px;
 }
 
-.news-col {}
-
-
 /* previous CSS */
-
 .box {
     bottom: 0;
     /* increase for footer use */
