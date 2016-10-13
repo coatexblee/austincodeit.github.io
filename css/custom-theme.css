@@ -1,21 +1,26 @@
 body {
+    font-family: 'Arial', sans-serif;
     padding-top: 70px;
     color: #59595B;
 }
-
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Arial Black';
+}
+.navbar-inverse .navbar-brand{
+  color: #e8e8e8;
+}
 #main {
     background-color: rgba(255, 255, 255, 0.85);
     margin-top: -40px;
     padding: 60px
 }
-
 .jumbotron {
     text-align: center;
     font-size: 50px;
     padding: 0px;
     background-color: transparent;
+    font-family: 'Arial Black'
 }
-
 .navbar-inverse {
     background-image: linear-gradient(to bottom, #59595b, #222 100%) !important;
 }
@@ -25,28 +30,22 @@ body {
     margin-top: -20px;
     text-align: center;
 }
-
 .code-logo img {
     margin: 0px;
 }
-
 .page-header {
     margin-top: 0px;
     border-bottom: 1px solid #bbbbbb;
 }
-
 hr {
     border-top: 1px solid #bbbbbb;
 }
-
 .code-logo img {
     width: 100px;
 }
-
 .welcome-text {
     float: right;
 }
-
 .tableauPlaceholder {
     height: 1033px;
     width: 100%;
@@ -55,61 +54,49 @@ hr {
 #demo-text {
     text-align: center;
 }
-
-.contact-table-wrapper {}
-
 .contact-table-wrapper table {
     width: 75%;
     margin: 0 auto;
 }
-
 .project-imgs {
     text-align: center;
 }
-
 .project-imgs img {
     padding: 10px;
     margin: 10px;
 }
-
 .tag-line {
     font-weight: 600;
     font-style: italic;
     text-align: center;
 }
-
 a {
     color: #cca349;
 }
-
 a:focus, a:hover {
     color: #7F6221;
     text-decoration: underline;
 }
-
 .carousel {
     margin: 15px;
     padding: 15px;
 }
-
 .footnote {
     text-align: center;
     padding: 10px 0 40px 0;
+    letter-spacing: 0.75px;
 }
-
 .resource-subjects {
     list-style: none;
     font-size: 16px;
+    margin-bottom: 40px;
 }
-
 .resource-subjects li {
     color: #990000;
 }
-
 .resource-links {
     list-style: none;
 }
-
 .resource-links li {
     padding: 10px 0 5px 0;
 }
