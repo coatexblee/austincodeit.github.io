@@ -144,14 +144,15 @@ dl.resource-list {
     color: white;
     font-weight: 700;
 }
-
+.thumbnail-row{
+    margin: 30px 0px -10px 0px;
+}
 .tweets-col iframe {
     height: 500px;
 }
 .district-caption{
-  margin-top: -15px;
-  text-align: center;
-
+    margin-top: -15px;
+    text-align: center;
 }
 /* previous CSS */
 .box {
