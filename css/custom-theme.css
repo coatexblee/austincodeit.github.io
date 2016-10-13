@@ -148,7 +148,11 @@ dl.resource-list {
 .tweets-col iframe {
     height: 500px;
 }
+.district-caption{
+  margin-top: -15px;
+  text-align: center;
 
+}
 /* previous CSS */
 .box {
     bottom: 0;

@@ -3,7 +3,9 @@ function myFunction(district) {
         district = "N1"
     }
     DrawCharts(district);
-    console.log(district);
+
+    document.getElementById("district-screenshot").src="./imgs/districts/"+ district +"-crop.png";
+    document.getElementById("district-link").href="./imgs/districts/"+ district +"-crop.png";
     $.ajax({
         url: "data/textfiles/" + district + "INTRO.txt",
         dataType: "text",
@@ -117,6 +119,8 @@ function DrawCharts(district) {
 
 
         document.getElementById("demo-text").innerHTML = "Car District <b>" + district + "</b>."
+        document.getElementById("district-screenshot").src="./imgs/districts/"+ district +"-crop.png";
+        document.getElementById("district-link").href="./imgs/districts/"+ district +"-crop.png";
     });
 
 
