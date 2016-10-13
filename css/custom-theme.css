@@ -4,7 +4,8 @@ body {
     color: #59595B;
 }
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Arial Black';
+  font-family: 'Arial Black', Arial Bold, Gadget, sans-serif;
+  font-weight: 900;
 }
 .navbar-inverse .navbar-brand{
   color: #e8e8e8;
@@ -19,7 +20,6 @@ h1, h2, h3, h4, h5, h6 {
     font-size: 50px;
     padding: 0px;
     background-color: transparent;
-    font-family: 'Arial Black'
 }
 .navbar-inverse {
     background-image: linear-gradient(to bottom, #59595b, #222 100%) !important;
