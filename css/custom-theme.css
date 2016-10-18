@@ -50,7 +50,10 @@ hr {
     height: 1033px;
     width: 100%;
 }
-
+.label-link{
+    background-color: #b11f26;
+    margin: 0px 5px 0px 0;
+}
 #demo-text {
     text-align: center;
 }
