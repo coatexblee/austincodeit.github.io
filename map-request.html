@@ -168,10 +168,10 @@
             var compileBody = function(){
                 var add1 = '', add2 = '', add3 = '', add4 = '', add5 = '', add6 = '', add7 = '';
                 if (caseDescr.length > 2) {
-                  add1 = "Case Number(s):\t"+caseDescr+"\n";
+                  add1 = "Case Number(s):\t"+caseDescr;
                 }
                 if (addDescr.length > 2){
-                  add2 = "Property Address(es):\t"+addDescr+"\n";
+                  add2 = "Properties:\t"+addDescr;
                 }
                 var fullText = `
                   Official Map Request For Austin Code Department, IT GIS Team\n
@@ -180,7 +180,14 @@
                   Team:\t\t`+team+`
                   Map:\t\t`+titleSug+`
                   Details:\tBelow are the specifics of my request...
-                  `+add1+add2+mapDescr+`\n`+add3+add4+add5+add6+add7;
+                  `+add1+`
+                  `+add2+`
+                  `+mapDescr+`
+                  `+add3+`
+                  `+add4+`
+                  `+add5+`
+                  `+add6+`
+                  `+add7;
 
                 return fullText;
             }
