@@ -25,6 +25,8 @@
     <style>
       table input.map-quant { width: 50px; }
       table td:nth-child(3),table td:nth-child(4){padding-left: 13px !important}
+      table td { vertical-align: middle !important;}
+      table.first-table {margin-bottom: 5px;}
     </style>
 </head>
 
@@ -76,7 +78,7 @@
               <div class="form-group">
                   <label for="map-details" class="col-sm-3 control-label">Map Details</label>
                   <div class="col-sm-9">
-                    <table class="table table-condensed">
+                    <table class="table table-condensed first-table">
                       <tr>
                         <th>Case Number(s)</th>
                         <th>Property Address(es)</th>
@@ -89,9 +91,15 @@
                     <table class="table table-condensed">
                       <tr>
                         <th>Quantity</th>
-                        <th>Size - Type</th>
+                        <th>Type</th>
                         <th>Print</th>
                         <th>PDF</th>
+                      </tr>
+                      <tr>
+                        <td><input type="text" id="quant0" placeholder="#" class="form-control map-quant" autofocus></td>
+                        <td>Interactive Web Map</td>
+                        <td></td>
+                        <td></td>
                       </tr>
                       <tr>
                         <td><input type="text" id="quant1" placeholder="#" class="form-control map-quant" autofocus></td>
@@ -108,27 +116,27 @@
                       <tr>
                         <td><input type="text" id="quant3" placeholder="#" class="form-control map-quant" autofocus></td>
                         <td>24x36 - Poster</td>
-                        <td><input type="checkbox" id="print2" ></td>
-                        <td><input type="checkbox" id="pdf2" ></td>
+                        <td><input type="checkbox" id="print3" ></td>
+                        <td><input type="checkbox" id="pdf3" ></td>
                       </tr>
                       <tr>
                         <td><input type="text" id="quant4" placeholder="#" class="form-control map-quant" autofocus></td>
                         <td>36x48 - Lg Poster</td>
-                        <td><input type="checkbox" id="print2" ></td>
-                        <td><input type="checkbox" id="pdf2" ></td>
+                        <td><input type="checkbox" id="print4" ></td>
+                        <td><input type="checkbox" id="pdf4" ></td>
                       </tr>
                       <tr>
                         <td><input type="text" id="quant5" placeholder="#" class="form-control map-quant" autofocus></td>
-                        <td><input type="text" id="otherType" placeholder="Other (e.g. Web Map)" class="form-control" style="width:75%" autofocus></td>
-                        <td><input type="checkbox" id="print2" ></td>
-                        <td><input type="checkbox" id="pdf2" ></td>
+                        <td><input type="text" id="otherType" placeholder="Custom (e.g. 3x5)" class="form-control" style="width:75%" autofocus></td>
+                        <td><input type="checkbox" id="print5" ></td>
+                        <td><input type="checkbox" id="pdf5" ></td>
                       </tr>
                     </table>
                   </div>
               </div>
 
               <div class="form-group">
-                  <label for="titleSuggestion" class="col-sm-3 control-label">Title Suggestion</label>
+                  <label for="titleSuggestion" class="col-sm-3 control-label">Map Title</label>
                   <div class="col-sm-9">
                       <input type="text" id="title-sugg" placeholder="e.g. ACD Complaints FY2017" class="form-control" autofocus>
                   </div>
@@ -137,13 +145,13 @@
                   <label class="control-label col-sm-3">Description</label>
                   <div class="col-sm-9">
                     <span id="helpBlock" class="help-block">Please include the purpose and audience of the map :)</span>
-                    <textarea class="form-control" placeholder="I want a map showing..." rows="2" id="map-descr"></textarea>
+                    <textarea class="form-control" placeholder="e.g. BSC Map, District Map, or I want a map showing..." rows="2" id="map-descr"></textarea>
                   </div>
               </div> <!-- /.form-group -->
 
               <div class="form-group">
                   <div class="col-sm-9 col-sm-offset-3">
-                      <button type="submit" class="btn btn-primary btn-block" onclick="sendMail(); return false">Request!</button>
+                      <button type="submit" class="btn btn-info btn-circle text-uppercase btn-block" onclick="sendMail(); return false">Request!</button>
                   </div>
               </div>
           </form> <!-- /form -->
@@ -188,8 +196,8 @@
                   `+add5+`
                   `+add6+`
                   `+add7;
-
-                return fullText;
+                  console.log(fullText);
+                // return fullText;
             }
 
 
