@@ -6,7 +6,7 @@
 $(document).ready(function() {
   'use strict';
 
-	var dateString = "Oct 2016";
+	var dateString = "March 2017";
 
 	console.log("hi! welcome to austin code's github!!!");
 	$("#footnoteInsert").html(`
