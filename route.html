@@ -56,38 +56,20 @@
     <div class="container">
         <div class="row" id="firstRow">
           <div class="col-sm-6">
+
+            <div class="btn-group route-inputs">
+                <div class="input-group">
+                  <input type="text" class="form-control" placeholder="Enter Inspector ID" id="inspectorID">
+                  <span class="input-group-btn">
+                    <button class="btn btn-default" id="loadTaskList" type="button">Load Task List</button>
+                  </span>
+                </div>
+            </div>
+            <br/><br/>
+
             <div class="well" id="availableAddresses">
 
-                <div class="list-group">
-                  <a href="#" class="list-group-item ">
-                    <h4 class="list-group-item-heading">Address #1</h4>
-                    <p class="list-group-item-text">...</p>
-                  </a>
-                </div>
-                <div class="list-group">
-                  <a href="#" class="list-group-item ">
-                    <h4 class="list-group-item-heading">Address #2</h4>
-                    <p class="list-group-item-text">...</p>
-                  </a>
-                </div>
-                <div class="list-group">
-                  <a href="#" class="list-group-item ">
-                    <h4 class="list-group-item-heading">Address #3</h4>
-                    <p class="list-group-item-text">...</p>
-                  </a>
-                </div>
-                <div class="list-group">
-                  <a href="#" class="list-group-item ">
-                    <h4 class="list-group-item-heading">Address #4</h4>
-                    <p class="list-group-item-text">...</p>
-                  </a>
-                </div>
-                <div class="list-group">
-                  <a href="#" class="list-group-item ">
-                    <h4 class="list-group-item-heading">Address #5</h4>
-                    <p class="list-group-item-text">...</p>
-                  </a>
-                </div>
+
 
             </div>
           </div>
@@ -136,6 +118,7 @@
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBbnhwYIXT-MBTVIaDxS9kzbqIOmoeqcRU">
     </script>
     <script src="./js/route-app.js"></script>
+    <script src="./js/load-task-list.js"></script>
 
 
 </body>
