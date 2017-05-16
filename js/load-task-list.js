@@ -1,6 +1,15 @@
 $(document).ready(function(){
 
-  var sampleArray = [1,2,3,'A','GH','X',343,'...'];
+  var sampleArray = [
+    { address: '2411 Shelby Oak Lane', process: 'Event Log', status: 'Open', fp: '1', pp:'15', start: 'May 1, 2017', comment:'3-1-2017 NEED TO WRITE TICKET'},
+    { address: '7510 Islander Dr', process: 'Initial Response/Site Investigation', status: 'Open', fp: '1', pp:'5', start: 'May 8, 2017', comment:'Warning Issued on November 8 2016'},
+    { address: '8300 Cayuga Dr', process: 'Initial Response/Site Investigation', status: 'Open', fp: '1', pp:'155', start: 'May 2, 2017', comment:'4-14-2017 NOV for junk at curb'},
+    { address: '9207 Kempler Dr', process: 'Event Log', status: 'Open', fp: '', pp:'1', start: 'May 10, 2017', comment:'4-25-2017 NOV for bamboo'},
+    { address: '8200 Cache Dr', process: 'Cutlist - Inspector (ROW)', status: 'Submitted to Cutlist', fp: '', pp:'555', start: 'May 17, 2017', comment:'2-23-2017 Need to write an Admin Warning ticket'},
+    { address: '3004 Siskin Dr', process: 'Initial Response/Site Investigation', status: 'Open', fp: '', pp:'555', start: 'May 5, 2017', comment:'2-17-2017 Last inspection/ NO show at court'},
+    { address: '8611 Leo St', process: 'Event Log', status: 'Open', fp: '', pp:'999', start: 'May 9, 2017', comment:'3-1-2017 NEED TO WRITE TICKET'},
+    { address: '6605 WolfCreek Pass', process: 'Event Log', status: 'Open', fp: '', pp: '999', start: 'May 21, 2017', comment:'3-1-2017 NEED TO WRITE TICKET'}
+  ];
   $("#loadTaskList").on('click', function(){
 
       if ( $("#inspectorID").val().length >= 2 ){
@@ -11,13 +20,26 @@ $(document).ready(function(){
       //loop through results and get addresses
       $(sampleArray).each(function(i){
         $("#availableAddresses").append(`<div class="list-group">
-            <a href="#" class="list-group-item ">
-              <h4 class="list-group-item-heading"> Sample Address #`+sampleArray[i]+`</h4>
-              <p class="list-group-item-text">... <span style="padding-left:2em"></span>|<span style="padding-left:2em"></span> ... <span style="padding-left:2em"></span>|<span style="padding-left:2em"></span> ... <span style="padding-left:2em"></span>|<span style="padding-left:2em"></span> ... <br>
-
-              </p>
-              <p><b>Case #</b>???-??-??</p>
-
+            <a class="list-group-item ">
+              <h4 class="list-group-item-heading">`+sampleArray[i].address +`</h4>
+              <table class="table table-condensed">
+                <tr>
+                  <th>Process</th>
+                  <td>`+sampleArray[i].process +`</td>
+                  <th>F.P.</th>
+                  <td>`+sampleArray[i].fp +`</td>
+                </tr>
+                <tr>
+                  <th>Start</th>
+                  <td>`+sampleArray[i].start +`</td>
+                  <th>P.P.</th>
+                  <td>`+sampleArray[i].pp +`</td>
+                </tr>
+                <tr>
+                  <th>Comment</th>
+                  <td colspan="3">`+sampleArray[i].comment +`</td>
+                </tr>
+              </table>
             </a>
           </div>
           `);

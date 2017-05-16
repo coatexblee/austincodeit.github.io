@@ -3,11 +3,9 @@
 }
 .removeAddress{
   padding: 0px 2px;
+  float: right;
 }
 
-#map_container{
-  position: relative;
-}
 #map{
     height: 0;
     overflow: hidden;
@@ -33,5 +31,98 @@
   overflow-y: scroll;
 }
 #toBerouted{
-  
+
+}
+#directions-panel{
+  margin-bottom: 0px;
+}
+table {
+    word-wrap: break-word;
+    table-layout: fixed;
+}
+table td, table th {
+  padding: 3px;
+}
+table th {
+  font-size: 12px;
+}
+table td {
+  font-size: 11px;
+}
+
+
+#mapResults{
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+/* animation section for loading map results */
+#loading-overlay {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    background: #cccccc;
+    z-index: 1000;
+    opacity: 0.75;
+    color: #fff;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    font-size: 34px;
+}
+
+.loaders {
+  height: 100%;
+  line-height: 300px;
+  background-color: #4EBA6F;
+  padding-top: 75px;
+}
+
+.loader {
+  display: inline-block;
+  position: relative;
+  width: 50px;
+  height: 50px;
+  vertical-align: middle;
+}
+
+/*	$Loader Quadrant
+	========================================================================== */
+.loader-quart {
+  border-radius: 50px;
+  border: 6px solid rgba(255, 255, 255, 0.4);
+}
+.loader-quart:after {
+  content: '';
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  bottom: -6px;
+  left: -6px;
+  border-radius: 50px;
+  border: 6px solid transparent;
+  border-top-color: #fff;
+  -webkit-animation: spin 1s linear infinite;
+  animation: spin 1s linear infinite;
+}
+
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+    tranform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    tranform: rotate(360deg);
+  }
+}
+@keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+    tranform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    tranform: rotate(360deg);
+  }
 }

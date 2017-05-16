@@ -14,23 +14,23 @@ $(document).ready(function(){
           }
           map = new google.maps.Map(document.getElementById('map'), mapOptions);
           //Callout Content
-          var contentString = 'RLC Building';
-          //Set window width + content
-          var infowindow = new google.maps.InfoWindow({
-            content: contentString,
-            maxWidth: 500
-          });
+          // var contentString = 'RLC Building';
+          // //Set window width + content
+          // var infowindow = new google.maps.InfoWindow({
+          //   content: contentString,
+          //   maxWidth: 500
+          // });
 
-          //Add Marker
-          var marker = new google.maps.Marker({
-            position: myLatlng,
-            map: map,
-            title: 'image title'
-          });
-
-          google.maps.event.addListener(marker, 'click', function() {
-            infowindow.open(map,marker);
-          });
+          // //Add Marker
+          // var marker = new google.maps.Marker({
+          //   position: myLatlng,
+          //   map: map,
+          //   title: 'image title'
+          // });
+          //
+          // google.maps.event.addListener(marker, 'click', function() {
+          //   infowindow.open(map,marker);
+          // });
 
           //Resize Function
           google.maps.event.addDomListener(window, "resize", function() {
@@ -43,20 +43,25 @@ $(document).ready(function(){
       var calculateAndDisplayRoute = function() {
         directionsDisplay.setMap(map);
         var waypts = [], start = '', finish = '';
-        // var checkboxArray = document.getElementById('waypoints');
+        // grab addresses from elements
         var divGroup = $("#toBeRouted > div.list-group h4");
         divGroup.each(function(i){
+          //grab text and trim whitespace
+          var loc = $(this).text().trim();
+          //loop through if it's #1 it's start location, if it's last it's finish, else it's waypoint
           if (i == 0){
-            start = $(this).text();
+            start = loc;
           } else if (i == (divGroup.length - 1) ){
-            finish = $(this).text();
+            finish = loc;
           } else {
             waypts.push({
-              location: $(this).text(),
+              location: loc,
               stopover: true
             });
           }
         });
+
+
         directionsService.route({
             origin: start, //document.getElementById('start').value,
             destination: finish, //document.getElementById('end').value,
@@ -66,6 +71,7 @@ $(document).ready(function(){
           }, function(response, status) {
             if (status === 'OK') {
               console.log('driving directions complete!!!!')
+              $("#loading-overlay").fadeOut( "slow" );
               directionsDisplay.setDirections(response);
               var route = response.routes[0];
               var summaryPanel = document.getElementById('directions-panel');
@@ -84,23 +90,29 @@ $(document).ready(function(){
               summaryPanel.innerHTML = '';
             }
           });
+
         }
 
       var validateRemoveButton = function(){
         $(".removeAddress").on('click', function(){
-          $(this).parent().parent().remove();
+          $(this).parent().parent().parent().remove();
           adjustRowCount();
         });
       }
       var addAddressFromInput = function(address){
         console.log(address);
         $("#toBeRouted").append(`<div class="list-group">
-            <a href="#" class="list-group-item ">
-              <h4 class="list-group-item-heading">`+address+`</h4>
-              <p class="list-group-item-text">...</p>
-              <button type="button" class="btn btn-sm btn-danger removeAddress">
-                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-              </button>
+            <a class="list-group-item ">
+              <h4 class="list-group-item-heading">`+ address +`
+                <button type="button" class="btn btn-sm btn-default removeAddress">
+                  <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                </button>
+              </h4>
+              <table classs="table table-condensed">
+                <tr>
+                  <th>...</th>
+                </tr>
+              </table>
             </a>
           </div>
           `);
@@ -128,11 +140,11 @@ $(document).ready(function(){
             return source === document.getElementById("toBeRouted")
           }
       }).on('drop', function (el) {
-          if ( $(el).children(".list-group-item").children("button").length ){
+          if ( $(el).children(".list-group-item").children("h4").children("button").length ){
             // console.log('button');
             //if it already has a button skip, else..
           } else {
-            $(el).children(".list-group-item").append(`<button type="button" class="btn btn-sm btn-danger removeAddress">
+            $(el).children(".list-group-item").children("h4").append(`<button type="button" class="btn btn-sm btn-default removeAddress">
               <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
             </button>`);
           }
@@ -174,6 +186,7 @@ $(document).ready(function(){
 
       $("#createRoute").on('click', function(){
         $( "#mapResults" ).slideToggle( "slow", function() {
+          $("#loading-overlay").fadeIn( "slow" );
           initialize();
           // Animation complete.
           calculateAndDisplayRoute();

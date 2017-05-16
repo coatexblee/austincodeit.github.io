@@ -102,12 +102,17 @@
           </div>
         </div> <!-- end of first row -->
 
-        <hr>
-        <button class="btn btn-md btn-default" id="showMap">Show Map</button>
-        <button class="btn btn-md btn-default" id="resetApp">Create New Route</button>
-        <hr>
         <div class="row" id="mapResults">
-          <div id="map_container"></div>
+            <hr>
+          <div class="route-inputs">
+            <button class="btn btn-md btn-default" id="resetApp">Start Over</button>
+          </div>
+            <hr>
+          <div id="loading-overlay">
+            <section class="loaders">
+              <span class="loader loader-quart"> </span> Loading...
+            </section>
+          </div>
           <div id="map"></div>
           <div class="well" id="directions-panel"></div>
 
