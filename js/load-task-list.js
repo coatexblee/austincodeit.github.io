@@ -13,10 +13,11 @@ $(document).ready(function(){
         $("#availableAddresses").append(`<div class="list-group">
             <a href="#" class="list-group-item ">
               <h4 class="list-group-item-heading"> Sample Address #`+sampleArray[i]+`</h4>
-              <p class="list-group-item-text">...</p>
-              <button type="button" class="btn btn-sm btn-danger removeAddress">
-                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-              </button>
+              <p class="list-group-item-text">... <span style="padding-left:2em"></span>|<span style="padding-left:2em"></span> ... <span style="padding-left:2em"></span>|<span style="padding-left:2em"></span> ... <span style="padding-left:2em"></span>|<span style="padding-left:2em"></span> ... <br>
+
+              </p>
+              <p><b>Case #</b>???-??-??</p>
+
             </a>
           </div>
           `);
