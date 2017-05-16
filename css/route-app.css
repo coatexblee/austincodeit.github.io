@@ -1,0 +1,29 @@
+.well {
+  min-height: 300px;
+}
+.removeAddress{
+  padding: 0px 2px;
+}
+
+#map_container{
+  position: relative;
+}
+#map{
+    height: 0;
+    overflow: hidden;
+    padding-bottom: 22.25%;
+    padding-top: 30px;
+    position: relative;
+}
+.route-inputs{
+  text-align: center;
+  width: 100%;
+}
+#toBeRouted > div.list-group:before{
+  content: attr(data-content);
+  left: 23px;
+  font-size: 11px;
+  position: absolute;
+  font-weight: 600;
+  padding-top: 11px;
+}
