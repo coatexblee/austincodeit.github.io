@@ -1,11 +1,13 @@
 .well {
   min-height: 300px;
+  background: white;
+  background-color: white;
 }
 .removeAddress{
   padding: 0px 2px;
   float: right;
 }
-ul.dropdown-menu{
+ul#dropdownChoice{
   cursor: pointer;
 }
 #map{
@@ -43,7 +45,6 @@ button#createRoute[disabled]{
 #directions-panel{
   margin-bottom: 0px;
   border-radius: 0px;
-  background: white;
   border-top: 2px solid #ccc;
 }
 table {
