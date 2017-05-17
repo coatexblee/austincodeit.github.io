@@ -1,7 +1,10 @@
 $(document).ready(function(){
+      // hide and disable certain elements for UI purposes
+      $("#directions-panel").hide();
       $("#mapResults").hide();
+      $("#createRoute").prop('disabled', true);
       //goooglemapsJS
-      var map, directionsService, directionsDisplay;
+      var map, directionsService, directionsDisplay; //global variables
       var initialize = function(){
           directionsService = new google.maps.DirectionsService;
           directionsDisplay = new google.maps.DirectionsRenderer;
@@ -13,24 +16,6 @@ $(document).ready(function(){
             mapTypeId: google.maps.MapTypeId.ROADMAP
           }
           map = new google.maps.Map(document.getElementById('map'), mapOptions);
-          //Callout Content
-          // var contentString = 'RLC Building';
-          // //Set window width + content
-          // var infowindow = new google.maps.InfoWindow({
-          //   content: contentString,
-          //   maxWidth: 500
-          // });
-
-          // //Add Marker
-          // var marker = new google.maps.Marker({
-          //   position: myLatlng,
-          //   map: map,
-          //   title: 'image title'
-          // });
-          //
-          // google.maps.event.addListener(marker, 'click', function() {
-          //   infowindow.open(map,marker);
-          // });
 
           //Resize Function
           google.maps.event.addDomListener(window, "resize", function() {
@@ -41,64 +26,67 @@ $(document).ready(function(){
       }
 
       var calculateAndDisplayRoute = function() {
-        directionsDisplay.setMap(map);
-        var waypts = [], start = '', finish = '';
-        // grab addresses from elements
-        var divGroup = $("#toBeRouted > div.list-group h4");
-        divGroup.each(function(i){
-          //grab text and trim whitespace
-          var loc = $(this).text().trim();
-          //loop through if it's #1 it's start location, if it's last it's finish, else it's waypoint
-          if (i == 0){
-            start = loc;
-          } else if (i == (divGroup.length - 1) ){
-            finish = loc;
-          } else {
-            waypts.push({
-              location: loc,
-              stopover: true
-            });
-          }
-        });
-
-
-        directionsService.route({
-            origin: start, //document.getElementById('start').value,
-            destination: finish, //document.getElementById('end').value,
-            waypoints: waypts,
-            optimizeWaypoints: true,
-            travelMode: 'DRIVING'
-          }, function(response, status) {
-            if (status === 'OK') {
-              console.log('driving directions complete!!!!')
-              $("#loading-overlay").fadeOut( "slow" );
-              directionsDisplay.setDirections(response);
-              var route = response.routes[0];
-              var summaryPanel = document.getElementById('directions-panel');
-              summaryPanel.innerHTML = '';
-              // For each route, display summary information.
-              for (var i = 0; i < route.legs.length; i++) {
-                var routeSegment = i + 1;
-                summaryPanel.innerHTML += '<b>Route Segment: ' + routeSegment +
-                    '</b><br>';
-                summaryPanel.innerHTML += route.legs[i].start_address + ' to ';
-                summaryPanel.innerHTML += route.legs[i].end_address + '<br>';
-                summaryPanel.innerHTML += route.legs[i].distance.text + '<br><br>';
-              }
+          directionsDisplay.setMap(map);
+          var waypts = [], start = '', finish = '';
+          // grab addresses from elements
+          var divGroup = $("#toBeRouted > div.list-group h4");
+          //loop through list and sort into waypoints, start, and last
+          divGroup.each(function(i){
+            //grab text and trim whitespace
+            var loc = $(this).text().trim();
+            //if it's #1 it's start location, if it's last it's finish, else it's waypoint
+            if (i == 0){
+              start = loc;
+            } else if (i == (divGroup.length - 1) ){
+              finish = loc;
             } else {
-              window.alert('Directions request failed due to ' + status);
-              summaryPanel.innerHTML = '';
+              waypts.push({
+                location: loc,
+                stopover: true
+              });
             }
           });
+          //google's direction service
+          directionsService.route({
+              origin: start, //document.getElementById('start').value,
+              destination: finish, //document.getElementById('end').value,
+              waypoints: waypts,
+              optimizeWaypoints: true,
+              travelMode: 'DRIVING'
+            }, function(response, status) {
+              if (status === 'OK') {
+                //if we get an OK response, add the directions, and show the appropriate elements
+                console.log('driving directions complete!!!!')
+                directionsDisplay.setDirections(response);
+                $("#loading-overlay").fadeOut( "slow" );
+                $("#directions-panel").fadeIn( "slow" );
+                var route = response.routes[0];
+                var summaryPanel = document.getElementById('directions-panel');
+                summaryPanel.innerHTML = '';
+                // For each route, display summary information.
+                for (var i = 0; i < route.legs.length; i++) {
+                  var routeSegment = i + 1;
+                  summaryPanel.innerHTML += '<b>Route Segment: ' + routeSegment +
+                      '</b><br>';
+                  summaryPanel.innerHTML += route.legs[i].start_address + ' to ';
+                  summaryPanel.innerHTML += route.legs[i].end_address + '<br>';
+                  summaryPanel.innerHTML += route.legs[i].distance.text + '<br><br>';
+                }
+              } else {
+                window.alert('Directions request failed due to ' + status);
+                summaryPanel.innerHTML = '';
+              }
+            });
 
         }
-
+      //function to ensure the remove button works after being moved in DOM
       var validateRemoveButton = function(){
         $(".removeAddress").on('click', function(){
           $(this).parent().parent().parent().remove();
           adjustRowCount();
         });
       }
+      //function to take the address from input and add it too routing list
       var addAddressFromInput = function(address){
         console.log(address);
         $("#toBeRouted").append(`<div class="list-group">
@@ -119,15 +107,27 @@ $(document).ready(function(){
         validateRemoveButton();
         adjustRowCount();
       }
+      //everytime the DOM is updated, adjust list count
       var adjustRowCount = function(){
         var divGroup = $("#toBeRouted > div.list-group ");
         var arrayLength = $("#toBeRouted > div.list-group ").length;
+        //adjust list CSS #s
         divGroup.each(function(i){
           $(this).attr('data-content',i+1);
         })
+        // disable or enable route button based on number of addresses available
+        if (arrayLength >= 2){
+          $("#createRoute").prop('disabled', false);
+          $("#createRoute").addClass('btn-primary');
+          $("#createRoute").removeClass('btn-default');
+        } else {
+          $("#createRoute").prop('disabled', true);
+          $("#createRoute").removeClass('btn-primary');
+          $("#createRoute").addClass('btn-default');
+        }
 
       }
-
+      //dragulaJS provides for the drag and drop functionality
       dragula([document.getElementById("availableAddresses"), document.getElementById("toBeRouted")],
         {
           copy: function (el, source) {
@@ -167,21 +167,22 @@ $(document).ready(function(){
           }
       });
       $(document).keypress(function(e) {
-          //if user pressed enter
+          //if user presses enter while focused on input field
           if(e.which == 13) {
                 //if input value has contents greater than 5
-                if ( $("#addressInput").val().length >= 5 ){
+                if ( $("#addressInput:focus").val().length >= 5 ){
                   //trigger addNewAddress click event
                   $( "#addNewAddress" ).trigger( "click" );
                 }
           }
       });
 
-      $("#resetMap").on('click', function(){
+      $("#resetList").on('click', function(){
         var divGroup = $("#toBeRouted > div.list-group ");
         divGroup.each(function(i){
           $(this).remove()
-        })
+        });
+        adjustRowCount();
       });
 
       $("#createRoute").on('click', function(){
@@ -197,16 +198,18 @@ $(document).ready(function(){
       });
 
       $("#resetApp").on('click', function(){
-        $("#resetMap").trigger( "click" );
+        $("#resetList").trigger( "click" );
         $( "#mapResults" ).slideToggle( "slow", function() {
-
           // Animation complete.
-
         });
         $( "#firstRow" ).slideToggle( "slow", function() {
           //
         });
       })
 
-
+      setTimeout(function(){
+        alert(`
+          This is a draft prototype. The functions and data used are samples only.
+          `);
+        }, 1000);
   });

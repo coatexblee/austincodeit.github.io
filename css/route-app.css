@@ -5,9 +5,11 @@
   padding: 0px 2px;
   float: right;
 }
-
+ul.dropdown-menu{
+  cursor: pointer;
+}
 #map{
-    height: 0;
+    height: 400px;
     overflow: hidden;
     padding-bottom: 22.25%;
     padding-top: 30px;
@@ -33,8 +35,16 @@
 #toBerouted{
 
 }
+button#createRoute[disabled]{
+  opacity: 1;
+}
+
+
 #directions-panel{
   margin-bottom: 0px;
+  border-radius: 0px;
+  background: white;
+  border-top: 2px solid #ccc;
 }
 table {
     word-wrap: break-word;

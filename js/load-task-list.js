@@ -11,10 +11,9 @@ $(document).ready(function(){
     { address: '6605 WolfCreek Pass', process: 'Event Log', status: 'Open', fp: '', pp: '999', start: 'May 21, 2017', comment:'3-1-2017 NEED TO WRITE TICKET'}
   ];
   $("#loadTaskList").on('click', function(){
-
       if ( $("#inspectorID").val().length >= 2 ){
-        var addressValue = $("#inspectorID").val();
-        //getAddresswaFromID(addressValue);
+        // var inspectorValue = $("#inspectorID").val();
+        //getAddressesFromID(inspectorValue);
         $("#inspectorID").val('');
       }
       //loop through results and get addresses
@@ -45,6 +44,16 @@ $(document).ready(function(){
           `);
       });
 
+  });
+  $(document).keypress(function(e) {
+      //if user presses enter while focused on input field
+      if(e.which == 13) {
+            //if input value has contents greater than 5
+            if ( $("#inspectorID:focus").val().length >= 2 ){
+              //trigger addNewAddress click event
+              $( "#loadTaskList" ).trigger( "click" );
+            }
+      }
   });
 
 });
