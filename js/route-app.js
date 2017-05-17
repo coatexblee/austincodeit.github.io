@@ -1,8 +1,4 @@
 $(document).ready(function(){
-      // hide and disable certain elements for UI purposes
-      $("#directions-panel").hide();
-      $("#mapResults").hide();
-      $("#createRoute").prop('disabled', true);
       //goooglemapsJS
       var map, directionsService, directionsDisplay; //global variables
       var initialize = function(){
