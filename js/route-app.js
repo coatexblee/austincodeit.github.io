@@ -85,21 +85,20 @@ $(document).ready(function(){
       //function to take the address from input and add it too routing list
       var addAddressFromInput = function(address){
         console.log(address);
-        $("#toBeRouted").append(`<div class="list-group">
-            <a class="list-group-item ">
-              <h4 class="list-group-item-heading">`+ address +`
-                <button type="button" class="btn btn-sm btn-default removeAddress">
-                  <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                </button>
-              </h4>
-              <table classs="table table-condensed">
-                <tr>
-                  <th>...</th>
-                </tr>
-              </table>
-            </a>
-          </div>
-          `);
+        $("#toBeRouted").append('<div class="list-group">'+
+            '<a class="list-group-item ">'+
+              '<h4 class="list-group-item-heading">'+ address + '</h4>' +
+                '<button type="button" class="btn btn-sm btn-default removeAddress">'+
+                  '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>'+
+                '</button>'+
+              '</h4>'+
+              '<table classs="table table-condensed">'+
+                '<tr>'+
+                  '<th>User added..</th>'+
+                '</tr>'+
+              '</table>'+
+            '</a>'+
+          '</div>');
         validateRemoveButton();
         adjustRowCount();
       }
@@ -140,9 +139,10 @@ $(document).ready(function(){
             // console.log('button');
             //if it already has a button skip, else..
           } else {
-            $(el).children(".list-group-item").children("h4").append(`<button type="button" class="btn btn-sm btn-default removeAddress">
-              <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-            </button>`);
+            $(el).children(".list-group-item").children("h4").append(''+
+              '<button type="button" class="btn btn-sm btn-default removeAddress">'+
+                '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>'+
+              '</button>');
           }
           validateRemoveButton();
           adjustRowCount();
@@ -204,8 +204,6 @@ $(document).ready(function(){
       })
 
       setTimeout(function(){
-        alert(`
-          This is a draft prototype. The functions and data used are samples only.
-          `);
+        alert('This is a draft prototype. The functions and data used are samples only.')
         }, 1000);
   });

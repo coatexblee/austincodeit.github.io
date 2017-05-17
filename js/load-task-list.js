@@ -18,30 +18,29 @@ $(document).ready(function(){
       }
       //loop through results and get addresses
       $(sampleArray).each(function(i){
-        $("#availableAddresses").append(`<div class="list-group">
-            <a class="list-group-item ">
-              <h4 class="list-group-item-heading">`+sampleArray[i].address +`</h4>
-              <table class="table table-condensed">
-                <tr>
-                  <th>Process</th>
-                  <td>`+sampleArray[i].process +`</td>
-                  <th>F.P.</th>
-                  <td>`+sampleArray[i].fp +`</td>
-                </tr>
-                <tr>
-                  <th>Start</th>
-                  <td>`+sampleArray[i].start +`</td>
-                  <th>P.P.</th>
-                  <td>`+sampleArray[i].pp +`</td>
-                </tr>
-                <tr>
-                  <th>Comment</th>
-                  <td colspan="3">`+sampleArray[i].comment +`</td>
-                </tr>
-              </table>
-            </a>
-          </div>
-          `);
+        $("#availableAddresses").append('<div class="list-group">'+
+            '<a class="list-group-item ">'+
+              '<h4 class="list-group-item-heading">'+sampleArray[i].address +'</h4>'+
+              '<table class="table table-condensed">'+
+                '<tr>'+
+                  '<th>Process</th>'+
+                  '<td>'+sampleArray[i].process +'</td>'+
+                  '<th>F.P.</th>'
+                  '<td>'+sampleArray[i].fp +'</td>'+
+                '</tr>'+
+                '<tr>'+
+                  '<th>Start</th>'+
+                  '<td>'+sampleArray[i].start +'</td>'+
+                  '<th>P.P.</th>'+
+                  '<td>'+sampleArray[i].pp +'</td>'+
+                '</tr>'+
+                '<tr>'+
+                  '<th>Comment</th>'+
+                  '<td colspan="3">'+sampleArray[i].comment +'</td>'+
+                '</tr>'+
+              '</table>'+
+            '</a>'+
+          '</div>');
       });
 
   });
