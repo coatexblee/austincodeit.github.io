@@ -25,7 +25,7 @@ $(document).ready(function(){
                 '<tr>'+
                   '<th>Process</th>'+
                   '<td>'+sampleArray[i].process +'</td>'+
-                  '<th>F.P.</th>'
+                  '<th>F.P.</th>'+
                   '<td>'+sampleArray[i].fp +'</td>'+
                 '</tr>'+
                 '<tr>'+

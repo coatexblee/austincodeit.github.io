@@ -204,6 +204,6 @@ $(document).ready(function(){
       })
 
       setTimeout(function(){
-        alert('This is a draft prototype. The functions and data used are samples only.')
+        alert('This is a draft prototype. The functions and data used are samples only.');
         }, 1000);
   });
