@@ -16,27 +16,37 @@ ul#dropdownChoice{
     padding-bottom: 22.25%;
     padding-top: 30px;
     position: relative;
+    border: 3px #cbe6a3 outset;
+    border-bottom: none;
 }
 .route-inputs{
   text-align: center;
   width: 100%;
+  margin-bottom: 20px;
 }
+/* numbers that order the list toBeRouted*/
 #toBeRouted > div.list-group:before{
   content: attr(data-content);
-  left: 23px;
-  font-size: 11px;
+  left: 24px;
+  font-size: 19px;
   position: absolute;
   font-weight: 600;
   padding-top: 11px;
+  font-family: monospace;
+}
+#toBeRouted > div > a.list-group-item {
+    margin-left: 10px;
 }
 
 #availableAddresses {
   max-height: 500px;
   overflow-y: scroll;
 }
-#toBerouted{
 
+#availableAddresses > div > a.list-group-item{
+    margin-left: 0px;
 }
+
 button#createRoute[disabled]{
   opacity: 1;
 }
@@ -47,6 +57,8 @@ button#createRoute[disabled]{
   border-radius: 0px;
   border-top: 2px solid #ccc;
   display: none;
+  border: 3px #cbe6a3 outset;
+  border-top: none;
 }
 table {
     word-wrap: break-word;
@@ -62,13 +74,14 @@ table td {
   font-size: 11px;
 }
 
-
 #mapResults{
     width: 100%;
     height: 100%;
     position: relative;
     display: none;
+    overflow: hidden;
 }
+
 /* animation section for loading map results */
 #loading-overlay {
     height: 100%;
@@ -76,7 +89,7 @@ table td {
     position: absolute;
     background: #cccccc;
     z-index: 1000;
-    opacity: 0.75;
+    opacity: 0.85;
     color: #fff;
     text-align: center;
     margin: 0;

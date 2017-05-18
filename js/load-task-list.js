@@ -46,7 +46,7 @@ $(document).ready(function(){
   });
   $(document).keypress(function(e) {
       //if user presses enter while focused on input field
-      if(e.which == 13) {
+      if(e.which == 13 && $("#inspectorID:focus").val()) {
             //if input value has contents greater than 5
             if ( $("#inspectorID:focus").val().length >= 2 ){
               //trigger addNewAddress click event

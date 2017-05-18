@@ -26,6 +26,9 @@ $(document).ready(function(){
           var waypts = [], start = '', finish = '';
           // grab addresses from elements
           var divGroup = $("#toBeRouted > div.list-group h4");
+
+          var summaryPanel = document.getElementById('directions-panel');
+          summaryPanel.innerHTML = '';
           //loop through list and sort into waypoints, start, and last
           divGroup.each(function(i){
             //grab text and trim whitespace
@@ -57,15 +60,13 @@ $(document).ready(function(){
                 $("#loading-overlay").fadeOut( "slow" );
                 $("#directions-panel").fadeIn( "slow" );
                 var route = response.routes[0];
-                var summaryPanel = document.getElementById('directions-panel');
-                summaryPanel.innerHTML = '';
                 // For each route, display summary information.
                 for (var i = 0; i < route.legs.length; i++) {
                   var routeSegment = i + 1;
                   summaryPanel.innerHTML += '<b>Route Segment: ' + routeSegment +
-                      '</b><br>';
+                      '</b> - Case #23-1231515<br>';
                   summaryPanel.innerHTML += route.legs[i].start_address + ' to ';
-                  summaryPanel.innerHTML += route.legs[i].end_address + '<br>';
+                  summaryPanel.innerHTML += route.legs[i].end_address + '<br>Distance: ';
                   summaryPanel.innerHTML += route.legs[i].distance.text + '<br><br>';
                 }
               } else {
@@ -87,14 +88,14 @@ $(document).ready(function(){
         console.log(address);
         $("#toBeRouted").append('<div class="list-group">'+
             '<a class="list-group-item ">'+
-              '<h4 class="list-group-item-heading">'+ address + '</h4>' +
+              '<h4 class="list-group-item-heading">'+ address +
                 '<button type="button" class="btn btn-sm btn-default removeAddress">'+
                   '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>'+
                 '</button>'+
               '</h4>'+
               '<table classs="table table-condensed">'+
                 '<tr>'+
-                  '<th>User added..</th>'+
+                  '<th>...added by User</th>'+
                 '</tr>'+
               '</table>'+
             '</a>'+
@@ -156,7 +157,7 @@ $(document).ready(function(){
       });
 
       $("#addNewAddress").on('click', function(){
-          if ( $("#addressInput").val().length >= 2 ){
+          if ( $("#addressInput").val().length >= 5 ){
             var addressValue = $("#addressInput").val();
             addAddressFromInput(addressValue);
             $("#addressInput").val('');
@@ -164,7 +165,7 @@ $(document).ready(function(){
       });
       $(document).keypress(function(e) {
           //if user presses enter while focused on input field
-          if(e.which == 13) {
+          if(e.which == 13 && $("#addressInput:focus").val()) {
                 //if input value has contents greater than 5
                 if ( $("#addressInput:focus").val().length >= 5 ){
                   //trigger addNewAddress click event
@@ -182,8 +183,8 @@ $(document).ready(function(){
       });
 
       $("#createRoute").on('click', function(){
+        $("#loading-overlay").fadeIn( "fast" );
         $( "#mapResults" ).slideToggle( "slow", function() {
-          $("#loading-overlay").fadeIn( "slow" );
           initialize();
           // Animation complete.
           calculateAndDisplayRoute();
@@ -195,6 +196,8 @@ $(document).ready(function(){
 
       $("#resetApp").on('click', function(){
         $("#resetList").trigger( "click" );
+        var summaryPanel = document.getElementById('directions-panel');
+        summaryPanel.innerHTML = '';
         $( "#mapResults" ).slideToggle( "slow", function() {
           // Animation complete.
         });
