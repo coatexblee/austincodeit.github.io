@@ -10,7 +10,7 @@ $(document).ready(function() {
 
 	console.log("hi! welcome to austin code's github!!!");
 	$("#footnoteInsert").html(''+
-      '<span class="label label-default">Last Update:'+
+      '<span class="label label-default">Last Update: '+
         '<span id="dateString">'+dateString+'</span>'+
       '</span>');
 
@@ -37,6 +37,6 @@ $(document).ready(function() {
       '<!--/.nav-collapse -->'+
   '</div>)');
 
-  // $("#navbarInsert").val() 
+  // $("#navbarInsert").val()
 
  });
