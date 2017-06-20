@@ -1,21 +1,9 @@
 $(document).ready(function(){
-	/*
-	short term:
-	1. develop minification process
-	2. visual is similar to amanda
-	3. load api on init
-	4. autocomplete names on typing input
-	5. add live map to pinpoint locations on everytime a user adds a new address
-
-	long term:
-	1. can we send the final route to a mobile app"
-	*/
 
 		let openDataLink  = 'https://data.austintexas.gov/resource/icyb-dhz7.json'
 
-
 		$.ajax({
-				url: "https://data.austintexas.gov/resource/icyb-dhz7.json",
+				url: openDataLink,
 				type: "GET",
 				data: {
 					"$limit" : 90,
@@ -34,7 +22,7 @@ $(document).ready(function(){
 
 			//variables for timelineChart
 			//value = count, key = date that was counted
-			var timeSeriesData = _.map(counts, function(value, key){
+			let timeSeriesData = _.map(counts, function(value, key){
 				let _d = new Date(key);
 				let yr = _d.getFullYear();
 				let mth = _d.getMonth();
@@ -45,39 +33,11 @@ $(document).ready(function(){
 
 			// console.log(dataCounted);
 
+			let activityCounts = _.countBy(sortedData,'activitytype');
 
+			let activityValues = _.values(activityCounts);
+			let activityKeys = _.keys(activityCounts);
 
-			//LOOP THROUGH DATA
-			for (let i = 0; i < data.length; i++){
-				// console.log(data[i]);
-
-
-				//2 get type data and add it to the dash-type panel
-					//a. get counbt
-				switch(data[i].activitytype) {
-					case 'BSC Review':
-							bscCount = bscCount + 1;
-			        break;
-			    case 'Citation Issued':
-							citeCount = citeCount + 1;
-			        break;
-			    case 'NOV Sent':
-							novCount = novCount + 1;
-			        break;
-			    case 'Inspection Performed':
-							inspectCount = inspectCount + 1;
-			        break;
-			    case 'Warning Issued':
-							warningCount = warningCount + 1;
-			        break;
-			    default:
-			        nullCount = nullCount + 1;
-				} //end of switch
-
-
-				//3. total data for date incidents
-
-			} //end of For Loop
 
 			let activityTypeChart = Highcharts.chart('container-type', {
 				chart: {
@@ -87,16 +47,16 @@ $(document).ready(function(){
 						text: 'Activities by Type'
 				},
 				xAxis: {
-						categories: ['BSC Review','Citation Issued','Inspection Performed','NOV Sent','Warning Issued']
+						categories: activityKeys
 				},
 				yAxis: {
 						title: {
-								text: 'b'
+								text: ''
 						}
 				},
 				series: [{
 						name: ['Total Count'],
-						data: [bscCount, citeCount, inspectCount, novCount, warningCount],
+						data: activityValues,
 						dataLabels: {
 	            enabled: true,
 	            // color: '#FFFFFF',
@@ -127,7 +87,7 @@ $(document).ready(function(){
         },
         yAxis: {
             title: {
-                text: 'a'
+                text: ''
             }
         },
         legend: {
