@@ -1,5 +1,18 @@
 $(document).ready(function(){
-      //goooglemapsJS
+	/*
+	short term:
+	1. develop minification process
+	2. visual is similar to amanda
+	3. load api on init
+	4. autocomplete names on typing input
+	5. add live map to pinpoint locations on everytime a user adds a new address
+	
+	long term:
+	1. can we send the final route to a mobile app"
+	*/
+
+
+	//goooglemapsJS
       var map, directionsService, directionsDisplay; //global variables
       var initialize = function(){
           directionsService = new google.maps.DirectionsService;
