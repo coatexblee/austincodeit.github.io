@@ -6,11 +6,10 @@ $(document).ready(function(){
 	3. load api on init
 	4. autocomplete names on typing input
 	5. add live map to pinpoint locations on everytime a user adds a new address
-	
+
 	long term:
 	1. can we send the final route to a mobile app"
 	*/
-
 
 	//goooglemapsJS
       var map, directionsService, directionsDisplay; //global variables
@@ -219,7 +218,7 @@ $(document).ready(function(){
         });
       })
 
-      setTimeout(function(){
-        alert('This is a draft prototype. The functions and data used are samples only.');
-        }, 1000);
+      // setTimeout(function(){
+      //   alert('This is a draft prototype. The functions and data used are samples only.');
+      //   }, 1000);
   });

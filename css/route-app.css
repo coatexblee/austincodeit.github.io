@@ -73,7 +73,9 @@ table th {
 table td {
   font-size: 11px;
 }
-
+.table{
+  margin-bottom: 0px;
+}
 #mapResults{
     width: 100%;
     height: 100%;

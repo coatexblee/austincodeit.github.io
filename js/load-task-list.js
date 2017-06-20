@@ -1,45 +1,87 @@
 $(document).ready(function(){
 
-  var sampleArray = [
-    { address: '2411 Shelby Oak Lane', process: 'Event Log', status: 'Open', fp: '1', pp:'15', start: 'May 1, 2017', comment:'3-1-2017 NEED TO WRITE TICKET'},
-    { address: '7510 Islander Dr', process: 'Initial Response/Site Investigation', status: 'Open', fp: '1', pp:'5', start: 'May 8, 2017', comment:'Warning Issued on November 8 2016'},
-    { address: '8300 Cayuga Dr', process: 'Initial Response/Site Investigation', status: 'Open', fp: '1', pp:'155', start: 'May 2, 2017', comment:'4-14-2017 NOV for junk at curb'},
-    { address: '9207 Kempler Dr', process: 'Event Log', status: 'Open', fp: '', pp:'1', start: 'May 10, 2017', comment:'4-25-2017 NOV for bamboo'},
-    { address: '8200 Cache Dr', process: 'Cutlist - Inspector (ROW)', status: 'Submitted to Cutlist', fp: '', pp:'555', start: 'May 17, 2017', comment:'2-23-2017 Need to write an Admin Warning ticket'},
-    { address: '3004 Siskin Dr', process: 'Initial Response/Site Investigation', status: 'Open', fp: '', pp:'555', start: 'May 5, 2017', comment:'2-17-2017 Last inspection/ NO show at court'},
-    { address: '8611 Leo St', process: 'Event Log', status: 'Open', fp: '', pp:'999', start: 'May 9, 2017', comment:'3-1-2017 NEED TO WRITE TICKET'},
-    { address: '6605 WolfCreek Pass', process: 'Event Log', status: 'Open', fp: '', pp: '999', start: 'May 21, 2017', comment:'3-1-2017 NEED TO WRITE TICKET'}
-  ];
+  let openDataLink  = 'https://data.austintexas.gov/resource/x6vs-siqw.json';
+  let openData;
+  $.ajax({
+      url: openDataLink,
+      type: "GET",
+      data: {
+        "$limit" : 90,
+        "$$app_token" : "n89g7s9iUyusfWDEHDHMtGcVT"
+      }
+  }).done(function(data) {
+
+    			//get unique inspector names
+    			var nameArray = _.chain(data).pluck('assigneduser').uniq().value();
+          console.log(nameArray);
+          //set up autocomplete w jquery ui plugin
+          $( "#inspectorID" ).autocomplete({
+            source: nameArray
+          });
+          //assign object to higher variable for search purposes...
+          openData = data;
+  });
+  function dateFormatting(datestring){
+    let _d = new Date(datestring);
+    let yr = _d.getFullYear();
+    let mth = _d.getMonth();
+    let day = _d.getDate();
+    if (isNaN(yr)){
+      return '';
+    } else {
+      return mth + " " + day + ", " + yr;
+    }
+  }
+  function nullCheck(string){
+    if (string){
+      return string;
+    } else {
+      return '';
+    }
+  }
   $("#loadTaskList").on('click', function(){
       //clear current list-group
       $("#availableAddresses").html("");
       //grab inspectorID
+      let chosenName = $("#inspectorID").val();
       if ( $("#inspectorID").val().length >= 2 ){
         // var inspectorValue = $("#inspectorID").val();
         //getAddressesFromID(inspectorValue);
         $("#inspectorID").val('');
       }
-      //loop through results and get addresses
-      $(sampleArray).each(function(i){
+      let filteredData = _.filter(openData, function(row){
+          return row.assigneduser == chosenName;
+      })
+      console.log(filteredData);
+      //loop through results and append data
+      $(filteredData).each(function(i){
+
+
         $("#availableAddresses").append('<div class="list-group">'+
             '<a class="list-group-item ">'+
-              '<h4 class="list-group-item-heading">'+sampleArray[i].address +'</h4>'+
+              '<h5 class="list-group-item-heading">'+nullCheck(filteredData[i].foldernumber) +' | ' +nullCheck(filteredData[i].foldername) +'</h5>'+
               '<table class="table table-condensed">'+
                 '<tr>'+
-                  '<th>Process</th>'+
-                  '<td>'+sampleArray[i].process +'</td>'+
-                  '<th>F.P.</th>'+
-                  '<td>'+sampleArray[i].fp +'</td>'+
+                  '<th>Type</th>'+
+                  '<td>'+nullCheck(filteredData[i].type) +'</td>'+
+                  '<th>Sub Type</th>'+
+                  '<td>'+nullCheck(filteredData[i].subtype) +'</td>'+
                 '</tr>'+
                 '<tr>'+
-                  '<th>Start</th>'+
-                  '<td>'+sampleArray[i].start +'</td>'+
+                  '<th>F.P</th>'+
+                  '<td>'+nullCheck(filteredData[i].priority1) +'</td>'+
                   '<th>P.P.</th>'+
-                  '<td>'+sampleArray[i].pp +'</td>'+
+                  '<td>'+nullCheck(filteredData[i].priority2) +'</td>'+
                 '</tr>'+
                 '<tr>'+
-                  '<th>Comment</th>'+
-                  '<td colspan="3">'+sampleArray[i].comment +'</td>'+
+                  '<th>Due to Start</th>'+
+                  '<td>'+ dateFormatting(filteredData[i].duetostart) +'</td>'+
+                  '<th>Due to End</th>'+
+                  '<td>'+ dateFormatting(filteredData[i].duetoend) +'</td>'+
+                '</tr>'+
+                '<tr>'+
+                  '<th>People and Location</th>'+
+                  '<td colspan="3">'+nullCheck(filteredData[i].peoplename) +' | '+ nullCheck(filteredData[i].housenumber) +' '+ nullCheck(filteredData[i].streetname) +'</td>'+
                 '</tr>'+
               '</table>'+
             '</a>'+
