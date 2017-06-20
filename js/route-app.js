@@ -136,13 +136,13 @@ $(document).ready(function(){
 
       }
       //dragulaJS provides for the drag and drop functionality
-      dragula([document.getElementById("availableAddresses"), document.getElementById("toBeRouted")],
+      dragula([document.getElementById("availableAddressRows"), document.getElementById("toBeRouted")],
         {
           copy: function (el, source) {
-            return source === document.getElementById("availableAddresses")
+            return source === document.getElementById("availableAddressRows")
           },
           accepts: function (el, target) {
-            return target !== document.getElementById("availableAddresses")
+            return target !== document.getElementById("availableAddressRows")
           },
           removeOnSpill:  function (el, source) {
             return source === document.getElementById("toBeRouted")

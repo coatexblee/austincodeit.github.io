@@ -17,7 +17,7 @@
     <link href="css/custom-theme.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dragula/3.7.2/dragula.min.css" integrity="sha256-iVhQxXOykHeL03K08zkxBGxDCLCuzRGGiTYf2FL6mLY=" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
-    <link href="./css/route-app.css" rel="stylesheet"/>
+    <link href="css/route-app.css" rel="stylesheet"/>
 </head>
 
 <body class="box">
@@ -38,10 +38,6 @@
                     <li><a href="index.html">Home</a></li>
                     <li><a href="about.html">About</a></li>
                     <li><a href="resources.html">Resources</a></li>
-                    <li><a href="maps.html">Maps</a></li>
-                    <li><a href="demographics.html">Demographics</a></li>
-                    <li><a href="news.html">News</a></li>
-                    <li><a href="open.html">Open Links</a></li>
                     <li class="active"><a href="route.html">Routing</a></li>
                 </ul>
             </div>
@@ -64,7 +60,25 @@
             <br/><br/>
 
             <div class="well" id="availableAddresses">
+              <table class="table" id="availableAddressTable">
+                <thead>
+                  <tr class="header-row">
+                    <th class="a">Type</th>
+                    <th class="b">Sub Type</th>
+                    <th class="b">Folder Number</th>
+                    <th class="c">Folder Name</th>
+                    <th class="a">F.P</th>
+                    <th class="a">P.P.</th>
+                    <th class="a">Due to Start</th>
+                    <th class="a">Due to End</th>
+                    <th class="c">People</th>
+                    <th class="c">Location</th>
+                  </tr>
+                </thead>
+                <tbody id="availableAddressRows">
 
+                </tbody>
+              </table>
 
 
             </div>

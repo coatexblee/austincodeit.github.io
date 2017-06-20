@@ -29,7 +29,7 @@ $(document).ready(function(){
     if (isNaN(yr)){
       return '';
     } else {
-      return mth + " " + day + ", " + yr;
+      return mth + "/" + day + "/" + yr;
     }
   }
   function nullCheck(string){
@@ -41,7 +41,7 @@ $(document).ready(function(){
   }
   $("#loadTaskList").on('click', function(){
       //clear current list-group
-      $("#availableAddresses").html("");
+      $("#availableAddressRows").html("");
       //grab inspectorID
       let chosenName = $("#inspectorID").val();
       if ( $("#inspectorID").val().length >= 2 ){
@@ -56,37 +56,51 @@ $(document).ready(function(){
       //loop through results and append data
       $(filteredData).each(function(i){
 
+        $("#availableAddressRows").append('<tr>'+
+                  '<td class="a">'+nullCheck(filteredData[i].type) +'</td>'+
+                  '<td class="b">'+nullCheck(filteredData[i].subtype) +'</td>'+
+                  '<td class="b">'+nullCheck(filteredData[i].foldernumber) +'</td>'+
+                  '<td class="c">'+nullCheck(filteredData[i].foldername) +'</td>'+
+                  '<td class="a">'+nullCheck(filteredData[i].priority1) +'</td>'+
+                  '<td class="a">'+nullCheck(filteredData[i].priority2) +'</td>'+
+                  '<td class="a">'+dateFormatting(filteredData[i].duetostart) +'</td>'+
+                  '<td class="a">'+dateFormatting(filteredData[i].duetoend) +'</td>'+
+                  '<td class="c">'+nullCheck(filteredData[i].peoplename) +'</td>'+
+                  '<td class="c">'+ nullCheck(filteredData[i].housenumber) +' '+ nullCheck(filteredData[i].streetname) +'</td>'+
+          '</tr>');
 
-        $("#availableAddresses").append('<div class="list-group">'+
-            '<a class="list-group-item ">'+
-              '<h5 class="list-group-item-heading">'+nullCheck(filteredData[i].foldernumber) +' | ' +nullCheck(filteredData[i].foldername) +'</h5>'+
-              '<table class="table table-condensed">'+
-                '<tr>'+
-                  '<th>Type</th>'+
-                  '<td>'+nullCheck(filteredData[i].type) +'</td>'+
-                  '<th>Sub Type</th>'+
-                  '<td>'+nullCheck(filteredData[i].subtype) +'</td>'+
-                '</tr>'+
-                '<tr>'+
-                  '<th>F.P</th>'+
-                  '<td>'+nullCheck(filteredData[i].priority1) +'</td>'+
-                  '<th>P.P.</th>'+
-                  '<td>'+nullCheck(filteredData[i].priority2) +'</td>'+
-                '</tr>'+
-                '<tr>'+
-                  '<th>Due to Start</th>'+
-                  '<td>'+ dateFormatting(filteredData[i].duetostart) +'</td>'+
-                  '<th>Due to End</th>'+
-                  '<td>'+ dateFormatting(filteredData[i].duetoend) +'</td>'+
-                '</tr>'+
-                '<tr>'+
-                  '<th>People and Location</th>'+
-                  '<td colspan="3">'+nullCheck(filteredData[i].peoplename) +' | '+ nullCheck(filteredData[i].housenumber) +' '+ nullCheck(filteredData[i].streetname) +'</td>'+
-                '</tr>'+
-              '</table>'+
-            '</a>'+
-          '</div>');
       });
+
+      //   $("#availableAddresses").append('<div class="list-group">'+
+      //       '<a class="list-group-item ">'+
+      //         '<h5 class="list-group-item-heading">'+nullCheck(filteredData[i].foldernumber) +' | ' +nullCheck(filteredData[i].foldername) +'</h5>'+
+      //         '<table class="table table-condensed">'+
+      //           '<tr>'+
+      //             '<th>Type</th>'+
+      //             '<td>'+nullCheck(filteredData[i].type) +'</td>'+
+      //             '<th>Sub Type</th>'+
+      //             '<td>'+nullCheck(filteredData[i].subtype) +'</td>'+
+      //           '</tr>'+
+      //           '<tr>'+
+      //             '<th>F.P</th>'+
+      //             '<td>'+nullCheck(filteredData[i].priority1) +'</td>'+
+      //             '<th>P.P.</th>'+
+      //             '<td>'+nullCheck(filteredData[i].priority2) +'</td>'+
+      //           '</tr>'+
+      //           '<tr>'+
+      //             '<th>Due to Start</th>'+
+      //             '<td>'+ dateFormatting(filteredData[i].duetostart) +'</td>'+
+      //             '<th>Due to End</th>'+
+      //             '<td>'+ dateFormatting(filteredData[i].duetoend) +'</td>'+
+      //           '</tr>'+
+      //           '<tr>'+
+      //             '<th>People and Location</th>'+
+      //             '<td colspan="3">'+nullCheck(filteredData[i].peoplename) +' | '+ nullCheck(filteredData[i].housenumber) +' '+ nullCheck(filteredData[i].streetname) +'</td>'+
+      //           '</tr>'+
+      //         '</table>'+
+      //       '</a>'+
+      //     '</div>');
+      // });
 
   });
   $(document).keypress(function(e) {
