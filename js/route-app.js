@@ -136,7 +136,7 @@ $(document).ready(function(){
 
       }
       //dragulaJS provides for the drag and drop functionality
-      dragula([document.getElementById("availableAddressRows"), document.getElementById("toBeRouted")],
+      dragula([document.getElementById("availableAddressRows"), document.getElementById("routableAddressRows")],
         {
           copy: function (el, source) {
             return source === document.getElementById("availableAddressRows")
@@ -145,20 +145,21 @@ $(document).ready(function(){
             return target !== document.getElementById("availableAddressRows")
           },
           removeOnSpill:  function (el, source) {
-            return source === document.getElementById("toBeRouted")
+            return source === document.getElementById("routableAddressRows")
           }
       }).on('drop', function (el) {
-          if ( $(el).children(".list-group-item").children("h4").children("button").length ){
-            // console.log('button');
-            //if it already has a button skip, else..
-          } else {
-            $(el).children(".list-group-item").children("h4").append(''+
-              '<button type="button" class="btn btn-sm btn-default removeAddress">'+
-                '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>'+
-              '</button>');
-          }
-          validateRemoveButton();
-          adjustRowCount();
+				console.log(el);
+          // if ( $(el).children(".list-group-item").children("h4").children("button").length ){
+          //   // console.log('button');
+          //   //if it already has a button skip, else..
+          // } else {
+          //   $(el).children(".list-group-item").children("h4").append(''+
+          //     '<button type="button" class="btn btn-sm btn-default removeAddress">'+
+          //       '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>'+
+          //     '</button>');
+          // }
+          // validateRemoveButton();
+          // adjustRowCount();
       }).on('remove', function (el) {
           adjustRowCount();
       });

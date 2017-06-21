@@ -47,30 +47,50 @@ ul#dropdownChoice{
   overflow-x: scroll;
   padding: 0px;
 }
+#toBeRouted {
+  overflow-y: scroll;
+  overflow-x: scroll;
+  padding: 0px;
+}
 
 #availableAddresses > div > a.list-group-item{
     margin-left: 0px;
 }
 
-#availableAddressTable{
+#availableAddressTable,
+#routableAddressTable{
     min-width:800px;
 }
-#availableAddressTable th {
+#availableAddressTable th,
+#routableAddressTable th {
   color:#444;
   background:#f1f2e8;
   text-align: center;
-}
-#availableAddressTable th,
- #availableAddressTable td {
   padding:1px;
 }
-#availableAddressTable .a{ width: 60px; text-align: center }
-#availableAddressTable .b{ width: 110px }
-#availableAddressTable .c{ width: 210px }
-.table td, .table th {
-    min-width: 100px;
+#routableAddressTable td,
+#availableAddressTable td {
+  padding:1px;
 }
-#availableAddressRows > tr:last-child{
+#routableAddressTable tr,
+#availableAddressTable tr {
+  cursor: pointer;
+}
+#routableAddressTable .a,
+#availableAddressTable .a{
+  width: 60px; text-align: center
+}
+#routableAddressTable .b,
+#availableAddressTable .b{
+  width: 110px
+}
+#routableAddressTable .c,
+#availableAddressTable .c{
+  width: 210px
+}
+
+#availableAddressRows > tr:last-child,
+#routableAddressRows > tr:last-child,{
   border-bottom: 1px #ddd solid;
 }
 button#createRoute[disabled]{

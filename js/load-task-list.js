@@ -13,7 +13,6 @@ $(document).ready(function(){
 
     			//get unique inspector names
     			var nameArray = _.chain(data).pluck('assigneduser').uniq().value();
-          console.log(nameArray);
           //set up autocomplete w jquery ui plugin
           $( "#inspectorID" ).autocomplete({
             source: nameArray
@@ -52,7 +51,6 @@ $(document).ready(function(){
       let filteredData = _.filter(openData, function(row){
           return row.assigneduser == chosenName;
       })
-      console.log(filteredData);
       //loop through results and append data
       $(filteredData).each(function(i){
 
@@ -71,36 +69,6 @@ $(document).ready(function(){
 
       });
 
-      //   $("#availableAddresses").append('<div class="list-group">'+
-      //       '<a class="list-group-item ">'+
-      //         '<h5 class="list-group-item-heading">'+nullCheck(filteredData[i].foldernumber) +' | ' +nullCheck(filteredData[i].foldername) +'</h5>'+
-      //         '<table class="table table-condensed">'+
-      //           '<tr>'+
-      //             '<th>Type</th>'+
-      //             '<td>'+nullCheck(filteredData[i].type) +'</td>'+
-      //             '<th>Sub Type</th>'+
-      //             '<td>'+nullCheck(filteredData[i].subtype) +'</td>'+
-      //           '</tr>'+
-      //           '<tr>'+
-      //             '<th>F.P</th>'+
-      //             '<td>'+nullCheck(filteredData[i].priority1) +'</td>'+
-      //             '<th>P.P.</th>'+
-      //             '<td>'+nullCheck(filteredData[i].priority2) +'</td>'+
-      //           '</tr>'+
-      //           '<tr>'+
-      //             '<th>Due to Start</th>'+
-      //             '<td>'+ dateFormatting(filteredData[i].duetostart) +'</td>'+
-      //             '<th>Due to End</th>'+
-      //             '<td>'+ dateFormatting(filteredData[i].duetoend) +'</td>'+
-      //           '</tr>'+
-      //           '<tr>'+
-      //             '<th>People and Location</th>'+
-      //             '<td colspan="3">'+nullCheck(filteredData[i].peoplename) +' | '+ nullCheck(filteredData[i].housenumber) +' '+ nullCheck(filteredData[i].streetname) +'</td>'+
-      //           '</tr>'+
-      //         '</table>'+
-      //       '</a>'+
-      //     '</div>');
-      // });
 
   });
   $(document).keypress(function(e) {
