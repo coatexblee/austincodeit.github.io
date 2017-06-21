@@ -55,7 +55,7 @@ $(document).ready(function(){
       $(filteredData).each(function(i){
 
         $("#availableAddressRows").append('<tr>'+
-                  '<td class="a">'+nullCheck(filteredData[i].type) +'</td>'+
+                  '<td class="first">'+nullCheck(filteredData[i].type) +'</td>'+
                   '<td class="b">'+nullCheck(filteredData[i].subtype) +'</td>'+
                   '<td class="b">'+nullCheck(filteredData[i].foldernumber) +'</td>'+
                   '<td class="c">'+nullCheck(filteredData[i].foldername) +'</td>'+

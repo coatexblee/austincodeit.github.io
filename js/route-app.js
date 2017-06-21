@@ -91,7 +91,7 @@ $(document).ready(function(){
       //function to ensure the remove button works after being moved in DOM
       var validateRemoveButton = function(){
         $(".removeAddress").on('click', function(){
-          $(this).parent().parent().parent().remove();
+          $(this).parent().parent().remove();
           adjustRowCount();
         });
       }
@@ -117,12 +117,12 @@ $(document).ready(function(){
       }
       //everytime the DOM is updated, adjust list count
       var adjustRowCount = function(){
-        var divGroup = $("#toBeRouted > div.list-group ");
-        var arrayLength = $("#toBeRouted > div.list-group ").length;
+        var divGroup = $("#routableAddressRows > tr");
+        var arrayLength = $("#routableAddressRows > tr ").length;
         //adjust list CSS #s
         divGroup.each(function(i){
-          $(this).attr('data-content',i+1);
-        })
+          $(this).children("td").find("span#count").html(i+1);
+        });
         // disable or enable route button based on number of addresses available
         if (arrayLength >= 2){
           $("#createRoute").prop('disabled', false);
@@ -148,19 +148,25 @@ $(document).ready(function(){
             return source === document.getElementById("routableAddressRows")
           }
       }).on('drop', function (el) {
-				console.log(el);
-          // if ( $(el).children(".list-group-item").children("h4").children("button").length ){
-          //   // console.log('button');
-          //   //if it already has a button skip, else..
-          // } else {
-          //   $(el).children(".list-group-item").children("h4").append(''+
-          //     '<button type="button" class="btn btn-sm btn-default removeAddress">'+
-          //       '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>'+
-          //     '</button>');
-          // }
-          // validateRemoveButton();
-          // adjustRowCount();
-      }).on('remove', function (el) {
+
+          if ( $(el).children("td").children("button").length ){
+            // console.log('button');
+            //if it already has a button skip, else..
+          } else {
+            $(el).children("td.first").append(''+'<span id="count"></span>'+
+              '<button type="button" class="btn btn-sm btn-default removeAddress">'+
+                '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>'+
+              '</button>');
+          }
+          validateRemoveButton();
+          adjustRowCount();
+      }).on('drag', function (el) {
+				//adding class to dragging func
+				$(el).css('font-size','11px');
+				$(el).css('background-color','white');
+				$(el).css('border','1px #ddd solid');
+				$(el).children().css('width','10%');
+			}).on('remove', function (el) {
           adjustRowCount();
       });
 
