@@ -97,32 +97,33 @@ $(document).ready(function(){
       }
       //function to take the address from input and add it too routing list
       var addAddressFromInput = function(address){
-        console.log(address);
-        $("#toBeRouted").append('<div class="list-group">'+
-            '<a class="list-group-item ">'+
-              '<h4 class="list-group-item-heading">'+ address +
-                '<button type="button" class="btn btn-sm btn-default removeAddress">'+
-                  '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>'+
-                '</button>'+
-              '</h4>'+
-              '<table classs="table table-condensed">'+
-                '<tr>'+
-                  '<th>...added by User</th>'+
-                '</tr>'+
-              '</table>'+
-            '</a>'+
-          '</div>');
+				$("#routableAddressRows").append('<tr>'+
+									'<td class="first"><span id="count"></span>'+
+			              '<button type="button" class="btn btn-sm btn-default removeAddress">'+
+			                '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>'+
+			              '</button>----</td>'+
+									'<td class="b">----</td>'+
+									'<td class="b">custom:</td>'+
+									'<td class="c">'+address+'</td>'+
+									'<td class="a">----</td>'+
+									'<td class="a">----</td>'+
+									'<td class="a">----</td>'+
+									'<td class="a">----</td>'+
+									'<td class="c">----</td>'+
+									'<td class="c">----</td>'+
+					'</tr>');
         validateRemoveButton();
         adjustRowCount();
       }
       //everytime the DOM is updated, adjust list count
       var adjustRowCount = function(){
+
+				//check for placeholder rows (this is a bug fix essentially...)
+				$("#routableAddressRows > tr.placeholder").remove()
+
         var divGroup = $("#routableAddressRows > tr");
-        var arrayLength = $("#routableAddressRows > tr ").length;
-        //adjust list CSS #s
-        divGroup.each(function(i){
-          $(this).children("td").find("span#count").html(i+1);
-        });
+        var arrayLength = $("#routableAddressRows > tr:not(.placeholder) ").length;
+
         // disable or enable route button based on number of addresses available
         if (arrayLength >= 2){
           $("#createRoute").prop('disabled', false);
@@ -134,6 +135,16 @@ $(document).ready(function(){
           $("#createRoute").addClass('btn-default');
         }
 
+				//adjust list CSS #s
+        divGroup.each(function(i){
+          $(this).children("td").find("span#count").html(i+1);
+        });
+
+				//we always want at least 8 rows (placeholders or real rows)
+				for (var i = arrayLength; i < 10;i++){
+					$("#routableAddressRows").append('<tr class="placeholder"><td id="no">&nbsp;</td></tr>');
+				}
+
       }
       //dragulaJS provides for the drag and drop functionality
       dragula([document.getElementById("availableAddressRows"), document.getElementById("routableAddressRows")],
@@ -144,16 +155,14 @@ $(document).ready(function(){
           accepts: function (el, target) {
             return target !== document.getElementById("availableAddressRows")
           },
-          removeOnSpill:  function (el, source) {
-            return source === document.getElementById("routableAddressRows")
-          }
+          removeOnSpill:  false
       }).on('drop', function (el) {
 
           if ( $(el).children("td").children("button").length ){
             // console.log('button');
             //if it already has a button skip, else..
           } else {
-            $(el).children("td.first").append(''+'<span id="count"></span>'+
+            $(el).children("td.first").prepend(''+'<span id="count"></span>'+
               '<button type="button" class="btn btn-sm btn-default removeAddress">'+
                 '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>'+
               '</button>');
@@ -194,7 +203,7 @@ $(document).ready(function(){
       });
 
       $("#resetList").on('click', function(){
-        var divGroup = $("#toBeRouted > div.list-group ");
+        var divGroup = $("#routableAddressRows > tr:not(.placeholder)");
         divGroup.each(function(i){
           $(this).remove()
         });
