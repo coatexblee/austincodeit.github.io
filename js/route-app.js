@@ -34,12 +34,12 @@ $(document).ready(function(){
             map.setCenter(center);
           });
 
-					google.maps.event.addListener(map, 'click', function(event) {
-	          addMarker(event.latLng, map);
-	        });
-
+					// google.maps.event.addListener(map, 'click', function(event) {
+	        //   addMarker(event.latLng, map);
+	        // });
 
       }
+
 			function addMarker(location, map) {
 				var labelObject;
 				if (iconCount == 0){
@@ -53,7 +53,7 @@ $(document).ready(function(){
 					position: location,
 					label: labelObject,
 					map: map,
-					draggable: true
+					draggable: false
 				})
 				addressMarkerArray.push(newMarker);
 				//attach the lat lng to the element
@@ -90,11 +90,13 @@ $(document).ready(function(){
 			     map.fitBounds(bounds);
 				}
 			}
+
 			var extractLATLNG = function(coords){
 				var latitude = Number(coords.split(',')[0].trim().slice(1, coords.length));
 				var longitude = Number(coords.split(',')[1].trim().slice(0,-1));
 				return { lat: latitude, lng: longitude };
 			}
+
 			var updateMarkerOrder = function(map){
 				if (map){
 					//reorder markers by drawing new markers
@@ -107,7 +109,6 @@ $(document).ready(function(){
 
 					addressRowSelection.each(function(elem){
 						var latLngObj = extractLATLNG($(this).children("td#location").attr('val'));
-						console.log(latLngObj);
 						addMarker( latLngObj, map )
 						// newMarkerLocations.push( $(this).children("td#location").attr('val') );
 					});
@@ -116,11 +117,19 @@ $(document).ready(function(){
 						addressMarkerArray[i].setMap(null);
 					}
 				}
-
 			}
+
+
+			var removeSpecificMarker = function(rowIndex){
+				iconCount = iconCount - 1;
+				addressMarkerArray[rowIndex].setMap(null);
+				addressMarkerArray.splice(rowIndex, 1);
+			}
+
       var calculateAndDisplayRoute = function() {
 					//clear existing points
-					addressMarkerArray = []; updateMarkerOrder(null);
+					updateMarkerOrder(null);
+					addressMarkerArray = [];
 
           directionsDisplay.setMap(map);
           var waypts = [], start = '', finish = '', caseArray = [];
@@ -133,17 +142,17 @@ $(document).ready(function(){
           addressRowSelection.each(function(i){
             //grab text and trim whitespace
 						// console.log()
-            var loc = $(this).children("td#location").text().trim() + ", Austin, TX";
+          	var latLngObj = extractLATLNG($(this).children("td#location").attr('val'));
 						caseArray.push( $(this).children("td").eq(2).text() );
-						console.log(loc);
+
             //if it's #1 it's start location, if it's last it's finish, else it's waypoint
             if (i == 0){
-              start = loc;
+              start = new google.maps.LatLng(latLngObj.lat, latLngObj.lng);
             } else if (i == (addressRowSelection.length - 1) ){
-              finish = loc;
+              finish = new google.maps.LatLng(latLngObj.lat, latLngObj.lng);
             } else {
               waypts.push({
-                location: loc,
+                location: new google.maps.LatLng(latLngObj.lat, latLngObj.lng),
                 stopover: true
               });
             }
@@ -160,7 +169,6 @@ $(document).ready(function(){
                 //if we get an OK response, add the directions, and show the appropriate elements
                 console.log('driving directions complete!!!!')
                 directionsDisplay.setDirections(response);
-                $("#loading-overlay").fadeOut( "slow" );
                 var route = response.routes[0];
                 // For each route, display summary information.
                 for (var i = 0; i < route.legs.length; i++) {
@@ -179,9 +187,20 @@ $(document).ready(function(){
         }
       //function to ensure the remove button works after being moved in DOM
       var validateRemoveButton = function(){
-        $(".removeAddress").on('click', function(){
+        $(".removeAddress").unbind('click').bind('click', function(){
+					console.log('cccclickkk');
+					//remove marker
+					// var rowIndex = $(this)
+					// 		    .closest('tr') // Get the closest tr parent element
+					// 		    .prevAll() // Find all sibling elements in front of it
+					// 		    .length; // Get their count
+					var rowIndex = $(this).parents("tr:first")[0].rowIndex;
+					//remove row entry
+					removeSpecificMarker(rowIndex-1);
           $(this).parent().parent().remove();
           adjustRowCount();
+					//everytime we update the order of our rows, we should
+					updateMarkerOrder(map);
         });
       }
       //function to take the address from input and add it too routing list
@@ -228,12 +247,15 @@ $(document).ready(function(){
 
 				//adjust list CSS #s
         divGroup.each(function(i){
-          $(this).children("td").find("span#count").html(i+1);
+					if (i == 0){
+          	$(this).children("td").find("span#count").html('S');
+					} else {
+          	$(this).children("td").find("span#count").html(i);
+					}
         });
 
 				//we always want at least 10 rows (placeholders or real rows)
 				addPlaceholderRows(arrayLength);
-
       }
 			var addPlaceholderRows = function(rowCount){
 				//we always want at least 10 rows (placeholders or real rows)
@@ -246,9 +268,7 @@ $(document).ready(function(){
 					$("#routableAddressRows").append(newRow);
 					newRow = '';
 				}
-
 			}
-
 
 
       //dragulaJS provides for the drag and drop functionality
@@ -261,8 +281,9 @@ $(document).ready(function(){
             return target !== document.getElementById("availableAddressRows")
           },
           removeOnSpill:  false
-      }).on('drop', function (el) {
+      }).on('drop', function (el, target, sibling) {
 
+				 if (target){
           if ( $(el).children("td").children("button").length ){
             // console.log('button');
             //if it already has a button skip, we need to sort the address rows
@@ -281,6 +302,9 @@ $(document).ready(function(){
 
           validateRemoveButton();
           adjustRowCount();
+				} else {
+					console.log('missed');
+				}
       }).on('drag', function (el) {
 				//adding class to dragging func
 				$(el).css('font-size','11px');
@@ -288,8 +312,9 @@ $(document).ready(function(){
 				$(el).css('border','1px #ddd solid');
 				$(el).children().css('width','10%');
 			}).on('remove', function (el) {
-          adjustRowCount();
-					//TO DO - remove from map as well
+				console.log('item removed...');
+        adjustRowCount();
+				//TO DO - remove from map as well
       });
 
       $("#dropdownChoice > li").on('click', function(){
@@ -336,12 +361,6 @@ $(document).ready(function(){
         $("#loading-overlay").fadeIn( "fast" );
 				calculateAndDisplayRoute();
       });
-
-
-
-      // setTimeout(function(){
-      //   alert('This is a draft prototype. The functions and data used are samples only.');
-      //   }, 1000);
 
 			//on load run these functions:
 
