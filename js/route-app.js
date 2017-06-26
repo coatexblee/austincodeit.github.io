@@ -12,8 +12,10 @@ $(document).ready(function(){
 	*/
 
 	//goooglemapsJS
-      var map, directionsService, directionsDisplay; //global variables
+      var map, directionsService, directionsDisplay, geocoder, addressMarkerArray = [], iconCount = 0, activeElement; //global variables
+			var labels = '0123456789ABCDEFGHIJKL';
       var initialize = function(){
+    			geocoder = new google.maps.Geocoder();
           directionsService = new google.maps.DirectionsService;
           directionsDisplay = new google.maps.DirectionsRenderer;
           var myLatlng = new google.maps.LatLng(30.3344316,-97.6791038);
@@ -31,24 +33,113 @@ $(document).ready(function(){
             google.maps.event.trigger(map, "resize");
             map.setCenter(center);
           });
+
+					google.maps.event.addListener(map, 'click', function(event) {
+	          addMarker(event.latLng, map);
+	        });
+
+
       }
+			function addMarker(location, map) {
+				var labelObject;
+				if (iconCount == 0){
+					labelObject = { color:'black', fontSize: '11px', fontWeight: '700', text: 'START'};
+				} else {
+					labelObject = { color:'black', fontSize: '11px', fontWeight: '700', text: labels[iconCount % labels.length] };
+				}
+				// Add the marker at the clicked location, and add the next-available label
+				// from the array of alphabetical characters.
+				var newMarker = new google.maps.Marker({
+					position: location,
+					label: labelObject,
+					map: map,
+					draggable: true
+				})
+				addressMarkerArray.push(newMarker);
+				//attach the lat lng to the element
+				if (!$(activeElement).attr('val') ){
+					console.log('location added to element')
+					$(activeElement).attr('val',location);
+				}
+				iconCount = iconCount + 1;
+				adjustMapBounds();
+			}
 
+			var placeAddressOnMap = function(address){
+				geocoder.geocode( { 'address': address}, function(results, status) {
+					if (status == google.maps.GeocoderStatus.OK) {
+						addMarker(results[0].geometry.location, map);
+					} else {
+						alert('Geocode was not successful for the following reason: ' + status);
+					}
+				});
+			}
+
+			var adjustMapBounds = function(){
+				if (addressMarkerArray.length <= 1){
+					//move map to singular point
+					map.setCenter(addressMarkerArray[0].getPosition());
+				} else {
+					 var bounds = new google.maps.LatLngBounds();
+			     // showing only 2 visible 1 hidden (because of markers.length-1)
+			     for(var i=0; i<addressMarkerArray.length; i++) {
+			         // extending bounds to contain this visible marker position
+			         bounds.extend( addressMarkerArray[i].getPosition() );
+			     }
+			     // setting new bounds to visible markers of 2
+			     map.fitBounds(bounds);
+				}
+			}
+			var extractLATLNG = function(coords){
+				var latitude = Number(coords.split(',')[0].trim().slice(1, coords.length));
+				var longitude = Number(coords.split(',')[1].trim().slice(0,-1));
+				return { lat: latitude, lng: longitude };
+			}
+			var updateMarkerOrder = function(map){
+				if (map){
+					//reorder markers by drawing new markers
+          var addressRowSelection = $("#routableAddressRows > tr:not(.placeholder)");
+					// first empty the array and clear map
+					for(var i=0; i<addressMarkerArray.length; i++) {
+						addressMarkerArray[i].setMap(null);
+					}
+					addressMarkerArray = []; iconCount = 0;
+
+					addressRowSelection.each(function(elem){
+						var latLngObj = extractLATLNG($(this).children("td#location").attr('val'));
+						console.log(latLngObj);
+						addMarker( latLngObj, map )
+						// newMarkerLocations.push( $(this).children("td#location").attr('val') );
+					});
+				} else {
+					for(var i=0; i<addressMarkerArray.length; i++) {
+						addressMarkerArray[i].setMap(null);
+					}
+				}
+
+			}
       var calculateAndDisplayRoute = function() {
-          directionsDisplay.setMap(map);
-          var waypts = [], start = '', finish = '';
-          // grab addresses from elements
-          var divGroup = $("#toBeRouted > div.list-group h4");
+					//clear existing points
+					addressMarkerArray = []; updateMarkerOrder(null);
 
+          directionsDisplay.setMap(map);
+          var waypts = [], start = '', finish = '', caseArray = [];
+          // grab addresses from elements
+          var addressRowSelection = $("#routableAddressRows > tr:not(.placeholder)");
+					console.log(addressRowSelection);
           var summaryPanel = document.getElementById('directions-panel');
           summaryPanel.innerHTML = '';
           //loop through list and sort into waypoints, start, and last
-          divGroup.each(function(i){
+          addressRowSelection.each(function(i){
             //grab text and trim whitespace
-            var loc = $(this).text().trim();
+						// console.log()
+            var loc = $(this).children("td#location").text().trim() + ", Austin, TX";
+						caseArray.push( $(this).children("td").eq(2).text() );
+						console.log(loc);
             //if it's #1 it's start location, if it's last it's finish, else it's waypoint
             if (i == 0){
               start = loc;
-            } else if (i == (divGroup.length - 1) ){
+            } else if (i == (addressRowSelection.length - 1) ){
               finish = loc;
             } else {
               waypts.push({
@@ -70,13 +161,11 @@ $(document).ready(function(){
                 console.log('driving directions complete!!!!')
                 directionsDisplay.setDirections(response);
                 $("#loading-overlay").fadeOut( "slow" );
-                $("#directions-panel").fadeIn( "slow" );
                 var route = response.routes[0];
                 // For each route, display summary information.
                 for (var i = 0; i < route.legs.length; i++) {
                   var routeSegment = i + 1;
-                  summaryPanel.innerHTML += '<b>Route Segment: ' + routeSegment +
-                      '</b> - Case #23-1231515<br>';
+                  summaryPanel.innerHTML += '<b>Trip #'+routeSegment + ': '+ caseArray[i] +'</b><br>';
                   summaryPanel.innerHTML += route.legs[i].start_address + ' to ';
                   summaryPanel.innerHTML += route.legs[i].end_address + '<br>Distance: ';
                   summaryPanel.innerHTML += route.legs[i].distance.text + '<br><br>';
@@ -102,22 +191,24 @@ $(document).ready(function(){
 			              '<button type="button" class="btn btn-sm btn-default removeAddress">'+
 			                '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>'+
 			              '</button>----</td>'+
-									'<td class="b">----</td>'+
-									'<td class="b">custom:</td>'+
-									'<td class="c">'+address+'</td>'+
+									'<td class="b">temp</td>'+
+									'<td class="b">n/a</td>'+
+									'<td class="c">n/a</td>'+
 									'<td class="a">----</td>'+
 									'<td class="a">----</td>'+
 									'<td class="a">----</td>'+
 									'<td class="a">----</td>'+
 									'<td class="c">----</td>'+
-									'<td class="c">----</td>'+
+									'<td class="c" id="location">'+address+'</td>'+
 					'</tr>');
+				activeElement = $("#routableAddressRows > tr:not(.placeholder):last-child").children("td#location");
+				console.log(activeElement);
         validateRemoveButton();
         adjustRowCount();
+				placeAddressOnMap(address);
       }
       //everytime the DOM is updated, adjust list count
       var adjustRowCount = function(){
-
 				//check for placeholder rows (this is a bug fix essentially...)
 				$("#routableAddressRows > tr.placeholder").remove()
 
@@ -140,12 +231,26 @@ $(document).ready(function(){
           $(this).children("td").find("span#count").html(i+1);
         });
 
-				//we always want at least 8 rows (placeholders or real rows)
-				for (var i = arrayLength; i < 10;i++){
-					$("#routableAddressRows").append('<tr class="placeholder"><td id="no">&nbsp;</td></tr>');
-				}
+				//we always want at least 10 rows (placeholders or real rows)
+				addPlaceholderRows(arrayLength);
 
       }
+			var addPlaceholderRows = function(rowCount){
+				//we always want at least 10 rows (placeholders or real rows)
+				for (var i = rowCount; i < 10; i++){
+					var newRow = '<tr class="placeholder">';
+					for (var j = 0; j< 10;j++){
+						newRow += '<td id="no">&nbsp;</td>';
+					}
+					newRow +='</tr>';
+					$("#routableAddressRows").append(newRow);
+					newRow = '';
+				}
+
+			}
+
+
+
       //dragulaJS provides for the drag and drop functionality
       dragula([document.getElementById("availableAddressRows"), document.getElementById("routableAddressRows")],
         {
@@ -160,13 +265,20 @@ $(document).ready(function(){
 
           if ( $(el).children("td").children("button").length ){
             // console.log('button');
-            //if it already has a button skip, else..
+            //if it already has a button skip, we need to sort the address rows
+						updateMarkerOrder(map);
           } else {
             $(el).children("td.first").prepend(''+'<span id="count"></span>'+
               '<button type="button" class="btn btn-sm btn-default removeAddress">'+
                 '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>'+
               '</button>');
+							//extract a readable text
+							var newAddress = $(el).children("td#location").text().trim() + ", Austin, TX";;
+							//get the element so we can add latlngs to it later
+							activeElement = $(el).children("td#location");
+							placeAddressOnMap(newAddress);
           }
+
           validateRemoveButton();
           adjustRowCount();
       }).on('drag', function (el) {
@@ -177,6 +289,7 @@ $(document).ready(function(){
 				$(el).children().css('width','10%');
 			}).on('remove', function (el) {
           adjustRowCount();
+					//TO DO - remove from map as well
       });
 
       $("#dropdownChoice > li").on('click', function(){
@@ -203,38 +316,35 @@ $(document).ready(function(){
       });
 
       $("#resetList").on('click', function(){
+				//clear available task list items
+
+	      $("#availableAddressRows").html("");
+				$("#directions-panel").html("");
+				//clear routable addresses
         var divGroup = $("#routableAddressRows > tr:not(.placeholder)");
         divGroup.each(function(i){
           $(this).remove()
         });
         adjustRowCount();
+				//remove markers from map
+				updateMarkerOrder(null);
+				addressMarkerArray = [];
+				iconCount = 0;
       });
 
       $("#createRoute").on('click', function(){
         $("#loading-overlay").fadeIn( "fast" );
-        $( "#mapResults" ).slideToggle( "slow", function() {
-          initialize();
-          // Animation complete.
-          calculateAndDisplayRoute();
-        });
-        $( "#firstRow" ).slideToggle( "slow", function() {
-          //hide menu options
-        });
+				calculateAndDisplayRoute();
       });
 
-      $("#resetApp").on('click', function(){
-        $("#resetList").trigger( "click" );
-        var summaryPanel = document.getElementById('directions-panel');
-        summaryPanel.innerHTML = '';
-        $( "#mapResults" ).slideToggle( "slow", function() {
-          // Animation complete.
-        });
-        $( "#firstRow" ).slideToggle( "slow", function() {
-          //
-        });
-      })
+
 
       // setTimeout(function(){
       //   alert('This is a draft prototype. The functions and data used are samples only.');
       //   }, 1000);
+
+			//on load run these functions:
+
+			addPlaceholderRows(0);
+			initialize();
   });

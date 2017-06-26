@@ -58,7 +58,7 @@ $(document).ready(function(){
                   '<td class="first">'+nullCheck(filteredData[i].type) +'</td>'+
                   '<td class="b">'+nullCheck(filteredData[i].subtype) +'</td>'+
                   '<td class="b">'+nullCheck(filteredData[i].foldernumber) +'</td>'+
-                  '<td class="c">'+nullCheck(filteredData[i].foldername) +'</td>'+
+                  '<td class="c" id="location">'+nullCheck(filteredData[i].foldername) +'</td>'+
                   '<td class="a">'+nullCheck(filteredData[i].priority1) +'</td>'+
                   '<td class="a">'+nullCheck(filteredData[i].priority2) +'</td>'+
                   '<td class="a">'+dateFormatting(filteredData[i].duetostart) +'</td>'+
