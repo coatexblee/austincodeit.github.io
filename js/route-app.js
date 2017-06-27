@@ -2,22 +2,22 @@ $(document).ready(function(){
 	/*
 	short term:
 	1. develop minification process
-	2. visual is similar to amanda
 	3. load api on init
-	4. autocomplete names on typing input
-	5. add live map to pinpoint locations on everytime a user adds a new address
-
 	long term:
-	1. can we send the final route to a mobile app"
+	1. can we send the final route to a mobile app?
 	*/
 
-	//goooglemapsJS
+
       var map, directionsService, directionsDisplay, geocoder, addressMarkerArray = [], iconCount = 0, activeElement; //global variables
 			var labels = '0123456789ABCDEFGHIJKL';
+			//initialize function for google maps
       var initialize = function(){
     			geocoder = new google.maps.Geocoder();
           directionsService = new google.maps.DirectionsService;
-          directionsDisplay = new google.maps.DirectionsRenderer;
+          directionsDisplay = new google.maps.DirectionsRenderer({draggable:true});
+					directionsDisplay.addListener('directions_changed', function() {
+						console.log('now hwat?')
+	        });
           var myLatlng = new google.maps.LatLng(30.3344316,-97.6791038);
 
           var mapOptions = {
@@ -34,13 +34,15 @@ $(document).ready(function(){
             map.setCenter(center);
           });
 
+					//click listener for adding points or doing any other action
 					// google.maps.event.addListener(map, 'click', function(event) {
 	        //   addMarker(event.latLng, map);
 	        // });
 
       }
 
-			function addMarker(location, map) {
+			//function for adding the marker
+			function addMarker(location, popUpText, sort) {
 				var labelObject;
 				if (iconCount == 0){
 					labelObject = { color:'black', fontSize: '11px', fontWeight: '700', text: 'START'};
@@ -55,6 +57,12 @@ $(document).ready(function(){
 					map: map,
 					draggable: false
 				})
+				var infowindow = new google.maps.InfoWindow({
+          content: popUpText
+        });
+				newMarker.addListener('click', function() {
+          infowindow.open(map, newMarker);
+        });
 				addressMarkerArray.push(newMarker);
 				//attach the lat lng to the element
 				if (!$(activeElement).attr('val') ){
@@ -63,12 +71,15 @@ $(document).ready(function(){
 				}
 				iconCount = iconCount + 1;
 				adjustMapBounds();
+				if (sort){
+					updateMarkerOrder(sort);
+				}
 			}
 
-			var placeAddressOnMap = function(address){
+			var placeAddressOnMap = function(address, popUpText, sort){
 				geocoder.geocode( { 'address': address}, function(results, status) {
 					if (status == google.maps.GeocoderStatus.OK) {
-						addMarker(results[0].geometry.location, map);
+						addMarker(results[0].geometry.location, popUpText, sort);
 					} else {
 						alert('Geocode was not successful for the following reason: ' + status);
 					}
@@ -91,14 +102,16 @@ $(document).ready(function(){
 				}
 			}
 
+			//a function to extract the lat lng from the draggable element
 			var extractLATLNG = function(coords){
 				var latitude = Number(coords.split(',')[0].trim().slice(1, coords.length));
 				var longitude = Number(coords.split(',')[1].trim().slice(0,-1));
 				return { lat: latitude, lng: longitude };
 			}
 
-			var updateMarkerOrder = function(map){
-				if (map){
+			//a function to update the numbering of the marker labels (or remove markers)
+			var updateMarkerOrder = function(sort){
+				if (sort){
 					//reorder markers by drawing new markers
           var addressRowSelection = $("#routableAddressRows > tr:not(.placeholder)");
 					// first empty the array and clear map
@@ -109,7 +122,7 @@ $(document).ready(function(){
 
 					addressRowSelection.each(function(elem){
 						var latLngObj = extractLATLNG($(this).children("td#location").attr('val'));
-						addMarker( latLngObj, map )
+						addMarker( latLngObj )
 						// newMarkerLocations.push( $(this).children("td#location").attr('val') );
 					});
 				} else {
@@ -119,13 +132,14 @@ $(document).ready(function(){
 				}
 			}
 
-
+			//a function to remove a specific marker
 			var removeSpecificMarker = function(rowIndex){
 				iconCount = iconCount - 1;
 				addressMarkerArray[rowIndex].setMap(null);
 				addressMarkerArray.splice(rowIndex, 1);
 			}
 
+			//a function to return the direction services api with a route to the map
       var calculateAndDisplayRoute = function() {
 					//clear existing points
 					updateMarkerOrder(null);
@@ -163,11 +177,16 @@ $(document).ready(function(){
               destination: finish, //document.getElementById('end').value,
               waypoints: waypts,
               optimizeWaypoints: true,
+							drivingOptions: {
+							  departureTime: new Date(Date.now()),
+							  trafficModel: 'bestguess'
+							},
               travelMode: 'DRIVING'
             }, function(response, status) {
               if (status === 'OK') {
                 //if we get an OK response, add the directions, and show the appropriate elements
                 console.log('driving directions complete!!!!')
+								console.log(response);
                 directionsDisplay.setDirections(response);
                 var route = response.routes[0];
                 // For each route, display summary information.
@@ -185,15 +204,11 @@ $(document).ready(function(){
             });
 
         }
+
       //function to ensure the remove button works after being moved in DOM
       var validateRemoveButton = function(){
+				//unbind and then bind bc internet
         $(".removeAddress").unbind('click').bind('click', function(){
-					console.log('cccclickkk');
-					//remove marker
-					// var rowIndex = $(this)
-					// 		    .closest('tr') // Get the closest tr parent element
-					// 		    .prevAll() // Find all sibling elements in front of it
-					// 		    .length; // Get their count
 					var rowIndex = $(this).parents("tr:first")[0].rowIndex;
 					//remove row entry
 					removeSpecificMarker(rowIndex-1);
@@ -212,7 +227,7 @@ $(document).ready(function(){
 			              '</button>----</td>'+
 									'<td class="b">temp</td>'+
 									'<td class="b">n/a</td>'+
-									'<td class="c">n/a</td>'+
+									'<td class="c">n/a -('+address+')</td>'+
 									'<td class="a">----</td>'+
 									'<td class="a">----</td>'+
 									'<td class="a">----</td>'+
@@ -220,11 +235,11 @@ $(document).ready(function(){
 									'<td class="c">----</td>'+
 									'<td class="c" id="location">'+address+'</td>'+
 					'</tr>');
+				//grab the active element because we want to be able to append to it later...
 				activeElement = $("#routableAddressRows > tr:not(.placeholder):last-child").children("td#location");
-				console.log(activeElement);
         validateRemoveButton();
         adjustRowCount();
-				placeAddressOnMap(address);
+				placeAddressOnMap(address, address, false);
       }
       //everytime the DOM is updated, adjust list count
       var adjustRowCount = function(){
@@ -282,11 +297,10 @@ $(document).ready(function(){
           },
           removeOnSpill:  false
       }).on('drop', function (el, target, sibling) {
-
+				//if we drop our element into the correct table, do stuff, otherwise skip it
 				 if (target){
           if ( $(el).children("td").children("button").length ){
-            // console.log('button');
-            //if it already has a button skip, we need to sort the address rows
+            //if it already has a button skip, we can skip
 						updateMarkerOrder(map);
           } else {
             $(el).children("td.first").prepend(''+'<span id="count"></span>'+
@@ -294,14 +308,27 @@ $(document).ready(function(){
                 '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>'+
               '</button>');
 							//extract a readable text
-							var newAddress = $(el).children("td#location").text().trim() + ", Austin, TX";;
+							var newAddress = $(el).children("td#location").text().trim() + ", Austin, TX";
+							var popUpText = $(el).children("td#location").text().trim();
 							//get the element so we can add latlngs to it later
 							activeElement = $(el).children("td#location");
-							placeAddressOnMap(newAddress);
+							//how many rows exist in the table before the drop?
+							var tableLength = $(target).children("tr:not(.placeholder)").length - 1;
+							//what position did we drop the item?
+							var dropIndex = $(target).children("tr.gu-transit")[0].rowIndex;
+							var sort = false;
+							//if you drop an item inside the existing order, we need to sort
+							if (dropIndex <= tableLength){
+								console.log('inner drop');
+								sort = true;
+							}
+							placeAddressOnMap(newAddress, popUpText, sort);
           }
 
+					// var rowIndex = $(this).parents("tr:first")[0].rowIndex;
           validateRemoveButton();
           adjustRowCount();
+
 				} else {
 					console.log('missed');
 				}
@@ -317,11 +344,13 @@ $(document).ready(function(){
 				//TO DO - remove from map as well
       });
 
+			//* UI functions *//
+			//drop down seleection made
       $("#dropdownChoice > li").on('click', function(){
         var addressValue = $(this).attr('val');
         addAddressFromInput(addressValue);
       });
-
+			//user enter a new address and clicked the add button
       $("#addNewAddress").on('click', function(){
           if ( $("#addressInput").val().length >= 5 ){
             var addressValue = $("#addressInput").val();
@@ -329,6 +358,7 @@ $(document).ready(function(){
             $("#addressInput").val('');
           }
       });
+			//user enter a new address and pressed enter
       $(document).keypress(function(e) {
           //if user presses enter while focused on input field
           if(e.which == 13 && $("#addressInput:focus").val()) {
@@ -339,10 +369,14 @@ $(document).ready(function(){
                 }
           }
       });
-
-      $("#resetList").on('click', function(){
+			//user clicked the create route button
+      $("#createRoute").on('click', function(){
+        $("#loading-overlay").fadeIn( "fast" );
+				calculateAndDisplayRoute();
+      });
+			//user clicked the rest button, so we start over
+			$("#resetList").on('click', function(){
 				//clear available task list items
-
 	      $("#availableAddressRows").html("");
 				$("#directions-panel").html("");
 				//clear routable addresses
@@ -353,17 +387,12 @@ $(document).ready(function(){
         adjustRowCount();
 				//remove markers from map
 				updateMarkerOrder(null);
+				directionsDisplay.setMap(null);
 				addressMarkerArray = [];
 				iconCount = 0;
       });
 
-      $("#createRoute").on('click', function(){
-        $("#loading-overlay").fadeIn( "fast" );
-				calculateAndDisplayRoute();
-      });
-
-			//on load run these functions:
-
+			//when the webpage loads, run these functions:
 			addPlaceholderRows(0);
 			initialize();
   });
