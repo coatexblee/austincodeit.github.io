@@ -122,7 +122,8 @@ $(document).ready(function(){
 
 					addressRowSelection.each(function(elem){
 						var latLngObj = extractLATLNG($(this).children("td#location").attr('val'));
-						addMarker( latLngObj )
+						var popUpText = $(this).children("td#location").text().trim();
+						addMarker( latLngObj, popUpText )
 						// newMarkerLocations.push( $(this).children("td#location").attr('val') );
 					});
 				} else {
@@ -395,4 +396,12 @@ $(document).ready(function(){
 			//when the webpage loads, run these functions:
 			addPlaceholderRows(0);
 			initialize();
+
+      //enable the tablesorter.js
+      $("#availableAddressTable").tablesorter({
+        // third click on the header will reset column to default - unsorted
+          sortReset   : true,
+          // Resets the sort direction so that clicking on an unsorted column will sort in the sortInitialOrder direction.
+          sortRestart : true
+        });
   });

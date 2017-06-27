@@ -69,6 +69,7 @@ $(document).ready(function(){
 
       });
 
+      $('#availableAddressTable').trigger('update');
 
   });
   $(document).keypress(function(e) {

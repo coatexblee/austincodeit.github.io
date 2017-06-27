@@ -88,7 +88,6 @@ ul#dropdownChoice{
 #routableAddressTable th {
   vertical-align: middle;
   color:#444;
-  background:#f1f2e8;
   text-align: center;
   padding:1px;
   font-size: 12px;
@@ -236,4 +235,45 @@ button#createRoute[disabled]{
     -webkit-transform: rotate(360deg);
     tranform: rotate(360deg);
   }
+}
+/* tables sorting */
+table.tablesorter {
+	font-family:arial;
+	background-color: #CDCDCD;
+	font-size: 8pt;
+	width: 100%;
+	text-align: left;
+}
+table.tablesorter thead tr th, table.tablesorter tfoot tr th {
+	background: #f1f2e8;
+	border: 1px solid #FFF;
+	font-size: 8pt;
+	padding: 4px;
+}
+table.tablesorter thead tr .header {
+	background-image: none;
+	background-repeat: no-repeat;
+	background-position: center right;
+	cursor: pointer;
+}
+table.tablesorter thead tr .header:hover {
+  background-color: #b6ac9b;
+}
+table.tablesorter tbody td {
+	color: #3D3D3D;
+	padding: 4px;
+	background-color: #FFF;
+	vertical-align: top;
+}
+table.tablesorter tbody tr.odd td {
+	background-color:#F0F0F6;
+}
+table.tablesorter thead tr .headerSortUp {
+	background-image: url(asc.gif);
+}
+table.tablesorter thead tr .headerSortDown {
+	background-image: url(desc.gif);
+}
+table.tablesorter thead tr .headerSortDown, table.tablesorter thead tr .headerSortUp {
+background-color: #b6ac9b;
 }
