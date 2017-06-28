@@ -418,6 +418,7 @@ $(document).ready(function() {
     directionsDisplay.setMap(null);
     addressMarkerArray = [];
     iconCount = 0;
+		$(".header-row th").removeClass("headerSortUp");	$(".header-row th").removeClass("headerSortDown");
   });
 
   //when the webpage loads, run these functions:
