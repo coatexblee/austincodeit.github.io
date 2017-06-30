@@ -1,13 +1,5 @@
+var global_pdf = {};
 $(document).ready(function() {
-  /*
-  short term:
-  1. develop minification process
-  3. load api on init
-  long term:
-  1. can we send the final route to a mobile app?
-  */
-
-
   var map,
     directionsService,
     directionsDisplay,
@@ -395,6 +387,7 @@ $(document).ready(function() {
         //trigger addNewAddress click event
         $("#addNewAddress").trigger("click");
       }
+
     }
   });
   //user clicked the create route button
