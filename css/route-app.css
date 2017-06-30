@@ -161,7 +161,6 @@ button#createRoute[disabled]{
     height: 100%;
     position: relative;
     overflow: hidden;
-    padding-left: 0px;
 }
 
 /* animation section for loading map results */
