@@ -3,6 +3,12 @@
   margin: -1px 1px 1px 1px;
   float: left;
 }
+tbody#availableAddressRows > tr > td.first > a{
+  display: none;
+}
+tbody#routableAddressRows > tr > td.first > a{
+  display: none;
+}
 .container{
   margin: 0px;
   width: 100%;
@@ -30,6 +36,10 @@ ul#dropdownChoice{
 }
 #app-controls{
   margin-top: 15px;
+}
+#app-actions{
+  margin-top: 15px;
+  margin-bottom: 50px;
 }
 #map{
     height: 400px;
@@ -274,4 +284,28 @@ table.tablesorter thead tr .headerSortDown {
 }
 table.tablesorter thead tr .headerSortDown, table.tablesorter thead tr .headerSortUp {
 background-color: #b6ac9b;
+}
+
+
+@media only screen and (max-width: 767px) {
+
+  #taskListOptions{
+    padding-right: 15px;
+  }
+
+  div#mapResults div#app-actions a#mobileApp.btn,
+  div#mapResults div#app-actions button#createPDF.btn,
+  div#taskListOptions div#app-controls button.btn
+  {
+    font-size: 14px;
+  }
+
+  tbody#availableAddressRows > tr > td.first > a.mobileAdd{
+    display: block;
+    padding: 1px 2px 0px 3px;
+    margin: -1px 1px 1px 1px;
+    float: left;
+  }
+
+
 }

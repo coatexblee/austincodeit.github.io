@@ -1,13 +1,16 @@
 var global_pdf = {};
+var global_func = {};
+var activeElement;
 $(document).ready(function() {
   var map,
     directionsService,
     directionsDisplay,
     geocoder,
     addressMarkerArray = [],
-    iconCount = 0,
-    activeElement; //global variables
+    iconCount = 0;
   var labels = '0123456789ABCDEFGHIJKL';
+
+
   //initialize function for google maps
   var initialize = function() {
     geocoder = new google.maps.Geocoder();
@@ -86,7 +89,7 @@ $(document).ready(function() {
     }
   }
 
-  var placeAddressOnMap = function(address, popUpText, sort) {
+  global_func.placeAddressOnMap = function(address, popUpText, sort) {
     geocoder.geocode({
       'address': address
     }, function(results, status) {
@@ -137,6 +140,7 @@ $(document).ready(function() {
       iconCount = 0;
 
       addressRowSelection.each(function(elem) {
+        console.log(elem);
         var latLngObj = extractLATLNG($(this).children("td#location").attr('val'));
         var popUpText = $(this).children("td#location").text().trim();
         addMarker(latLngObj, popUpText)
@@ -226,14 +230,14 @@ $(document).ready(function() {
   }
 
   //function to ensure the remove button works after being moved in DOM
-  var validateRemoveButton = function() {
+  global_func.validateRemoveButton = function() {
     //unbind and then bind bc internet
     $(".removeAddress").unbind('click').bind('click', function() {
       var rowIndex = $(this).parents("tr:first")[0].rowIndex;
       //remove row entry
       removeSpecificMarker(rowIndex - 1);
       $(this).parent().parent().remove();
-      adjustRowCount();
+      global_func.adjustRowCount();
       //everytime we update the order of our rows, we should
       updateMarkerOrder(map);
     });
@@ -257,12 +261,13 @@ $(document).ready(function() {
       '</tr>');
     //grab the active element because we want to be able to append to it later...
     activeElement = $("#routableAddressRows > tr:not(.placeholder):last-child").children("td#location");
-    validateRemoveButton();
-    adjustRowCount();
-    placeAddressOnMap(address, address, false);
+    global_func.validateRemoveButton();
+    global_func.adjustRowCount();
+    global_func.placeAddressOnMap(address, address, false);
   }
+
   //everytime the DOM is updated, adjust list count
-  var adjustRowCount = function() {
+  global_func.adjustRowCount = function() {
     //check for placeholder rows (this is a bug fix essentially...)
     $("#routableAddressRows > tr.placeholder").remove()
 
@@ -315,6 +320,10 @@ $(document).ready(function() {
       accepts: function(el, target) {
         return target !== document.getElementById("availableAddressRows")
       },
+      moves: function(el, container, handle) {
+        return  !el.classList.contains('mobile')
+      },
+      delay: 100,
       removeOnSpill: false
     }).on('drop', function(el, target, sibling) {
     //if we drop our element into the correct table, do stuff, otherwise skip it
@@ -342,12 +351,14 @@ $(document).ready(function() {
           console.log('inner drop');
           sort = true;
         }
-        placeAddressOnMap(newAddress, popUpText, sort);
+        console.log(newAddress);
+
+        global_func.placeAddressOnMap(newAddress, popUpText, sort);
       }
 
       // var rowIndex = $(this).parents("tr:first")[0].rowIndex;
-      validateRemoveButton();
-      adjustRowCount();
+      global_func.validateRemoveButton();
+      global_func.adjustRowCount();
 
     } else {
       console.log('missed');
@@ -360,7 +371,7 @@ $(document).ready(function() {
     $(el).children().css('width', '10%');
   }).on('remove', function(el) {
     console.log('item removed...');
-    adjustRowCount();
+    global_func.adjustRowCount();
   //TO DO - remove from map as well
   });
 
@@ -405,7 +416,7 @@ $(document).ready(function() {
     divGroup.each(function(i) {
       $(this).remove()
     });
-    adjustRowCount();
+    global_func.adjustRowCount();
     //remove markers from map
     updateMarkerOrder(null);
     directionsDisplay.setMap(null);
