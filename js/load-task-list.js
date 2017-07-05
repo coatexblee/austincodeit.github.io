@@ -6,7 +6,7 @@ $(document).ready(function() {
 		url: openDataLink,
 		type: "GET",
 		data: {
-			"$limit": 5000,
+			"$limit": 6000,
 			"$$app_token": "n89g7s9iUyusfWDEHDHMtGcVT"
 		}
 	}).done(function(data) {

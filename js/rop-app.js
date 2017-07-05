@@ -6,17 +6,20 @@ $(document).ready(function(){
 				url: openDataLink,
 				type: "GET",
 				data: {
-					"$limit" : 90,
+					"$limit" : 6000,
 					"$$app_token" : "n89g7s9iUyusfWDEHDHMtGcVT"
 				}
 		}).done(function(data) {
 
 			//prep dataset by sorting & counting data incidents
 			var sortedData = _.sortBy(data, 'activitydate');
+			// console.log(sortedData);
 			var counts = _.countBy(sortedData,'activitydate');
+			var uniqueProp = _(data).chain().flatten().pluck('registeredaddress').unique().value();
 
 			//1 get total count add add it to the dash-total panel
 			$("#full-count").html(data.length);
+			$("#full-prop-count").html(uniqueProp.length);
 			//variables for typeChart
 			let bscCount=0, citeCount=0, inspectCount=0, novCount=0, warningCount=0, nullCount=0;
 
@@ -25,6 +28,8 @@ $(document).ready(function(){
 			let timeSeriesData = _.map(counts, function(value, key){
 				let _d = new Date(key);
 				let yr = _d.getFullYear();
+
+				if (yr == 216){ yr = 2016; console.log(yr);}
 				let mth = _d.getMonth();
 				let day = _d.getDate();
 				return [ Date.UTC(yr,mth,day),  value	];
@@ -132,10 +137,22 @@ $(document).ready(function(){
 					//variables for leaflet (geojson)
 					var markers = L.markerClusterGroup();
 
+					function dateFormatting(d){
+						let _d = new Date(d);
+						let yr = _d.getFullYear();
+						let mth = _d.getMonth();
+						let day = _d.getDate();
+						return ""+mth+"/"+day+"/"+yr;
+					}
+
 					function onEachFeature(feature, layer) {
+							let popUpHTML = '<table><tr><th>Name: </th><td> '+ feature.properties.name +'</td></tr>'+
+							'<tr><th>Activity Type: </th><td> '+ feature.properties.activityType +'</td></tr>'+
+							'<tr><th>Activity Date: </th><td> '+ dateFormatting(feature.properties.activityDate) +'</td></tr>';
+
 					    // does this feature have a property named popupContent?
-					    if (feature.properties && feature.properties.popupContent) {
-					        layer.bindPopup(feature.properties.popupContent);
+					    if (feature.properties) {
+					        layer.bindPopup(popUpHTML);
 					    }
 					}
 
@@ -145,7 +162,9 @@ $(document).ready(function(){
 										"properties": {
 												"id": key,
 												"name": value.registeredaddress,
-												"popupContent": ''+value.registeredaddress+''
+												"activityDate": value.activitydate,
+												"activityType": value.activitytype,
+
 										},
 										"geometry": value.location_1
 //										{

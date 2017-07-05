@@ -78,7 +78,7 @@ ul#dropdownChoice{
 }
 #availableAddresses,
 #toBeRouted {
-  height: 250px;
+  height: 284px;
   overflow-y: scroll;
   overflow-x: scroll;
   padding: 0px;
@@ -305,6 +305,10 @@ background-color: #b6ac9b;
     padding: 1px 2px 0px 3px;
     margin: -1px 1px 1px 1px;
     float: left;
+  }
+  #availableAddresses,
+  #toBeRouted {
+    height: 240px;
   }
 
 
