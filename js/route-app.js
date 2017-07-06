@@ -223,15 +223,15 @@ $(document).ready(function() {
             summaryPanel.innerHTML += 'People: '+ peopleArray[i]+'<br><hr><br>';
           } else {
             //convert text into numbers so we can add stuff
-            timeCalc += Number( route.legs[routeSegment].duration.text.replace(/\D/g,'') );
-            distanceCalc += Number( route.legs[routeSegment].distance.text.replace(/\D/g,'') );
+            timeCalc += Number( route.legs[routeSegment].duration.text.replace(/[a-z]+/g,'').trim() );
+            distanceCalc += Number( route.legs[routeSegment].distance.text.replace(/[a-z]+/g,'').trim() );
 
             summaryPanel.innerHTML += '<b>#'+i+'. ' +locationArray[i]+' | '+ caseArray[i] + '';
             summaryPanel.innerHTML += '<span id="routeTripTime"><b>Est. Trip:</b> '+ route.legs[routeSegment].duration.text +' | <b>Distance:</b> '+ route.legs[routeSegment].distance.text +'</span></b><br>';
             summaryPanel.innerHTML += 'People: '+ peopleArray[i]+'<br><hr><br>';
           }
         }
-        summaryPanel.innerHTML += '<b>Trip Time:</b> '+ timeCalc+'minutes | <b>Trip Distance:</b> '+ distanceCalc+' miles';
+        summaryPanel.innerHTML += '<b>Trip Time:</b> '+ timeCalc+' mins | <b>Trip Distance:</b> '+ distanceCalc+' mi';
       } else {
         window.alert('Directions request failed due to ' + status);
         summaryPanel.innerHTML = '';
