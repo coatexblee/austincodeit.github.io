@@ -159,7 +159,11 @@ button#createRoute[disabled]{
   border-top: none;
   font-size: 12px;
 }
+#directions-panel.well hr {
+  border-top: 1px solid #e7e7e7;
+  margin: 3px 0px 3px 0px;
 
+}
 .table{
   margin-bottom: 0px;
   table-layout:fixed;
@@ -285,7 +289,9 @@ table.tablesorter thead tr .headerSortDown {
 table.tablesorter thead tr .headerSortDown, table.tablesorter thead tr .headerSortUp {
 background-color: #b6ac9b;
 }
-
+#routeTripTime{
+  float:right;
+}
 
 @media only screen and (max-width: 767px) {
 

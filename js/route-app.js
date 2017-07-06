@@ -79,7 +79,7 @@ $(document).ready(function() {
     addressMarkerArray.push(newMarker);
     //attach the lat lng to the element
     if (!$(activeElement).attr('val')) {
-      console.log('location added to element')
+      // console.log('location added to element')
       $(activeElement).attr('val', location);
     }
     iconCount = iconCount + 1;
@@ -140,7 +140,7 @@ $(document).ready(function() {
       iconCount = 0;
 
       addressRowSelection.each(function(elem) {
-        console.log(elem);
+        // console.log(elem);
         var latLngObj = extractLATLNG($(this).children("td#location").attr('val'));
         var popUpText = $(this).children("td#location").text().trim();
         addMarker(latLngObj, popUpText)
@@ -170,10 +170,10 @@ $(document).ready(function() {
     var waypts = [],
       start = '',
       finish = '',
-      caseArray = [];
+      caseArray = [], locationArray = [], peopleArray = [];
     // grab addresses from elements
     var addressRowSelection = $("#routableAddressRows > tr:not(.placeholder)");
-    console.log(addressRowSelection);
+    // console.log(addressRowSelection);
     var summaryPanel = document.getElementById('directions-panel');
     summaryPanel.innerHTML = '';
     //loop through list and sort into waypoints, start, and last
@@ -182,7 +182,8 @@ $(document).ready(function() {
       // console.log()
       var latLngObj = extractLATLNG($(this).children("td#location").attr('val'));
       caseArray.push($(this).children("td").eq(2).text());
-
+      locationArray.push($(this).children("td#location").text().trim());
+      peopleArray.push($(this).children("td").eq(8).text().trim());
       //if it's #1 it's start location, if it's last it's finish, else it's waypoint
       if (i == 0) {
         start = new google.maps.LatLng(latLngObj.lat, latLngObj.lng);
@@ -213,14 +214,24 @@ $(document).ready(function() {
         console.log(response);
         directionsDisplay.setDirections(response);
         var route = response.routes[0];
-        // For each route, display summary information.
-        for (var i = 0; i < route.legs.length; i++) {
-          var routeSegment = i + 1;
-          summaryPanel.innerHTML += '<b>Trip #' + routeSegment + ': ' + caseArray[i] + '</b><br>';
-          summaryPanel.innerHTML += route.legs[i].start_address + ' to ';
-          summaryPanel.innerHTML += route.legs[i].end_address + '<br>Distance: ';
-          summaryPanel.innerHTML += route.legs[i].distance.text + '<br><br>';
+        var timeCalc = 0, distanceCalc = 0;
+        // For each route, display summaryinformation.
+        for (var i = 0; i <= route.legs.length; i++) {
+          var routeSegment = i - 1;
+          if (i ==0){
+            summaryPanel.innerHTML += '<b>Start: ' +locationArray[i]+' | '+ caseArray[i] + '</b><br>';
+            summaryPanel.innerHTML += 'People: '+ peopleArray[i]+'<br><hr><br>';
+          } else {
+            //convert text into numbers so we can add stuff
+            timeCalc += Number( route.legs[routeSegment].duration.text.replace(/\D/g,'') );
+            distanceCalc += Number( route.legs[routeSegment].distance.text.replace(/\D/g,'') );
+
+            summaryPanel.innerHTML += '<b>#'+i+'. ' +locationArray[i]+' | '+ caseArray[i] + '';
+            summaryPanel.innerHTML += '<span id="routeTripTime"><b>Est. Trip:</b> '+ route.legs[routeSegment].duration.text +' | <b>Distance:</b> '+ route.legs[routeSegment].distance.text +'</span></b><br>';
+            summaryPanel.innerHTML += 'People: '+ peopleArray[i]+'<br><hr><br>';
+          }
         }
+        summaryPanel.innerHTML += '<b>Trip Time:</b> '+ timeCalc+'minutes | <b>Trip Distance:</b> '+ distanceCalc+' miles';
       } else {
         window.alert('Directions request failed due to ' + status);
         summaryPanel.innerHTML = '';
@@ -348,10 +359,10 @@ $(document).ready(function() {
         var sort = false;
         //if you drop an item inside the existing order, we need to sort
         if (dropIndex <= tableLength) {
-          console.log('inner drop');
+          // console.log('inner drop');
           sort = true;
         }
-        console.log(newAddress);
+        // console.log(newAddress);
 
         global_func.placeAddressOnMap(newAddress, popUpText, sort);
       }
