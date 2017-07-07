@@ -13,6 +13,10 @@ $(document).ready(function() {
 
   //initialize function for google maps
   var initialize = function() {
+    if (google == null){
+      //if google is undefined loop back until it is loaded...
+      initialize();
+    }
     geocoder = new google.maps.Geocoder();
     directionsService = new google.maps.DirectionsService;
     directionsDisplay = new google.maps.DirectionsRenderer({

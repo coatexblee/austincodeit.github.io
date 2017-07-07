@@ -1,6 +1,5 @@
 var map;
 $(document).ready(function(){
-
 		let openDataLink  = 'https://data.austintexas.gov/resource/673d-jv2y.json';
 
 		$.ajax({
@@ -99,14 +98,7 @@ $(document).ready(function(){
 
 			//function for adding the marker
 			function addMarker(location, popUpText) {
-				// Add the marker at the clicked location, and add the next-available label
-				// from the array of alphabetical characters.
-				// var newMarker = new google.maps.Marker({
-				// 	position: location,
-				// 	map: map,
-				// 	draggable: false
-				// })
-				//
+
 				var cityCircle = new google.maps.Circle({
             strokeColor: '#FF0000',
             strokeOpacity: 0.8,
@@ -120,7 +112,7 @@ $(document).ready(function(){
 				var infoWindow = new google.maps.InfoWindow({
 					content: popUpText
 				});
-				
+
 				google.maps.event.addListener(cityCircle, 'click', function(ev) {
             infoWindow.setPosition(ev.latLng);
             infoWindow.open(map);
@@ -135,35 +127,39 @@ $(document).ready(function(){
 			});
 
 			console.log('starting');
-			let i = 0; let secondTry = [], secondTryKeys = [];
+			let i = 0; let secondTry = []; let secondTryKeys = [];
 			function addressLoop(){
 				geocoder.geocode({
 					'address': addressCleaned[i]
 				}, function(results, status) {
+						console.log(addressCleaned[i]);
 						if (status == google.maps.GeocoderStatus.OK) {
-							console.log(addressCleaned[i])
+							//if we get a response, map the address
+							console.log(addressCleaned[i]+" "+addressKeys[i]);
 							addMarker(results[0].geometry.location, addressKeys[i]);
+							if (i < addressCleaned.length){
+					    	setTimeout(addressLoop, 500);
+								i = i + 1;
+							}
+						} else if (status == google.maps.GeocoderStatus.OVER_QUERY_LIMIT){
+							//over the limit, so we wait and try again in 2.5 seconds...
+								console.log('pause.... at '+i+' position...');
+								// console.log(addressCleaned[i]);
+								setTimeout(addressLoop, 2500);
 						} else {
-							secondTry.push(addressCleaned[i]);
-							secondTryKeys.push(addressKeys[i]);
-						}
-
-						i = i + 1;
-						console.log(i);
-						if (i < addressCleaned.length){
-				    	setTimeout(addressLoop, 750);
+							console.log('err');
 						}
 				});
 		 	}
 			addressLoop();
 
-
 		}); //end of ajax request
 
 		var initialize = function() {
-			if (!google){
-				initialize();
-			}
+			if (google == null){
+	      //if google is undefined loop back until it is loaded...
+	      initialize();
+	    }
 	    var myLatlng = new google.maps.LatLng(30.2764099,-97.7507724);
 	    var mapOptions = {
 	      zoom: 13,
