@@ -40,6 +40,7 @@ ul#dropdownChoice{
 #app-actions{
   margin-top: 15px;
   margin-bottom: 50px;
+  display: none;
 }
 #map{
     height: 400px;
@@ -292,13 +293,17 @@ background-color: #b6ac9b;
 #routeTripTime{
   float:right;
 }
-
+#mobileFunc{
+  display: none;
+}
 @media only screen and (max-width: 767px) {
 
   #taskListOptions{
     padding-right: 15px;
   }
-
+  #mobileFunc{
+    display: block;
+  }
   div#mapResults div#app-actions a#mobileApp.btn,
   div#mapResults div#app-actions button#createPDF.btn,
   div#taskListOptions div#app-controls button.btn

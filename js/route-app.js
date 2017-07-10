@@ -170,6 +170,8 @@ $(document).ready(function() {
 
   //a function to return the direction services api with a route to the map
   var calculateAndDisplayRoute = function() {
+    //1. show actionable buttons
+    $("#app-actions").show();
     //clear existing points
     updateMarkerOrder(null);
     addressMarkerArray = [];
@@ -471,6 +473,7 @@ $(document).ready(function() {
     //remove markers from map
     updateMarkerOrder(null);
     directionsDisplay.setMap(null);
+    $("#app-actions").hide();
     addressMarkerArray = [];
     iconCount = 0;
 		$(".header-row th").removeClass("headerSortUp");	$(".header-row th").removeClass("headerSortDown");
