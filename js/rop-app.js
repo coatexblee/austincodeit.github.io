@@ -39,10 +39,13 @@ $(document).ready(function(){
 			// console.log(dataCounted);
 
 			let activityCounts = _.countBy(sortedData,'activitytype');
+			let zipCodeCount = _.countBy(data,'zipcode');
 
 			let activityValues = _.values(activityCounts);
 			let activityKeys = _.keys(activityCounts);
 
+			let zipValues = _.values(zipCodeCount);
+			let zipKeys = _.keys(zipCodeCount);
 
 			let activityTypeChart = Highcharts.chart('container-type', {
 				chart: {
@@ -130,7 +133,37 @@ $(document).ready(function(){
             data: timeSeriesData
         }]
     });
-
+		let zipCountChart = Highcharts.chart('container-zip', {
+			chart: {
+					type: 'column'
+			},
+			title: {
+					text: 'ROP Acivitiy by Zip Code'
+			},
+			xAxis: {
+					categories: zipKeys
+			},
+			yAxis: {
+					title: {
+							text: ''
+					}
+			},
+			series: [{
+					name: ['Total Count'],
+					data: zipValues,
+					dataLabels: {
+						enabled: true,
+						// color: '#FFFFFF',
+						align: 'right',
+						// format: '{point.y:.1f}', // one decimal
+						// y: 10, // 10 pixels down from the top
+						style: {
+								// fontSize: '10px',
+								// fontFamily: 'Verdana, sans-serif'
+						}
+				}
+			}]
+		}); //end of myChart
 
 
 
