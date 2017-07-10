@@ -1,6 +1,10 @@
 var global_pdf = {};
 var global_func = {};
 var activeElement;
+
+////to do
+// update directions display on "Directions change" update
+//create larger map for printing...
 $(document).ready(function() {
   var map,
     directionsService,
@@ -23,7 +27,7 @@ $(document).ready(function() {
       draggable: true
     });
     directionsDisplay.addListener('directions_changed', function() {
-      console.log('now hwat?')
+      //need to update time and distance.... console.log('now hwat?')
     });
     var myLatlng = new google.maps.LatLng(30.3344316, -97.6791038);
 
@@ -174,13 +178,14 @@ $(document).ready(function() {
     var waypts = [],
       start = '',
       finish = '',
-      caseArray = [], locationArray = [], peopleArray = [];
+      caseArray = [], locationArray = [], peopleArray = [], fpArray = [], ppArray = [];
     // grab addresses from elements
     var addressRowSelection = $("#routableAddressRows > tr:not(.placeholder)");
     // console.log(addressRowSelection);
     var summaryPanel = document.getElementById('directions-panel');
     summaryPanel.innerHTML = '';
     //loop through list and sort into waypoints, start, and last
+
     addressRowSelection.each(function(i) {
       //grab text and trim whitespace
       // console.log()
@@ -188,6 +193,10 @@ $(document).ready(function() {
       caseArray.push($(this).children("td").eq(2).text());
       locationArray.push($(this).children("td#location").text().trim());
       peopleArray.push($(this).children("td").eq(8).text().trim());
+      fpArray.push($(this).children("td").eq(4).text().trim());
+      ppArray.push($(this).children("td").eq(5).text().trim());
+
+
       //if it's #1 it's start location, if it's last it's finish, else it's waypoint
       if (i == 0) {
         start = new google.maps.LatLng(latLngObj.lat, latLngObj.lng);
@@ -200,6 +209,11 @@ $(document).ready(function() {
         });
       }
     });
+
+    //update object for PDF printing purposes
+    global_pdf.start = locationArray[0];
+    global_pdf.end = locationArray[locationArray.length-1];
+    global_pdf.tasks = [];
     //google's direction service
     directionsService.route({
       origin: start, //document.getElementById('start').value,
@@ -207,7 +221,7 @@ $(document).ready(function() {
       waypoints: waypts,
       optimizeWaypoints: true,
       drivingOptions: {
-        departureTime: new Date(Date.now()),
+        departureTime: new Date(Date.now()+1000),
         trafficModel: 'bestguess'
       },
       travelMode: 'DRIVING'
@@ -222,20 +236,42 @@ $(document).ready(function() {
         // For each route, display summaryinformation.
         for (var i = 0; i <= route.legs.length; i++) {
           var routeSegment = i - 1;
+          var legDistance, legDuration;
           if (i ==0){
+            legDistance = 0;
+            legDuration = 0;
             summaryPanel.innerHTML += '<b>Start: ' +locationArray[i]+' | '+ caseArray[i] + '</b><br>';
             summaryPanel.innerHTML += 'People: '+ peopleArray[i]+'<br><hr><br>';
           } else {
             //convert text into numbers so we can add stuff
             timeCalc += Number( route.legs[routeSegment].duration.text.replace(/[a-z]+/g,'').trim() );
             distanceCalc += Number( route.legs[routeSegment].distance.text.replace(/[a-z]+/g,'').trim() );
-
+            legDistance =route.legs[routeSegment].distance.text;
+            legDuration = route.legs[routeSegment].duration.text;
             summaryPanel.innerHTML += '<b>#'+i+'. ' +locationArray[i]+' | '+ caseArray[i] + '';
-            summaryPanel.innerHTML += '<span id="routeTripTime"><b>Est. Trip:</b> '+ route.legs[routeSegment].duration.text +' | <b>Distance:</b> '+ route.legs[routeSegment].distance.text +'</span></b><br>';
+            summaryPanel.innerHTML += '<span id="routeTripTime"><b>Est. Trip:</b> '+ legDuration +' | <b>Distance:</b> '+ legDistance +'</span></b><br>';
             summaryPanel.innerHTML += 'People: '+ peopleArray[i]+'<br><hr><br>';
           }
+          //update global_pdf object for printing purposes
+          global_pdf.tasks.push(
+            {
+              folder: locationArray[i],
+              folder_num: caseArray[i],
+              fp: fpArray[i],
+              pp: ppArray[i],
+              people: peopleArray[i],
+              leg_dist: legDistance,
+              leg_time: legDuration
+            }
+          );
+
+
         }
-        summaryPanel.innerHTML += '<b>Trip Time:</b> '+ timeCalc+' mins | <b>Trip Distance:</b> '+ distanceCalc+' mi';
+        //update global pdf
+        global_pdf.trip_dist = ""+distanceCalc;
+        global_pdf.trip_time = ""+timeCalc;
+        summaryPanel.innerHTML += '<b>Trip Time:</b> '+ timeCalc.toPrecision(2)+' mins | <b>Trip Distance:</b> '+ distanceCalc.toPrecision(2)+' mi';
+        console.log(global_pdf);
       } else {
         window.alert('Directions request failed due to ' + status);
         summaryPanel.innerHTML = '';

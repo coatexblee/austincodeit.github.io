@@ -1,3 +1,4 @@
+
 $(document).ready(function() {
 
 	let openDataLink = 'https://data.austintexas.gov/resource/x6vs-siqw.json';
@@ -23,7 +24,7 @@ $(document).ready(function() {
 	function dateFormatting(datestring) {
 		let _d = new Date(datestring);
 		let yr = _d.getFullYear();
-		let mth = _d.getMonth();
+		let mth = _d.getMonth()+1;
 		let day = _d.getDate();
 		if (isNaN(yr)) {
 			return '';
@@ -48,6 +49,10 @@ $(document).ready(function() {
 			//getAddressesFromID(inspectorValue);
 			$("#inspectorID").val('');
 		}
+		global_pdf.name = chosenName; //update global pdf object
+		global_pdf.datestamp = dateFormatting(Date.now());
+		global_pdf.timestamp = new Date().toLocaleTimeString();
+		console.log(global_pdf);
 		let filteredData = _.filter(openData, function(row) {
 			return row.assigneduser == chosenName;
 		})
