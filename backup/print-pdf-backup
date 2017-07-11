@@ -28,9 +28,13 @@ $(document).ready(function() {
   //   trip_time:'4',
   //   map_center:''
   // };
-
+  var convertGoogleArraytoPath(googleArray){
+    for (var i = 0; i<=googleArray.length;i++){
+      console.log(googleArray[i].lat);
+    }
+  }
   var createFinalPDF = function(){
-    console.log('creating...')
+
       var element = $('#directions-panel')[0];
       var pdfOptions = {
           orientation: "portrait", // One of "portrait" or "landscape" (or shortcuts "p" (Default), "l")
@@ -45,11 +49,12 @@ $(document).ready(function() {
       var left_margin = 16;
       var page_height = 280;
       var page_width = 200;
-      var content_margin = 40;
+      var content_margin = 50;
       var page_count = 1;
       var getRightMargin = function(obj){
         return page_width - (obj.length*2)-1;
       }
+
 
       var addHeader = function(){
         /* setting up the header */
@@ -83,57 +88,70 @@ $(document).ready(function() {
       addFooter();
 
       //add map to document
-      var createMarkerArray = function(markerArray){
-        var finalString ='';
-        for (var i = 0; i < markerArray.length; i++){
-            if(i ==0){
-              finalString+="&markers=color:red%7Clabel:S%7C"+String(markerArray[i].lat)+","+String(markerArray[i].lng);
-            } else {
-              finalString+="&markers=color:red%7Clabel:"+i+"%7C"+String(markerArray[i].lat)+","+String(markerArray[i].lng);
-            }
-        }
-        return finalString
-      }
-
+      // var element = $('#map');
       var element = $('#sampleImg');
-
-      var mapElement = $('#map');
+      // console.log(google);
+      // mapCenter = global_pdf.map_center
+      // console.log(global_pdf.route_path);
+      var newPath = convertGoogleArraytoPath(global_pdf.route_path);
       var google_1 = "https://maps.googleapis.com/maps/api/staticmap";
-      var google_2 = "?center="+global_pdf.map_center;
-      var google_3 = "&zoom="+global_pdf.map_zoom;
-      var google_4 = "&size=700x400";
-      var google_5 = createMarkerArray(global_pdf.route_stops);
-      var google_6 = "&path=weight:4%7Ccolor:blue%7Cenc:"+global_pdf.route_path;
-      var google_k = "&key=AIzaSyCSjAnT5cJ03MwURghAT1nZrLz4InNRpP0";
+      var google_2 = "&path=color:0x0000ff|weight:5|30.2834885,-97.7422752|31.2834885,-96.7422752"
+      $(element).attr("src",google_1+"?center="+global_pdf.map_center+"&zoom=13&size=600x300&maptype=roadmap"+google_2);//&markers=color:blue%7Clabel:S%7C40.702147,-74.015794&markers=color:green%7Clabel:G%7C40.711614,-74.012318&markers=color:red%7Clabel:C%7C40.718217,-73.998284&key=AIzaSyCSjAnT5cJ03MwURghAT1nZrLz4InNRpP0");
 
-      // var imgRatio = (page_width-left_margin)/700;
-      // var mapImgWidth = element.width()*imgRatio;
-      // var mapImgHeight = element.height()*imgRatio;
-      var mapImgWidth = 184;
-      var mapImgHeight = 105;
+      var imgRatio = (page_width-left_margin)/element.width();
+      var mapImgWidth = element.width()*imgRatio;
+      var mapImgHeight = element.height()*imgRatio;
       var picMarginX = 10+page_width/2;
       var picMarginY = content_margin-10;
 
-      $(element).attr("src",google_1+google_2+google_3+google_4+google_5+google_6+"&maptype=roadmap"+google_k);
-
-      function addGoogleMapImage(){
-        html2canvas(element, {
-           useCORS: true,
-           onrendered: function(canvas) {
-             console.log('rendered...')
-             var dataUrl= canvas.toDataURL("image/png");
-
-             pdf.addImage(dataUrl, 'JPEG', left_margin, content_margin-5, mapImgWidth, mapImgHeight);
-             pdf.text(left_margin, content_margin+mapImgHeight+20,'Trip Time: '+global_pdf.trip_time+" minutes"); //final row
-             pdf.text(left_margin+80, content_margin+mapImgHeight+20,'Trip Distance: '+global_pdf.trip_dist+" miles"); //final row
-            //  pdf.output('datauri');
-             pdf.addPage();
-             page_count = page_count + 1;
-
-             addTaskContents();
-           }
-       });
+      function imgHeightCheck(){
+        if (mapImgHeight > 110){
+          mapImgHeight = mapImgHeight*.8;
+          mapImgWidth = mapImgWidth*.8;
+          imgHeightCheck();
+        }
       }
+      imgHeightCheck();
+      function addGoogleMapImage(){
+        console.log('need to finish....')
+        // html2canvas(element, {
+        //    useCORS: true,
+        //    onrendered: function(canvas) {
+            //  console.log(canvas);
+            //  console.log('rendered...')
+            //  var dataUrl= canvas.toDataURL("image/png");
+
+            //  pdf.addImage(dataUrl, 'JPEG', left_margin, content_margin-15, mapImgWidth, mapImgHeight);
+            //  pdf.output('datauri');
+            //  pdf.addPage();
+            //  page_count = page_count + 1;
+
+            //  addTaskContents();
+      //      }
+      //  });
+      }
+        //the original code below is far too resource heavy...
+        ///will switch to static API with path and markers
+        // addTaskContents();
+
+        // html2canvas(element, {
+        //     useCORS: true,
+        //     logging:true,
+        //     // timout:5000,
+        //     onrendered: function(canvas) {
+        //       // console.log(canvas);
+        //       console.log('rendered...')
+        //       var dataUrl= canvas.toDataURL("image/png");
+        //       //
+        //       // pdf.addImage(dataUrl, 'JPEG', left_margin, content_margin-15, mapImgWidth, mapImgHeight);
+        //       // pdf.addPage();
+        //       // page_count = page_count + 1;
+        //       //
+              // addTaskContents();
+        //     }
+        // });
+      // }
+
       addGoogleMapImage();
 
       function addTaskContents(){
@@ -154,7 +172,7 @@ $(document).ready(function() {
           pdf.text(inner_margin_A+50,content_margin,''+tasklist[i].folder); //row 1
           // pdf.text(inner_margin_A+150,content_margin,'  <Notes>'); //row 1
 
-          pdf.text(inner_margin_A,content_margin+5,''+tasklist[i].people); //row 2
+          pdf.text(inner_margin_A,content_margin+5,'People: '+tasklist[i].people); //row 2
 
           pdf.text(inner_margin_A,content_margin+10,'FP: '+tasklist[i].fp); //row 2
           pdf.text(inner_margin_A+50,content_margin+10,'PP: '+tasklist[i].pp); //row 2
@@ -166,8 +184,8 @@ $(document).ready(function() {
           if (i == global_pdf.tasks.length-1){
             content_margin += 40;
             pdf.setFontType("bold");
-            pdf.text(left_margin, content_margin,'Trip Time: '+global_pdf.trip_time+" minutes"); //final row
-            pdf.text(left_margin+80, content_margin,'Trip Distance: '+global_pdf.trip_dist+" miles"); //final row
+            pdf.text(left_margin, content_margin,'Trip Distance: '+global_pdf.trip_dist+" miles"); //final row
+            pdf.text(left_margin+80, content_margin,'Trip Time: '+global_pdf.trip_time+" minutes"); //final row
           } else if (content_margin >= page_height-80){
             //check current page height, if we need to go to a new page do that,
             pdf.addPage();
@@ -193,7 +211,7 @@ $(document).ready(function() {
 
 
   $("#createPDF").on('click', function(){
-      console.log('printing....');
+    console.log('printing....');
       createFinalPDF();
   });
 

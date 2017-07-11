@@ -1,7 +1,32 @@
 var global_pdf = {};
 var global_func = {};
 var activeElement;
-
+// global_pdf = {
+//   datestamp:'2',
+//   timestamp:'2',
+//   start:'2',
+//   end:'2',
+//   name:'2',
+//   time:'2',
+//   tasks:[{
+//     folder:'1',
+//     folder_num:'1',
+//     people:'1',
+//     fp:'1',
+//     pp:'1',
+//     leg_time:'1',
+//     leg_dist:'1'
+//   },{  folder:'1',  folder_num:'1',  people:'1',  fp:'1',  pp:'1',  leg_time:'1',  leg_dist:'1'},
+//   {  folder:'1',  folder_num:'1',  people:'1',  fp:'1',  pp:'1',  leg_time:'1',  leg_dist:'1'},
+//   {  folder:'1',  folder_num:'1',  people:'1',  fp:'1',  pp:'1',  leg_time:'1',  leg_dist:'1'},
+//   {  folder:'1',  folder_num:'1',  people:'1',  fp:'1',  pp:'1',  leg_time:'1',  leg_dist:'1'},
+//   {  folder:'1',  folder_num:'1',  people:'1',  fp:'1',  pp:'1',  leg_time:'1',  leg_dist:'1'},
+//   {  folder:'1',  folder_num:'1',  people:'1',  fp:'1',  pp:'1',  leg_time:'1',  leg_dist:'1'},
+//   {  folder:'1',  folder_num:'1',  people:'1',  fp:'1',  pp:'1',  leg_time:'1',  leg_dist:'1'}
+// ],
+//   trip_dist:'2',
+//   trip_time:'4'
+// };
 ////to do
 // update directions display on "Directions change" update
 //create larger map for printing...
@@ -14,12 +39,13 @@ $(document).ready(function() {
     iconCount = 0;
   var labels = '0123456789ABCDEFGHIJKL';
 
-
   //initialize function for google maps
   var initialize = function() {
-    if (google == null){
+    if (typeof google !== 'object'){
       //if google is undefined loop back until it is loaded...
-      initialize();
+      setTimeout(function(){
+        initialize();
+      },1000)
     }
     geocoder = new google.maps.Geocoder();
     directionsService = new google.maps.DirectionsService;
@@ -44,11 +70,11 @@ $(document).ready(function() {
       google.maps.event.trigger(map, "resize");
       map.setCenter(center);
     });
-
     //click listener for adding points or doing any other action
     // google.maps.event.addListener(map, 'click', function(event) {
     //   addMarker(event.latLng, map);
     // });
+    // console.log(global_pdf);
 
   }
 
@@ -175,7 +201,7 @@ $(document).ready(function() {
     //clear existing points
     updateMarkerOrder(null);
     addressMarkerArray = [];
-
+    global_pdf.route_stops = [];
     directionsDisplay.setMap(map);
     var waypts = [],
       start = '',
@@ -197,6 +223,7 @@ $(document).ready(function() {
       peopleArray.push($(this).children("td").eq(8).text().trim());
       fpArray.push($(this).children("td").eq(4).text().trim());
       ppArray.push($(this).children("td").eq(5).text().trim());
+      global_pdf.route_stops.push((latLngObj));
 
 
       //if it's #1 it's start location, if it's last it's finish, else it's waypoint
@@ -230,10 +257,13 @@ $(document).ready(function() {
     }, function(response, status) {
       if (status === 'OK') {
         //if we get an OK response, add the directions, and show the appropriate elements
-        console.log('driving directions complete!!!!')
+        // console.log('driving directions complete!!!!')
         console.log(response);
         directionsDisplay.setDirections(response);
+
         var route = response.routes[0];
+        global_pdf.route_path = response.routes[0].overview_polyline;
+
         var timeCalc = 0, distanceCalc = 0;
         // For each route, display summaryinformation.
         for (var i = 0; i <= route.legs.length; i++) {
@@ -273,7 +303,9 @@ $(document).ready(function() {
         global_pdf.trip_dist = ""+distanceCalc;
         global_pdf.trip_time = ""+timeCalc;
         summaryPanel.innerHTML += '<b>Trip Time:</b> '+ timeCalc.toPrecision(2)+' mins | <b>Trip Distance:</b> '+ distanceCalc.toPrecision(2)+' mi';
-        console.log(global_pdf);
+        global_pdf.map_center = String(map.getCenter().toUrlValue());
+        global_pdf.map_zoom = String(map.getZoom());
+        // console.log(global_pdf);
       } else {
         window.alert('Directions request failed due to ' + status);
         summaryPanel.innerHTML = '';
@@ -281,6 +313,8 @@ $(document).ready(function() {
     });
 
   }
+
+
 
   //function to ensure the remove button works after being moved in DOM
   global_func.validateRemoveButton = function() {
