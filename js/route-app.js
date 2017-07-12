@@ -8,6 +8,8 @@ var activeElement;
 //   end:'2',
 //   name:'2',
 //   time:'2',
+//   route_stops:[{lat:1,lng:1},{lat:1,lng:1}],
+//   rout_path:
 //   tasks:[{
 //     folder:'1',
 //     folder_num:'1',
@@ -131,6 +133,7 @@ $(document).ready(function() {
         addMarker(results[0].geometry.location, popUpText, sort);
       } else {
         alert('Geocode was not successful for the following reason: ' + status);
+        //should not add new row or marker.... needs fixin
       }
     });
   }
@@ -304,7 +307,7 @@ $(document).ready(function() {
         global_pdf.trip_time = ""+timeCalc;
         summaryPanel.innerHTML += '<b>Trip Time:</b> '+ timeCalc.toPrecision(2)+' mins | <b>Trip Distance:</b> '+ distanceCalc.toPrecision(2)+' mi';
         global_pdf.map_center = String(map.getCenter().toUrlValue());
-        global_pdf.map_zoom = String(map.getZoom());
+        global_pdf.map_zoom = String(map.getZoom()-1);
         // console.log(global_pdf);
       } else {
         window.alert('Directions request failed due to ' + status);

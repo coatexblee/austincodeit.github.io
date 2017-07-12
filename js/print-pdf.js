@@ -96,43 +96,70 @@ $(document).ready(function() {
       }
 
       var element = $('#sampleImg');
-
       var mapElement = $('#map');
+      var mapWidth = 640 //Math.floor(mapElement.width());
+      var mapHeight = 400 //Math.floor(mapElement.height());
       var google_1 = "https://maps.googleapis.com/maps/api/staticmap";
       var google_2 = "?center="+global_pdf.map_center;
       var google_3 = "&zoom="+global_pdf.map_zoom;
-      var google_4 = "&size=700x400";
+      var google_4 = "&size=640x400";
       var google_5 = createMarkerArray(global_pdf.route_stops);
       var google_6 = "&path=weight:4%7Ccolor:blue%7Cenc:"+global_pdf.route_path;
       var google_k = "&key=AIzaSyCSjAnT5cJ03MwURghAT1nZrLz4InNRpP0";
 
-      // var imgRatio = (page_width-left_margin)/700;
-      // var mapImgWidth = element.width()*imgRatio;
-      // var mapImgHeight = element.height()*imgRatio;
-      var mapImgWidth = 184;
-      var mapImgHeight = 105;
+      var pdfImgWidth = mapWidth*(184/mapWidth);
+      var pdfImgHeight = mapHeight*(105/mapHeight);
+      // var mapImgWidth = 184;
+      // var mapImgHeight = 105;
       var picMarginX = 10+page_width/2;
       var picMarginY = content_margin-10;
 
-      $(element).attr("src",google_1+google_2+google_3+google_4+google_5+google_6+"&maptype=roadmap"+google_k);
-
+      // $(element).attr("src",google_1+google_2+google_3+google_4+google_5+google_6+"&maptype=roadmap"+google_k);
+      console.log(google_1+google_2+google_3+google_4+google_5+google_6+"&maptype=roadmap"+google_k);
       function addGoogleMapImage(){
-        html2canvas(element, {
-           useCORS: true,
-           onrendered: function(canvas) {
-             console.log('rendered...')
-             var dataUrl= canvas.toDataURL("image/png");
 
-             pdf.addImage(dataUrl, 'JPEG', left_margin, content_margin-5, mapImgWidth, mapImgHeight);
-             pdf.text(left_margin, content_margin+mapImgHeight+20,'Trip Time: '+global_pdf.trip_time+" minutes"); //final row
-             pdf.text(left_margin+80, content_margin+mapImgHeight+20,'Trip Distance: '+global_pdf.trip_dist+" miles"); //final row
-            //  pdf.output('datauri');
+          var canvas = document.getElementById("canvasImg")
+          var ctx = canvas.getContext('2d');;
+          var img = new Image();
+          img.onload = function(){
+            canvas.width = mapWidth;
+            canvas.height = mapHeight;
+            ctx.drawImage(img, 0, 0, mapWidth, mapHeight);
+            var dataUrl = canvas.toDataURL('image/png', 1.0);
+
+            pdf.addImage(dataUrl, 'JPEG', left_margin, content_margin-5, pdfImgWidth, pdfImgHeight);
+            pdf.setFontType("bold");
+            pdf.text(left_margin, content_margin+pdfImgHeight+20,'Trip Time: '+global_pdf.trip_time+" minutes"); //final row
+            pdf.text(left_margin+80, content_margin+pdfImgHeight+20,'Trip Distance: '+global_pdf.trip_dist+" miles"); //final row
+            pdf.setFontType("normal");
+            // pdf.output('datauri');
              pdf.addPage();
              page_count = page_count + 1;
 
              addTaskContents();
-           }
-       });
+          }
+          img.crossOrigin = "anonymous"; // This enables CORS
+          img.src = google_1+google_2+google_3+google_4+google_5+google_6+"&maptype=roadmap"+google_k;
+          console.log('rendered...')
+
+        // html2canvas(element, {
+          //  useCORS: true,
+          //  onrendered: function(canvas) {
+            //  var dataUrl= canvas.toDataURL("image/png");
+            //
+            //  pdf.addImage(dataUrl, 'JPEG', left_margin, content_margin-5, mapImgWidth, mapImgHeight);
+            //  pdf.text(left_margin, content_margin+mapImgHeight+20,'Trip Time: '+global_pdf.trip_time+" minutes"); //final row
+            //
+            //  pdf.setFontType("bold");
+            //  pdf.text(left_margin+80, content_margin+mapImgHeight+20,'Trip Distance: '+global_pdf.trip_dist+" miles"); //final row
+            //  pdf.setFontType("normal");
+            // pdf.output('datauri');
+            //  pdf.addPage();
+            //  page_count = page_count + 1;
+
+            //  addTaskContents();
+          //  }
+      //  });
       }
       addGoogleMapImage();
 
