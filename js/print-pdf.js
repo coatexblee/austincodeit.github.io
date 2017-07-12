@@ -1,36 +1,6 @@
 
 $(document).ready(function() {
-  //////testing block
-  // global_pdf = {
-  //   datestamp:'2',
-  //   timestamp:'2',
-  //   start:'2',
-  //   end:'2',
-  //   name:'2',
-  //   time:'2',
-  //   tasks:[{
-  //     folder:'1',
-  //     folder_num:'1',
-  //     people:'1',
-  //     fp:'1',
-  //     pp:'1',
-  //     leg_time:'1',
-  //     leg_dist:'1'
-  //   },{  folder:'1',  folder_num:'1',  people:'1',  fp:'1',  pp:'1',  leg_time:'1',  leg_dist:'1'},
-  //   {  folder:'1',  folder_num:'1',  people:'1',  fp:'1',  pp:'1',  leg_time:'1',  leg_dist:'1'},
-  //   {  folder:'1',  folder_num:'1',  people:'1',  fp:'1',  pp:'1',  leg_time:'1',  leg_dist:'1'},
-  //   {  folder:'1',  folder_num:'1',  people:'1',  fp:'1',  pp:'1',  leg_time:'1',  leg_dist:'1'},
-  //   {  folder:'1',  folder_num:'1',  people:'1',  fp:'1',  pp:'1',  leg_time:'1',  leg_dist:'1'},
-  //   {  folder:'1',  folder_num:'1',  people:'1',  fp:'1',  pp:'1',  leg_time:'1',  leg_dist:'1'},
-  //   {  folder:'1',  folder_num:'1',  people:'1',  fp:'1',  pp:'1',  leg_time:'1',  leg_dist:'1'}
-  // ],
-  //   trip_dist:'2',
-  //   trip_time:'4',
-  //   map_center:''
-  // };
-
   var createFinalPDF = function(){
-    console.log('creating...')
       var element = $('#directions-panel')[0];
       var pdfOptions = {
           orientation: "portrait", // One of "portrait" or "landscape" (or shortcuts "p" (Default), "l")
@@ -47,16 +17,17 @@ $(document).ready(function() {
       var page_width = 200;
       var content_margin = 40;
       var page_count = 1;
-      var getRightMargin = function(obj){
+
+      var getRightMargin = function(obj) { //this function is to adjust width based on obj length
         return page_width - (obj.length*2)-1;
       }
 
+      /* setting up the header */
       var addHeader = function(){
-        /* setting up the header */
         pdf.setFontSize(14);
         pdf.text(left_margin, 20, global_pdf.name); //inspector name
         pdf.setFontSize(10);
-        pdf.text(left_margin, 27, 'Route: ' + global_pdf.start + ' to '+global_pdf.end ); //route address
+        pdf.text(left_margin, 27, '' + global_pdf.start + ' to '+global_pdf.end ); //route address
         pdf.text(getRightMargin(global_pdf.datestamp),20, ""+global_pdf.datestamp ); //today's date
         pdf.text(getRightMargin(global_pdf.timestamp),27, ""+global_pdf.timestamp ); //timestamp
         // console.log(global_pdf.date.length)
@@ -66,7 +37,8 @@ $(document).ready(function() {
         pdf.addImage(codeImgURL, 'JPEG', page_width/2, 5, 18, 18);
       }
       addHeader();
-      //add official footer
+
+      /* setting up the footer */
       var addFooter = function(){
         pdf.setFontSize(8);
         pdf.setTextColor(70,70,70);
@@ -82,8 +54,9 @@ $(document).ready(function() {
       }
       addFooter();
 
-      //add map to document
+      /* this function will create an encoded string to add the markers to google's static image api */
       var createMarkerArray = function(markerArray){
+        console.log(markerArray);
         var finalString ='';
         for (var i = 0; i < markerArray.length; i++){
             if(i ==0){
@@ -122,48 +95,29 @@ $(document).ready(function() {
           var ctx = canvas.getContext('2d');;
           var img = new Image();
           img.onload = function(){
-            canvas.width = mapWidth;
-            canvas.height = mapHeight;
-            ctx.drawImage(img, 0, 0, mapWidth, mapHeight);
-            var dataUrl = canvas.toDataURL('image/png', 1.0);
+              //the image has been loaded...
+              canvas.width = mapWidth;
+              canvas.height = mapHeight;
+              ctx.drawImage(img, 0, 0, mapWidth, mapHeight);
+              var dataUrl = canvas.toDataURL('image/png', 1.0);
 
-            pdf.addImage(dataUrl, 'JPEG', left_margin, content_margin-5, pdfImgWidth, pdfImgHeight);
-            pdf.setFontType("bold");
-            pdf.text(left_margin, content_margin+pdfImgHeight+20,'Trip Time: '+global_pdf.trip_time+" minutes"); //final row
-            pdf.text(left_margin+80, content_margin+pdfImgHeight+20,'Trip Distance: '+global_pdf.trip_dist+" miles"); //final row
-            pdf.setFontType("normal");
-            // pdf.output('datauri');
-             pdf.addPage();
-             page_count = page_count + 1;
-
-             addTaskContents();
+              pdf.addImage(dataUrl, 'JPEG', left_margin, content_margin-5, pdfImgWidth, pdfImgHeight);
+              pdf.setFontType("bold");
+              pdf.text(left_margin, content_margin+pdfImgHeight+20,'Trip Time: '+global_pdf.trip_time+" minutes"); //final row
+              pdf.text(left_margin+80, content_margin+pdfImgHeight+20,'Trip Distance: '+global_pdf.trip_dist+" miles"); //final row
+              pdf.setFontType("normal");
+              // pdf.output('datauri');
+              page_count = page_count + 1;
+              addTaskContents();
           }
           img.crossOrigin = "anonymous"; // This enables CORS
           img.src = google_1+google_2+google_3+google_4+google_5+google_6+"&maptype=roadmap"+google_k;
-          console.log('rendered...')
 
-        // html2canvas(element, {
-          //  useCORS: true,
-          //  onrendered: function(canvas) {
-            //  var dataUrl= canvas.toDataURL("image/png");
-            //
-            //  pdf.addImage(dataUrl, 'JPEG', left_margin, content_margin-5, mapImgWidth, mapImgHeight);
-            //  pdf.text(left_margin, content_margin+mapImgHeight+20,'Trip Time: '+global_pdf.trip_time+" minutes"); //final row
-            //
-            //  pdf.setFontType("bold");
-            //  pdf.text(left_margin+80, content_margin+mapImgHeight+20,'Trip Distance: '+global_pdf.trip_dist+" miles"); //final row
-            //  pdf.setFontType("normal");
-            // pdf.output('datauri');
-            //  pdf.addPage();
-            //  page_count = page_count + 1;
-
-            //  addTaskContents();
-          //  }
-      //  });
       }
       addGoogleMapImage();
 
       function addTaskContents(){
+        pdf.addPage();
         addHeader();
         addFooter();
         pdf.setFontType("normal");
@@ -178,16 +132,16 @@ $(document).ready(function() {
           pdf.rect(left_margin, content_margin-3, 5, 5); // empty checkbox
           //X value (from left), Y value (from top), content
           pdf.text(inner_margin_A,content_margin,''+(i+1)+'. '+tasklist[i].folder_num); //row 1
-          pdf.text(inner_margin_A+50,content_margin,''+tasklist[i].folder); //row 1
+          pdf.text(inner_margin_A+60,content_margin,''+tasklist[i].folder); //row 1
           // pdf.text(inner_margin_A+150,content_margin,'  <Notes>'); //row 1
 
           pdf.text(inner_margin_A,content_margin+5,''+tasklist[i].people); //row 2
 
           pdf.text(inner_margin_A,content_margin+10,'FP: '+tasklist[i].fp); //row 2
-          pdf.text(inner_margin_A+50,content_margin+10,'PP: '+tasklist[i].pp); //row 2
+          pdf.text(inner_margin_A+60,content_margin+10,'PP: '+tasklist[i].pp); //row 2
 
           pdf.text(inner_margin_A,content_margin+15,'Time: '+tasklist[i].leg_time+''); //row 3
-          pdf.text(inner_margin_A+50,content_margin+15,'Distance: '+tasklist[i].leg_dist+ ''); //row 3
+          pdf.text(inner_margin_A+60,content_margin+15,'Distance: '+tasklist[i].leg_dist+ ''); //row 3
 
           //if we are on the last leg, add the trip total distance,
           if (i == global_pdf.tasks.length-1){

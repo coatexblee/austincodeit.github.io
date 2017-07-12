@@ -1,37 +1,10 @@
 var global_pdf = {};
 var global_func = {};
 var activeElement;
-// global_pdf = {
-//   datestamp:'2',
-//   timestamp:'2',
-//   start:'2',
-//   end:'2',
-//   name:'2',
-//   time:'2',
-//   route_stops:[{lat:1,lng:1},{lat:1,lng:1}],
-//   rout_path:
-//   tasks:[{
-//     folder:'1',
-//     folder_num:'1',
-//     people:'1',
-//     fp:'1',
-//     pp:'1',
-//     leg_time:'1',
-//     leg_dist:'1'
-//   },{  folder:'1',  folder_num:'1',  people:'1',  fp:'1',  pp:'1',  leg_time:'1',  leg_dist:'1'},
-//   {  folder:'1',  folder_num:'1',  people:'1',  fp:'1',  pp:'1',  leg_time:'1',  leg_dist:'1'},
-//   {  folder:'1',  folder_num:'1',  people:'1',  fp:'1',  pp:'1',  leg_time:'1',  leg_dist:'1'},
-//   {  folder:'1',  folder_num:'1',  people:'1',  fp:'1',  pp:'1',  leg_time:'1',  leg_dist:'1'},
-//   {  folder:'1',  folder_num:'1',  people:'1',  fp:'1',  pp:'1',  leg_time:'1',  leg_dist:'1'},
-//   {  folder:'1',  folder_num:'1',  people:'1',  fp:'1',  pp:'1',  leg_time:'1',  leg_dist:'1'},
-//   {  folder:'1',  folder_num:'1',  people:'1',  fp:'1',  pp:'1',  leg_time:'1',  leg_dist:'1'}
-// ],
-//   trip_dist:'2',
-//   trip_time:'4'
-// };
+
 ////to do
 // update directions display on "Directions change" update
-//create larger map for printing...
+
 $(document).ready(function() {
   var map,
     directionsService,
@@ -54,9 +27,6 @@ $(document).ready(function() {
     directionsDisplay = new google.maps.DirectionsRenderer({
       draggable: true
     });
-    directionsDisplay.addListener('directions_changed', function() {
-      //need to update time and distance.... console.log('now hwat?')
-    });
     var myLatlng = new google.maps.LatLng(30.3344316, -97.6791038);
 
     var mapOptions = {
@@ -71,6 +41,10 @@ $(document).ready(function() {
       var center = map.getCenter();
       google.maps.event.trigger(map, "resize");
       map.setCenter(center);
+    });
+    //listener for anytime the markers or path is moved to update the display
+    directionsDisplay.addListener('directions_changed', function() {
+      //need to update time and distance.... console.log('now hwat?')
     });
     //click listener for adding points or doing any other action
     // google.maps.event.addListener(map, 'click', function(event) {
@@ -131,9 +105,12 @@ $(document).ready(function() {
     }, function(results, status) {
       if (status == google.maps.GeocoderStatus.OK) {
         addMarker(results[0].geometry.location, popUpText, sort);
+        return true;
       } else {
-        alert('Geocode was not successful for the following reason: ' + status);
-        //should not add new row or marker.... needs fixin
+        alert('Geocode was not successful for the following reason: ' + status +'\nPlease manually enter the address.');
+        // console.log(activeElement);
+          $(activeElement).parent().remove();
+          global_func.adjustRowCount();
       }
     });
   }
@@ -226,7 +203,10 @@ $(document).ready(function() {
       peopleArray.push($(this).children("td").eq(8).text().trim());
       fpArray.push($(this).children("td").eq(4).text().trim());
       ppArray.push($(this).children("td").eq(5).text().trim());
-      global_pdf.route_stops.push((latLngObj));
+      console.log('calculating route...');
+      console.log($(this).children("td#location").text().trim());
+      console.log(latLngObj);
+      global_pdf.route_stops.push(latLngObj);
 
 
       //if it's #1 it's start location, if it's last it's finish, else it's waypoint
@@ -251,7 +231,7 @@ $(document).ready(function() {
       origin: start, //document.getElementById('start').value,
       destination: finish, //document.getElementById('end').value,
       waypoints: waypts,
-      optimizeWaypoints: true,
+      // optimizeWaypoints: true, //uncomment and it will make the best route for you....
       drivingOptions: {
         departureTime: new Date(Date.now()+1000),
         trafficModel: 'bestguess'
@@ -303,8 +283,8 @@ $(document).ready(function() {
 
         }
         //update global pdf
-        global_pdf.trip_dist = ""+distanceCalc;
-        global_pdf.trip_time = ""+timeCalc;
+        global_pdf.trip_dist = ""+distanceCalc.toPrecision(2);
+        global_pdf.trip_time = ""+timeCalc.toPrecision(2);
         summaryPanel.innerHTML += '<b>Trip Time:</b> '+ timeCalc.toPrecision(2)+' mins | <b>Trip Distance:</b> '+ distanceCalc.toPrecision(2)+' mi';
         global_pdf.map_center = String(map.getCenter().toUrlValue());
         global_pdf.map_zoom = String(map.getZoom()-1);
@@ -422,6 +402,7 @@ $(document).ready(function() {
         //if it already has a button skip, we can skip
         updateMarkerOrder(map);
       } else {
+
         $(el).children("td.first").prepend('' + '<span id="count"></span>' +
           '<button type="button" class="btn btn-sm btn-default removeAddress">' +
           '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>' +
@@ -446,7 +427,7 @@ $(document).ready(function() {
         global_func.placeAddressOnMap(newAddress, popUpText, sort);
       }
 
-      // var rowIndex = $(this).parents("tr:first")[0].rowIndex;
+      // both of these functions will need to be run either way
       global_func.validateRemoveButton();
       global_func.adjustRowCount();
 
@@ -483,7 +464,7 @@ $(document).ready(function() {
   $(document).keypress(function(e) {
     //if user presses enter while focused on input field
     if (e.which == 13 && $("#addressInput:focus").val()) {
-      //if input value has contents greater than 5
+      //if input value has contents greater than 5, check address
       if ($("#addressInput:focus").val().length >= 5) {
         //trigger addNewAddress click event
         $("#addNewAddress").trigger("click");
@@ -514,6 +495,7 @@ $(document).ready(function() {
     addressMarkerArray = [];
     iconCount = 0;
 		$(".header-row th").removeClass("headerSortUp");	$(".header-row th").removeClass("headerSortDown");
+    initialize();
   });
 
   //when the webpage loads, run these functions:
