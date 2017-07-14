@@ -153,4 +153,7 @@ $(document).ready(function() {
     });
   };
 
+  global_pdf.name = ''; //update global pdf object
+  global_pdf.datestamp = dateFormatting(Date.now()); //set date to now
+  global_pdf.timestamp = new Date().toLocaleTimeString(); //set time to now
 });

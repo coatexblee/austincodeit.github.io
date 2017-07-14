@@ -40,7 +40,6 @@ ul#dropdownChoice{
 #app-actions{
   margin-top: 15px;
   margin-bottom: 50px;
-  display: none;
 }
 #map{
     height: 400px;
@@ -147,7 +146,8 @@ ul#dropdownChoice{
   padding-left: 20px;
 }
 
-button#createRoute[disabled]{
+button#createRoute[disabled],
+button#createPDF[disabled]{
   opacity: 1;
 }
 
@@ -181,10 +181,12 @@ button#createRoute[disabled]{
 
 /* animation section for loading map results */
 #loading-overlay {
+    display: none;
     height: 100%;
     width: 100%;
-    position: absolute;
-    background: #cccccc;
+    position: fixed;
+    top:0;
+    background-color: #4EBA6F;
     z-index: 1000;
     opacity: 0.85;
     color: #fff;
@@ -193,14 +195,11 @@ button#createRoute[disabled]{
     padding: 0;
     font-size: 34px;
 }
-
 .loaders {
   height: 100%;
   line-height: 300px;
-  background-color: #4EBA6F;
   padding-top: 75px;
 }
-
 .loader {
   display: inline-block;
   position: relative;
@@ -208,14 +207,32 @@ button#createRoute[disabled]{
   height: 50px;
   vertical-align: middle;
 }
-
+#loading-route-overlay {
+    /*display: none;*/
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    background: #dddddd;
+    z-index: 1000;
+    opacity: 0.85;
+    color: #777777;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    font-size: 34px;
+}
 /*	$Loader Quadrant
 	========================================================================== */
 .loader-quart {
   border-radius: 50px;
   border: 6px solid rgba(255, 255, 255, 0.4);
 }
-.loader-quart:after {
+.loader-route-quart {
+  border-radius: 50px;
+  border: 6px solid #888888;
+}
+.loader-quart:after,
+.loader-route-quart:after {
   content: '';
   position: absolute;
   top: -6px;
@@ -229,6 +246,40 @@ button#createRoute[disabled]{
   animation: spin 1s linear infinite;
 }
 
+.btn .tooltiptext {
+    visibility: hidden;
+    width: 290px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -145px;
+    margin-bottom: 3px;
+    /* Fade in tooltip - takes 1 second to go from 0% to 100% opac: */
+    opacity: 0;
+    transition: opacity 1s;
+}
+
+.btn:disabled:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+.btn .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: black transparent transparent transparent;
+}
+/* animation */
 @-webkit-keyframes spin {
   0% {
     -webkit-transform: rotate(0deg);
@@ -302,7 +353,7 @@ background-color: #b6ac9b;
     padding-right: 15px;
   }
   #mobileFunc{
-    display: block;
+    display: table-cell;
   }
   div#mapResults div#app-actions a#mobileApp.btn,
   div#mapResults div#app-actions button#createPDF.btn,

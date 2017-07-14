@@ -179,7 +179,7 @@ $(document).ready(function() {
   //a function to return the direction services api with a route to the map
   let calculateAndDisplayRoute = function() {
     //1. show actionable buttons
-    $("#app-actions").show();
+    // $("#app-actions").show();
     //clear existing points
     updateMarkerOrder(null);
     addressMarkerArray = [];
@@ -291,7 +291,7 @@ $(document).ready(function() {
         global_pdf.trip_time = "" + timeCalc.toPrecision(2);
         summaryPanel.innerHTML += '<b>Trip Time:</b> ' + timeCalc.toPrecision(2) + ' mins | <b>Trip Distance:</b> ' + distanceCalc.toPrecision(2) + ' mi';
         global_pdf.map_center = String(map.getCenter().toUrlValue());
-        global_pdf.map_zoom = String(map.getZoom() - 1);
+        global_pdf.map_zoom = String(map.getZoom());
         // console.log(global_pdf);
       } else if (status === 'MAX_WAYPOINTS_EXCEEDED'){
         window.alert('Directions request failed due to ' + status + '\nThe limit is 22.');
@@ -306,6 +306,17 @@ $(document).ready(function() {
         window.alert('Directions request failed due to ' + status);
         summaryPanel.innerHTML = '';
       }
+      //remove animation
+      $("#loading-route-overlay").hide('slow', function(){ $("#loading-route-overlay").remove(); });
+      //make button active
+      $("#createPDF").prop('disabled', false);
+      $("#createPDF").addClass('btn-primary');
+      $("#createPDF").removeClass('btn-default');
+      //setup mobile activity as well
+      $("#mobileApp").prop('disabled', false);
+      $("#mobileApp").addClass('btn-primary');
+      $("#mobileApp").removeClass('btn-default');
+
     });
 
   }
@@ -486,7 +497,12 @@ $(document).ready(function() {
   });
   //user clicked the create route button
   $("#createRoute").on('click', function() {
-    $("#loading-overlay").fadeIn("fast");
+    //add loading animation
+    $("#map").prepend('<div id="loading-route-overlay">'+
+      '<section class="loaders">'+
+        '<span class="loader loader-route-quart"> </span> Generating Route...'+
+      '</section>'+
+     '</div>');
     calculateAndDisplayRoute();
   });
   //user clicked the rest button, so we start over
@@ -503,7 +519,15 @@ $(document).ready(function() {
     //remove markers from map
     updateMarkerOrder(null);
     directionsDisplay.setMap(null);
-    $("#app-actions").hide();
+    //reset button actions
+    $("#createPDF").prop('disabled', true);
+    $("#createPDF").removeClass('btn-primary');
+    $("#createPDF").addClass('btn-default');
+    //reset mobile activity as well
+    $("#mobileApp").prop('disabled', true);
+    $("#mobileApp").removeClass('btn-primary');
+    $("#mobileApp").addClass('btn-default');
+
     addressMarkerArray = [];
     iconCount = 0;
     $(".header-row th").removeClass("headerSortUp");

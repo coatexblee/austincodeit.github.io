@@ -1,5 +1,6 @@
 $(document).ready(function() {
   let createFinalPDF = function() {
+    console.log(global_pdf);
     let $directionsText = $('#directions-panel')[0];
     let pdfOptions = {
       orientation: "portrait", // One of "portrait" or "landscape" (or shortcuts "p" (Default), "l")
@@ -10,6 +11,7 @@ $(document).ready(function() {
     let pdf = new jsPDF(pdfOptions);
     /*formatting*/
     pdf.setFont("helvetica");
+    pdf.setTextColor(0, 0, 0);
     pdf.setLineWidth(0.5);
     let left_margin = 16;
     let page_height = 280;
@@ -20,7 +22,7 @@ $(document).ready(function() {
 
     /* utility functions */
     let getRightMargin = function(obj) { //this function is to adjust width based on obj length
-      return page_width - (obj.length * 2) - 1;
+      return page_width - (obj.length * 2);
     }
     /* this function will create an encoded string to add the markers to google's static image api */
     let createMarkerArray = function(markerArray) {
@@ -60,6 +62,7 @@ $(document).ready(function() {
       //code logo from url file
       //url, type, x, y, imageHeight, imageWidth
       pdf.addImage(codeImgURL, 'JPEG', page_width / 2, 5, 18, 18);
+      addFooter(); //add footer
     }
 
     /* setting up the footer */
@@ -71,6 +74,9 @@ $(document).ready(function() {
       let footerHeight = page_height - 18;
       pdf.text(footerMargin, footerHeight, footerText); //add footer text
       pdf.text(page_width, footerHeight, String(page_count)); //add page number
+      pdf.setFontType("normal");
+      pdf.setFontSize(10);
+      pdf.setTextColor(0, 0, 0);
     }
 
 
@@ -125,10 +131,6 @@ $(document).ready(function() {
     function addTaskContents() {
       pdf.addPage();
       addHeader();
-      addFooter();
-      pdf.setFontType("normal");
-      pdf.setFontSize(10);
-      pdf.setTextColor(0, 0, 0);
       /* setting up task contents*/
       let tasklist = global_pdf.tasks;
       let inner_margin_A = left_margin + 20;
@@ -147,9 +149,14 @@ $(document).ready(function() {
         pdf.text(inner_margin_A, content_margin + 5, '' + tasklist[i].people); //row 2
         pdf.text(inner_margin_A, content_margin + 10, 'FP: ' + tasklist[i].fp); //row 2
         pdf.text(inner_margin_A + 60, content_margin + 10, 'PP: ' + tasklist[i].pp); //row 2
-
+        // if(i ==0){
+        //   pdf.text(inner_margin_A, content_margin + 15, 'Time: ' + tasklist[i].leg_time + ''); //row 3
+        //   pdf.text(inner_margin_A + 60, content_margin + 15, 'Distance: ' + tasklist[i].leg_dist + ''); //row 3
+        //
+        // } else {
         pdf.text(inner_margin_A, content_margin + 15, 'Time: ' + tasklist[i].leg_time + ''); //row 3
         pdf.text(inner_margin_A + 60, content_margin + 15, 'Distance: ' + tasklist[i].leg_dist + ''); //row 3
+        // }
 
         //if we are on the last leg, add the trip total distance,
         if (i == global_pdf.tasks.length - 1) {
@@ -172,17 +179,18 @@ $(document).ready(function() {
 
       }
 
+      $("#loading-overlay").fadeOut("slow");
       pdf.output('datauri'); //end of script
     }
 
-    addHeader(); //add header
-    addFooter(); //add footer
+    addHeader(); //add header w footer inside function
     addGoogleMapImage(); //we will add the map first, then add the task contents to complete the function
   } //end of createPDF function
 
 
   $("#createPDF").on('click', function() {
     console.log('printing....');
+    $("#loading-overlay").fadeIn("slow");
     createFinalPDF();
   });
 
