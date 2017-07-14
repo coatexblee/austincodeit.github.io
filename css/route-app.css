@@ -355,7 +355,7 @@ background-color: #b6ac9b;
   #mobileFunc{
     display: table-cell;
   }
-  div#mapResults div#app-actions a#mobileApp.btn,
+  div#mapResults div#app-actions button#mobileApp.btn,
   div#mapResults div#app-actions button#createPDF.btn,
   div#taskListOptions div#app-controls button.btn
   {
