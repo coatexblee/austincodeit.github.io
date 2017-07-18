@@ -178,9 +178,12 @@ $(document).ready(function() {
         }
 
       }
-
-      $("#loading-overlay").fadeOut("slow");
-      pdf.output('datauri'); //end of script
+      function callback(){
+        alert("done!");
+      }
+      // $("#loading-overlay").fadeOut("slow");
+      //pdf.outout( type, options, callback )
+      pdf.output('datauri', { } , callback); //end of script
     }
 
     addHeader(); //add header w footer inside function

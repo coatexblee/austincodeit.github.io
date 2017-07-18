@@ -4,7 +4,7 @@ filesToMinify = ['str-app','rop-app','route-app','custom-script','load-task-list
 
 for filename in filesToMinify:
 	newName = filename+'.min.js'
-	print newName
+	print newName+" minified..."
 	with open(filename+'.js') as js_file:
 		f = open(newName,"w+")
 		minified = jsmin(js_file.read())

@@ -186,10 +186,10 @@ button#createPDF[disabled]{
     width: 100%;
     position: fixed;
     top:0;
-    background-color: #4EBA6F;
+    background: #dddddd;
     z-index: 1000;
     opacity: 0.85;
-    color: #fff;
+    color: #777777;
     text-align: center;
     margin: 0;
     padding: 0;
