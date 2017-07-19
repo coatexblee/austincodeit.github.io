@@ -46,7 +46,7 @@ $(document).ready(function() {
     //listener for anytime the markers or path is moved to update the display
     directionsDisplay.addListener('directions_changed', function() {
       //need to update time and distance....
-      console.log('now hwat?');
+      // console.log('now hwat?');
     });
     //click listener for adding points or doing any other action
     // google.maps.event.addListener(map, 'click', function(event) {
@@ -209,9 +209,9 @@ $(document).ready(function() {
       peopleArray.push($(this).children("td").eq(8).text().trim());
       fpArray.push($(this).children("td").eq(4).text().trim());
       ppArray.push($(this).children("td").eq(5).text().trim());
-      console.log('calculating route...');
-      console.log($(this).children("td#location").text().trim());
-      console.log(latLngObj);
+      // console.log('calculating route...');
+      // console.log($(this).children("td#location").text().trim());
+      // console.log(latLngObj);
       global_pdf.route_stops.push(latLngObj);
 
 
@@ -247,7 +247,7 @@ $(document).ready(function() {
       if (status === 'OK') {
         //if we get an OK response, add the directions, and show the appropriate elements
         // console.log('driving directions complete!!!!')
-        console.log(response);
+        // console.log(response);
         directionsDisplay.setDirections(response);
 
         let route = response.routes[0];

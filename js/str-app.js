@@ -156,9 +156,11 @@ $(document).ready(function(){
 		}); //end of ajax request
 
 		var initialize = function() {
-			if (google == null){
+			if (typeof google !== 'object') {
 	      //if google is undefined loop back until it is loaded...
-	      initialize();
+	      setTimeout(function() {
+	        initialize();
+	      }, 1000)
 	    }
 	    var myLatlng = new google.maps.LatLng(30.2764099,-97.7507724);
 	    var mapOptions = {
