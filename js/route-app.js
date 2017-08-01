@@ -12,8 +12,13 @@ $(document).ready(function() {
     directionsDisplay,
     geocoder,
     addressMarkerArray = [],
-    iconCount = 0;
+    iconCount = 0,
+    timeOfDeparture;
   let labels = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+  //custom maps section
+  let snazzySyle = [{"stylers":[{"saturation":-100},{"gamma":1}]},{"elementType":"labels.text.stroke","stylers":[{"visibility":"off"}]},{"featureType":"poi.business","elementType":"labels.text","stylers":[{"visibility":"off"}]},{"featureType":"poi.business","elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"poi.place_of_worship","elementType":"labels.text","stylers":[{"visibility":"off"}]},{"featureType":"poi.place_of_worship","elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"road","elementType":"geometry","stylers":[{"visibility":"simplified"}]},{"featureType":"water","stylers":[{"visibility":"on"},{"saturation":50},{"gamma":0},{"hue":"#50a5d1"}]},{"featureType":"administrative.neighborhood","elementType":"labels.text.fill","stylers":[{"color":"#333333"}]},{"featureType":"road.local","elementType":"labels.text","stylers":[{"weight":0.5},{"color":"#333333"}]},{"featureType":"transit.station","elementType":"labels.icon","stylers":[{"gamma":1},{"saturation":50}]}];
+  let nightStyle = [{elementType:"geometry",stylers:[{color:"#242f3e"}]},{elementType:"labels.text.fill",stylers:[{color:"#746855"}]},{elementType:"labels.text.stroke",stylers:[{color:"#242f3e"}]},{featureType:"administrative.locality",elementType:"labels.text.fill",stylers:[{color:"#d59563"}]},{featureType:"poi",elementType:"labels.text.fill",stylers:[{color:"#d59563"}]},{featureType:"poi.park",elementType:"geometry",stylers:[{color:"#263c3f"}]},{featureType:"poi.park",elementType:"labels.text.fill",stylers:[{color:"#6b9a76"}]},{featureType:"road",elementType:"geometry",stylers:[{color:"#38414e"}]},{featureType:"road",elementType:"geometry.stroke",stylers:[{color:"#212a37"}]},{featureType:"road",elementType:"labels.text.fill",stylers:[{color:"#9ca5b3"}]},{featureType:"road.highway",elementType:"geometry",stylers:[{color:"#746855"}]},{featureType:"road.highway",elementType:"geometry.stroke",stylers:[{color:"#1f2835"}]},{featureType:"road.highway",elementType:"labels.text.fill",stylers:[{color:"#f3d19c"}]},{featureType:"transit",elementType:"geometry",stylers:[{color:"#2f3948"}]},{featureType:"transit.station",elementType:"labels.text.fill",stylers:[{color:"#d59563"}]},{featureType:"water",elementType:"geometry",stylers:[{color:"#17263c"}]},{featureType:"water",elementType:"labels.text.fill",stylers:[{color:"#515c6d"}]},{featureType:"water",elementType:"labels.text.stroke",stylers:[{color:"#17263c"}]}];
 
   //initialize function for google maps
   let initialize = function() {
@@ -23,20 +28,25 @@ $(document).ready(function() {
         initialize();
       }, 1000)
     }
-    geocoder = new google.maps.Geocoder();
-    directionsService = new google.maps.DirectionsService;
-    directionsDisplay = new google.maps.DirectionsRenderer({
-      draggable: false //will provide 'true' option in future
-    });
+
     let myLatlng = new google.maps.LatLng(30.3344316, -97.6791038);
 
     let mapOptions = {
       zoom: 14,
       center: myLatlng,
-      mapTypeId: google.maps.MapTypeId.ROADMAP
+      mapTypeControlOptions: {
+            mapTypeIds: ['roadmap', 'satellite', 'style_a', 'style_b']
+          }
+      // styles: snazzySyle
+      // mapTypeId: google.maps.MapTypeId.ROADMAP
     }
     map = new google.maps.Map(document.getElementById('map'), mapOptions);
-
+    geocoder = new google.maps.Geocoder();
+    directionsService = new google.maps.DirectionsService;
+    directionsDisplay = new google.maps.DirectionsRenderer({
+      draggable: true, //will provide 'true' option in future,
+      map: map
+    });
     //Resize Function
     google.maps.event.addDomListener(window, "resize", function() {
       let center = map.getCenter();
@@ -46,7 +56,8 @@ $(document).ready(function() {
     //listener for anytime the markers or path is moved to update the display
     directionsDisplay.addListener('directions_changed', function() {
       //need to update time and distance....
-      // console.log('now hwat?');
+      console.log('directionschanged....');
+      timeOfDeparture = new Date(Date.now() + 1000);
     });
     //click listener for adding points or doing any other action
     // google.maps.event.addListener(map, 'click', function(event) {
@@ -54,6 +65,13 @@ $(document).ready(function() {
     // });
     // console.log(global_pdf);
 
+    let mapStyle1 = new google.maps.StyledMapType(snazzySyle,{name: 'Grey Scale'});
+    let mapStyle2 = new google.maps.StyledMapType(nightStyle,{name: 'Night Mode'});
+    //Associate the styled map with the MapTypeId and set it to display.
+    map.mapTypes.set('style_a', mapStyle1);
+    map.mapTypes.set('style_b', mapStyle2);
+    map.setMapTypeId('style_a');
+    // map.setMapTypeId('style_b');
   }
 
   //function for adding the marker
@@ -80,7 +98,7 @@ $(document).ready(function() {
       position: location,
       label: labelObject,
       map: map,
-      draggable: false
+      draggable: true //set to false to make items not dragganble
     })
     let infowindow = new google.maps.InfoWindow({
       content: popUpText
@@ -232,6 +250,7 @@ $(document).ready(function() {
     global_pdf.start = locationArray[0];
     global_pdf.end = locationArray[locationArray.length - 1];
     global_pdf.tasks = [];
+    timeOfDeparture = new Date(Date.now() + 1000);
     //google's direction service
     directionsService.route({
       origin: start, //document.getElementById('start').value,
@@ -239,14 +258,14 @@ $(document).ready(function() {
       waypoints: waypts,
       // optimizeWaypoints: true, //uncomment and it will make the best route for you....
       drivingOptions: {
-        departureTime: new Date(Date.now() + 1000),
+        departureTime: timeOfDeparture,
         trafficModel: 'bestguess'
       },
       travelMode: 'DRIVING'
     }, function(response, status) {
       if (status === 'OK') {
         //if we get an OK response, add the directions, and show the appropriate elements
-        // console.log('driving directions complete!!!!')
+        console.log('driving directions updated')
         // console.log(response);
         directionsDisplay.setDirections(response);
 
