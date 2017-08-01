@@ -1,6 +1,6 @@
 $(document).ready(function() {
   let createFinalPDF = function() {
-    console.log(global_pdf);
+    // console.log(global_pdf);
     let $directionsText = $('#directions-panel')[0];
     let pdfOptions = {
       orientation: "portrait", // One of "portrait" or "landscape" (or shortcuts "p" (Default), "l")

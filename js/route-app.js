@@ -55,9 +55,12 @@ $(document).ready(function() {
     });
     //listener for anytime the markers or path is moved to update the display
     directionsDisplay.addListener('directions_changed', function() {
-      //need to update time and distance....
-      console.log('directionschanged....');
-      timeOfDeparture = new Date(Date.now() + 1000);
+      // if this has already been run, skip
+      if (global_pdf.trip_dist){
+          //need to update time and distance...
+          timeOfDeparture = new Date(Date.now() + 1000);
+          updateDirectionsDisplay(directionsDisplay.getDirections());
+      }
     });
     //click listener for adding points or doing any other action
     // google.maps.event.addListener(map, 'click', function(event) {
@@ -265,7 +268,7 @@ $(document).ready(function() {
     }, function(response, status) {
       if (status === 'OK') {
         //if we get an OK response, add the directions, and show the appropriate elements
-        console.log('driving directions updated')
+        console.log('driving directions updated....')
         // console.log(response);
         directionsDisplay.setDirections(response);
 
@@ -289,7 +292,7 @@ $(document).ready(function() {
             legDistance = route.legs[routeSegment].distance.text;
             legDuration = route.legs[routeSegment].duration.text;
             summaryPanel.innerHTML += '<b>#' + i + '. ' + locationArray[i] + ' | ' + caseArray[i] + '';
-            summaryPanel.innerHTML += '<span id="routeTripTime"><b>Est. Trip:</b> ' + legDuration + ' | <b>Distance:</b> ' + legDistance + '</span></b><br>';
+            summaryPanel.innerHTML += '<span id="routeTripTime" class="leg'+i+'"><b>Est. Trip:</b> ' + legDuration + ' | <b>Distance:</b> ' + legDistance + '</span></b><br>';
             summaryPanel.innerHTML += 'People: ' + peopleArray[i] + '<br><hr><br>';
           }
           //update global_pdf object for printing purposes
@@ -303,12 +306,11 @@ $(document).ready(function() {
             leg_time: legDuration
           });
 
-
         }
         //update global pdf
         global_pdf.trip_dist = "" + distanceCalc.toPrecision(2);
         global_pdf.trip_time = "" + timeCalc.toPrecision(2);
-        summaryPanel.innerHTML += '<b>Trip Time:</b> ' + timeCalc.toPrecision(2) + ' mins | <b>Trip Distance:</b> ' + distanceCalc.toPrecision(2) + ' mi';
+        summaryPanel.innerHTML += '<span id="finalRouteStats"><b>Trip Time:</b> ' + timeCalc.toPrecision(2) + ' mins | <b>Trip Distance:</b> ' + distanceCalc.toPrecision(2) + ' mi</span>';
         global_pdf.map_center = String(map.getCenter().toUrlValue());
         global_pdf.map_zoom = String(map.getZoom());
         // console.log(global_pdf);
@@ -340,6 +342,44 @@ $(document).ready(function() {
 
   }
 
+  let updateDirectionsDisplay = function(response){
+      console.log(response);
+      let summaryPanel = document.getElementById('directions-panel');
+
+      let route = response.routes[0];
+      global_pdf.route_path = response.routes[0].overview_polyline;
+      //
+      let timeCalc = 0, distanceCalc = 0;
+      // For each route, display summaryinformation.
+      for (let i = 0; i <= route.legs.length; i++) {
+        let routeSegment = i - 1;
+        let legDistance, legDuration;
+        if (i == 0) {
+          legDistance = 0;
+          legDuration = 0;
+        } else {
+          //convert text into numbers so we can add stuff
+          timeCalc += Number(route.legs[routeSegment].duration.text.replace(/[a-z]+/g, '').trim());
+          distanceCalc += Number(route.legs[routeSegment].distance.text.replace(/[a-z]+/g, '').trim());
+          legDistance = route.legs[routeSegment].distance.text;
+          legDuration = route.legs[routeSegment].duration.text;
+          //update the stats for this particular leg by using a unique ID
+          $(".leg"+i+"").html('<span id="routeTripTime"><b>Est. Trip:</b> ' + legDuration + ' | <b>Distance:</b> ' + legDistance + '</span></b><br>');
+          console.log('new leg??? '+legDuration);
+        }
+        //update global_pdf object for printing purposes
+        global_pdf.tasks[i].leg_dist = legDistance;
+        global_pdf.tasks[i].leg_time = legDuration;
+
+      }
+
+        //update global pdf
+        global_pdf.trip_dist = "" + distanceCalc.toPrecision(2);
+        global_pdf.trip_time = "" + timeCalc.toPrecision(2);
+        $("#finalRouteStats").html('<span id="finalRouteStats"><b>Trip Time:</b> ' + timeCalc.toPrecision(2) + ' mins | <b>Trip Distance:</b> ' + distanceCalc.toPrecision(2) + ' mi</span>');
+        global_pdf.map_center = String(map.getCenter().toUrlValue());
+        global_pdf.map_zoom = String(map.getZoom());
+  }
 
 
   //function to ensure the remove button works after being moved in DOM
