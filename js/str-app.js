@@ -121,21 +121,21 @@ $(document).ready(function(){
 
 			/* Google Map SECTION!!!*/
 			//1. clean addresses
-			console.log('1');
+			// console.log('1');
 			let addressCleaned = addressKeys.map(function(elem){
 				return elem.substring(9,elem.length).trim() + ", Austin, TX";
 			});
 
-			console.log('starting');
+			// console.log('starting');
 			let i = 0; let secondTry = []; let secondTryKeys = [];
 			function addressLoop(){
 				geocoder.geocode({
 					'address': addressCleaned[i]
 				}, function(results, status) {
-						console.log(addressCleaned[i]);
+						// console.log(addressCleaned[i]);
 						if (status == google.maps.GeocoderStatus.OK) {
 							//if we get a response, map the address
-							console.log(addressCleaned[i]+" "+addressKeys[i]);
+							// console.log(addressCleaned[i]+" "+addressKeys[i]);
 							addMarker(results[0].geometry.location, addressKeys[i]);
 							if (i < addressCleaned.length){
 					    	setTimeout(addressLoop, 500);
@@ -143,11 +143,11 @@ $(document).ready(function(){
 							}
 						} else if (status == google.maps.GeocoderStatus.OVER_QUERY_LIMIT){
 							//over the limit, so we wait and try again in 2.5 seconds...
-								console.log('pause.... at '+i+' position...');
+								// console.log('pause.... at '+i+' position...');
 								// console.log(addressCleaned[i]);
 								setTimeout(addressLoop, 2500);
 						} else {
-							console.log('err');
+							// console.log('err');
 						}
 				});
 		 	}
