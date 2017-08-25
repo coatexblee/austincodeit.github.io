@@ -6,12 +6,12 @@
 $(document).ready(function() {
   'use strict';
 
-	var dateString = "May 2017";
+	const DATE_STRING = "May 2017";
 
 	console.log("hi! welcome to austin code's github!!!");
 	$("#footnoteInsert").html(''+
       '<span class="label label-default">Last Update: '+
-        '<span id="dateString">'+dateString+'</span>'+
+        '<span id="dateString">'+DATE_STRING+'</span>'+
       '</span>');
 
   $("#navbarInsert").html('<div class="container">'+

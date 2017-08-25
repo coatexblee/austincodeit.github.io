@@ -12,10 +12,10 @@ $(document).ready(function(){
 		}).done(function(data) {
 
 			//prep dataset by sorting & counting data incidents
-			var sortedData = _.sortBy(data, 'activitydate');
+			let sortedData = _.sortBy(data, 'activitydate');
 			// console.log(sortedData);
-			var counts = _.countBy(sortedData,'activitydate');
-			var uniqueProp = _(data).chain().flatten().pluck('registeredaddress').unique().value();
+			let counts = _.countBy(sortedData,'activitydate');
+			let uniqueProp = _(data).chain().flatten().pluck('registeredaddress').unique().value();
 
 			//1 get total count add add it to the dash-total panel
 			$("#full-count").html(data.length);

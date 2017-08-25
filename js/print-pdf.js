@@ -14,15 +14,15 @@ $(document).ready(function() {
     pdf.setTextColor(0, 0, 0);
     pdf.setLineWidth(0.5);
     let left_margin = 16;
-    let page_height = 280;
-    let page_width = 200;
+    const PAGE_HEIGHT = 280;
+    const PAGE_WIDTH = 200;
     let content_margin = 40;
     let page_count = 1;
     let labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
     /* utility functions */
     let getRightMargin = function(obj) { //this function is to adjust width based on obj length
-      return page_width - (obj.length * 2);
+      return PAGE_WIDTH - (obj.length * 2);
     }
     /* this function will create an encoded string to add the markers to google's static image api */
     let createMarkerArray = function(markerArray) {
@@ -41,11 +41,11 @@ $(document).ready(function() {
       if (lineType == "thin"){
         pdf.setLineWidth(0.25);
         pdf.setDrawColor(200, 200, 200); //add grey dividing line
-        pdf.line(left_margin, yValue, page_width, yValue); // horizontal line
+        pdf.line(left_margin, yValue, PAGE_WIDTH, yValue); // horizontal line
       } else {
         pdf.setLineWidth(0.5);
         pdf.setDrawColor(15, 15, 15); //darker color for box
-        pdf.line(left_margin, yValue, page_width, yValue);
+        pdf.line(left_margin, yValue, PAGE_WIDTH, yValue);
       }
     }
 
@@ -61,7 +61,7 @@ $(document).ready(function() {
       addLine("header", 30);
       //code logo from url file
       //url, type, x, y, imageHeight, imageWidth
-      pdf.addImage(codeImgURL, 'JPEG', page_width / 2, 5, 18, 18);
+      pdf.addImage(codeImgURL, 'JPEG', PAGE_WIDTH / 2, 5, 18, 18);
       addFooter(); //add footer
     }
 
@@ -70,10 +70,10 @@ $(document).ready(function() {
       pdf.setFontSize(8);
       pdf.setTextColor(70, 70, 70);
       let footerText = 'City of Austin | Open Data Portal | jsPDF | GitHub'
-      let footerMargin = page_width / 2 - 20;
-      let footerHeight = page_height - 18;
+      let footerMargin = PAGE_WIDTH / 2 - 20;
+      let footerHeight = PAGE_HEIGHT - 18;
       pdf.text(footerMargin, footerHeight, footerText); //add footer text
-      pdf.text(page_width, footerHeight, String(page_count)); //add page number
+      pdf.text(PAGE_WIDTH, footerHeight, String(page_count)); //add page number
       pdf.setFontType("normal");
       pdf.setFontSize(10);
       pdf.setTextColor(0, 0, 0);
@@ -96,7 +96,7 @@ $(document).ready(function() {
     let pdfImgHeight = mapHeight * (105 / mapHeight);
     // let mapImgWidth = 184;
     // let mapImgHeight = 105;
-    let picMarginX = 10 + page_width / 2;
+    let picMarginX = 10 + PAGE_WIDTH / 2;
     let picMarginY = content_margin - 10;
 
     // $(element).attr("src",google_1+google_2+google_3+google_4+google_5+google_6+"&maptype=roadmap"+google_k);
@@ -164,7 +164,7 @@ $(document).ready(function() {
           pdf.setFontType("bold");
           pdf.text(left_margin, content_margin, 'Trip Time: ' + global_pdf.trip_time + " minutes"); //final row
           pdf.text(left_margin + 80, content_margin, 'Trip Distance: ' + global_pdf.trip_dist + " miles"); //final row
-        } else if (content_margin >= page_height - 80) {
+        } else if (content_margin >= PAGE_HEIGHT - 80) {
           //check current page height, if we need to go to a new page do that,
           pdf.addPage();
           page_count = page_count + 1;

@@ -78,45 +78,45 @@ $(document).ready(function(){
 						name: ['Total Count'],
 						data: zipValues,
 						dataLabels: {
-	            enabled: true,
-	            // color: '#FFFFFF',
-	            align: 'right',
-	            // format: '{point.y:.1f}', // one decimal
-	            // y: 10, // 10 pixels down from the top
-	            style: {
-	                // fontSize: '10px',
-	                // fontFamily: 'Verdana, sans-serif'
-	            }
-	        }
+				            enabled: true,
+				            // color: '#FFFFFF',
+				            align: 'right',
+				            // format: '{point.y:.1f}', // one decimal
+				            // y: 10, // 10 pixels down from the top
+				            style: {
+				                // fontSize: '10px',
+				                // fontFamily: 'Verdana, sans-serif'
+				            }
+				        }
 				}]
 			}); //end of myChart
 
 
 			//2. get lat lngs from cleaned addresses
-			_api_key = 'AIzaSyBbnhwYIXT-MBTVIaDxS9kzbqIOmoeqcRU'
+			const API_KEY = 'AIzaSyBbnhwYIXT-MBTVIaDxS9kzbqIOmoeqcRU'
 			geocoder = new google.maps.Geocoder();
 
 			//function for adding the marker
 			function addMarker(location, popUpText) {
 
-				var cityCircle = new google.maps.Circle({
-            strokeColor: '#FF0000',
-            strokeOpacity: 0.8,
-            strokeWeight: 2,
-            fillColor: '#FF0000',
-            fillOpacity: 0.35,
-            map: map,
-            center: location,
-            radius: 200
-          });
-				var infoWindow = new google.maps.InfoWindow({
+				let cityCircle = new google.maps.Circle({
+		            strokeColor: '#FF0000',
+		            strokeOpacity: 0.8,
+		            strokeWeight: 2,
+		            fillColor: '#FF0000',
+		            fillOpacity: 0.35,
+		            map: map,
+		            center: location,
+		            radius: 200
+		          });
+				let infoWindow = new google.maps.InfoWindow({
 					content: popUpText
 				});
 
 				google.maps.event.addListener(cityCircle, 'click', function(ev) {
-            infoWindow.setPosition(ev.latLng);
-            infoWindow.open(map);
-        });
+		            infoWindow.setPosition(ev.latLng);
+		            infoWindow.open(map);
+		        });
 			}
 
 			/* Google Map SECTION!!!*/
@@ -155,28 +155,28 @@ $(document).ready(function(){
 
 		}); //end of ajax request
 
-		var initialize = function() {
+		let initialize = function() {
 			if (typeof google !== 'object') {
-	      //if google is undefined loop back until it is loaded...
-	      setTimeout(function() {
-	        initialize();
-	      }, 1000)
-	    }
-	    var myLatlng = new google.maps.LatLng(30.2764099,-97.7507724);
-	    var mapOptions = {
-	      zoom: 13,
-	      center: myLatlng,
-	      mapTypeId: google.maps.MapTypeId.ROADMAP
-	    }
-	    map = new google.maps.Map(document.getElementById('google-map'), mapOptions);
+		      //if google is undefined loop back until it is loaded...
+		      setTimeout(function() {
+		        initialize();
+		      }, 1000)
+		    }
+		    let myLatlng = new google.maps.LatLng(30.2764099,-97.7507724);
+		    let mapOptions = {
+		      zoom: 13,
+		      center: myLatlng,
+		      mapTypeId: google.maps.MapTypeId.ROADMAP
+		    }
+		    map = new google.maps.Map(document.getElementById('google-map'), mapOptions);
 
-	    //Resize Function
-	    google.maps.event.addDomListener(window, "resize", function() {
-	      var center = map.getCenter();
-	      google.maps.event.trigger(map, "resize");
-	      map.setCenter(center);
-	    });
-	  }
+		    //Resize Function
+		    google.maps.event.addDomListener(window, "resize", function() {
+		      var center = map.getCenter();
+		      google.maps.event.trigger(map, "resize");
+		      map.setCenter(center);
+		    });
+		}
 		initialize();
 
   });

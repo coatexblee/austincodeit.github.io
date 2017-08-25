@@ -11,7 +11,7 @@ $(document).ready(function(){
       let mobile_end = "";
       let midpoints = "";
       // console.log(destinations.length);
-      for (var i = 0; i < destinations.length; i++){
+      for (let i = 0; i < destinations.length; i++){
         // console.log(i)
         // console.log(destinations[i]);
         if (i == destinations.length - 1){
