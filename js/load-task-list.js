@@ -1,6 +1,6 @@
 $(document).ready(function() {
   /* at window open - a query is made to the open data portal.. */
-  let openDataLink = 'https://data.austintexas.gov/resource/x6vs-siqw.json';
+  let openDataLink = 'https://data.austintexas.gov/resource/ttd7-isgm.json';
   let openData;
   $.ajax({
     url: openDataLink,
