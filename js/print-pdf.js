@@ -100,7 +100,7 @@ $(document).ready(function() {
     let picMarginY = content_margin - 10;
 
     // $(element).attr("src",google_1+google_2+google_3+google_4+google_5+google_6+"&maptype=roadmap"+google_k);
-    console.log(google_1 + google_2 + google_3 + google_4 + google_5 + google_6 + "&maptype=roadmap" + google_k);
+    // console.log(google_1 + google_2 + google_3 + google_4 + google_5 + google_6 + "&maptype=roadmap" + google_k);
 
     function addGoogleMapImage() {
 

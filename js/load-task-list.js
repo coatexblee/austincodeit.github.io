@@ -1,13 +1,13 @@
 $(document).ready(function() {
   /* at window open - a query is made to the open data portal.. */
-  let openDataLink = 'https://data.austintexas.gov/resource/ttd7-isgm.json';
+  let openDataLink = 'https://data.austintexas.gov/resource/czdh-pagu.json';
   let openData;
   $.ajax({
     url: openDataLink,
     type: "GET",
     data: {
-      "$limit": 6000,
-      "$$app_token": "n89g7s9iUyusfWDEHDHMtGcVT"
+      "$limit": 7000,
+      "$$app_token": "AmHlGm0OHBl6r4hg0PLvAtJk7"
     }
   }).done(function(data) {
     //when the results are returned...
@@ -64,7 +64,7 @@ $(document).ready(function() {
 
       $("#availableAddressRows").append('<tr>' +
         '<td class="first">' + nullCheck(filteredData[i].type) + '</td>' +
-        '<td class="b">' + nullCheck(filteredData[i].subtype) + '</td>' +
+        // '<td class="b">' + nullCheck(filteredData[i].subtype) + '</td>' +
         '<td class="b">' + nullCheck(filteredData[i].foldernumber) + '</td>' +
         '<td class="c" id="location">' + nullCheck(filteredData[i].foldername) + '</td>' +
         '<td class="a">' + nullCheck(filteredData[i].priority1) + '</td>' +
