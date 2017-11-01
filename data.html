@@ -11,71 +11,79 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>Austin Code's GitHub</title>
-    <!-- old CSS
-	<link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen"
-	-->
-    <!-- Bootstrap core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap theme -->
-    <link href="css/bootstrap-theme.min.css" rel="stylesheet">
-    <!-- Custom styles for this template -->
-    <link href="css/custom-theme.css" rel="stylesheet">
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-	<script type="text/javascript" src="js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="js/custom-script.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css" />
+
   </head>
   <body>
-    <!-- Fixed navbar -->
-    <nav class="navbar navbar-inverse navbar-fixed-top">
+
       <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">Austin Code</a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="about.html">About</a></li>
-            <li><a href="projects.html">Projects</a></li>
-            <li><a href="districts.html">Districts</a></li>
-            <li class="active"><a href="#">Data</a></li>
-            <li><a href="open.html">Open Links</a></li>
-          </ul>
-        </div><!--/.nav-collapse -->
+          <input type="text" placeholder="address" />
+          <br />
+          Results below:
+          <div id="results1"> </div>
+          <div id="results2"> </div>
+          <div id="results3"> </div>
+          <div id="results4"> </div>
+          <div id="results5"> </div>
       </div>
-    </nav>
-	<div class="container col-lg-6 col-lg-offset-3 col-md-8 col-md-offset-2" role="main">
-
-		<div class="page-header">
-			<h1>Data</h1>
-		</div>
-		<h4>Resources</h4>
-		<ul>
-			<li>...</li>
-			<li>...</li>
-		</ul>
-		<h4>Repository Page</h4>
-		<ul>
-			<li>...</li>
-			<li>...</li>
-		</ul>
-
-
-		<br><br>
-		<div class="footnote">
-			<span class="label label-default">Last Update: <span id="dateString"></span></span>
-		</div>
-		<br><br>
-
-    </div> <!-- /container -->
-
   </body>
 </html>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js" type="text/javascript"></script>
+<script>
+
+    $(document).ready(function() {
+        /*
+            PROCESS FOR APPLICATION function
+            1. CREATE DROPDOWN
+            2. ON DROPDOWN SELECTION, SORT OPENDATA OBJECT BY NAME...
+                2A. CREATE ARRAY OF OBJECTS
+                2B. INCLUDE ADDRESS, PRIORITIES, DUE TO START, FOLDER NUMBER
+            3. SEND ARRAY TO GEOCODER USIGN MAP FUNCTION
+                3A. SELECT KEY AT RANDOM TO THROTTLE REQUEST
+                3B. CREATE 0.1 SECOND DELAY
+                3C. RETURN RESULTS with ERROR MSG STATIG HOW MANY WERE NOT CODED
+            4. SEND RESULTS TO MAP
+            5. CONFIGURE POPUPS
+            6. CREATE ADD TO QUEUE BUTTON
+            7. ENABLE RESET TO CLEAR MAP
+            8. CREATE VISUAL DISPLAY OF WHOSE TASK LIST IS BEING VISUALIZED
+
+        */
+
+        let key1 = 'AIzaSyBXAnW9slEyfpkJKdHxnz_29kF8pn14MA0';
+        let key2 = 'AIzaSyALPWxESCeijSKpKHoduW0htKA6w0KIJnc';
+        let key3 = 'AIzaSyBbnhwYIXT-MBTVIaDxS9kzbqIOmoeqcRU';
+        let key4 = 'AIzaSyCRQEeXDjgRjRX7HVyGFLDQXCzlrty1NxI';
+        let key5 = 'AIzaSyDgR0LEtKMow--eiBeyiCbypLhDMAKCE8E';
+        let key6 = 'AIzaSyC6ag7eWl7tjpaLo94L3w2LYZO41vklZC8';
+
+        let list = [
+            {add: '1200 w 40th st', key: key1}
+            // {add: '1300 w 40th st', key: key2},
+            // {add: '1400 w 40th st', key: key3},
+            // {add: '1500 w 40th st', key: key4},
+            // {add: '1600 w 40th st', key: key5},
+        ];
+        let count = 1;
+        list.map(function(elem, idx){
+            //construct link
+            let link = 'https://maps.googleapis.com/maps/api/geocode/json?address='+elem['add']+'+Austin,+TX'+'&key='+elem['key'];
+            console.log("LOOP: ", elem," ", idx);
+            $.ajax({
+              url: link,
+              type: "GET"
+            }).done(function(data) {
+              //when the results are returned...
+              //get inspector names by unique values
+
+              $("#results"+count+"").html(JSON.stringify(data));
+              count++;
+              console.log('done: ',count,data);
+            });
+        });
+
+
+    });
+
+</script>

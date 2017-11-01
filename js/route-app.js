@@ -16,7 +16,7 @@ $(document).ready(function() {
     timeOfDeparture;
   let labels = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
-  //this is a custom style you can get at snazzymaps.com really easy to create one and add it to your map. 
+  //this is a custom style you can get at snazzymaps.com really easy to create one and add it to your map.
   let snazzySyle = [{"stylers":[{"saturation":-100},{"gamma":1}]},{"elementType":"labels.text.stroke","stylers":[{"visibility":"off"}]},{"featureType":"poi.business","elementType":"labels.text","stylers":[{"visibility":"off"}]},{"featureType":"poi.business","elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"poi.place_of_worship","elementType":"labels.text","stylers":[{"visibility":"off"}]},{"featureType":"poi.place_of_worship","elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"road","elementType":"geometry","stylers":[{"visibility":"simplified"}]},{"featureType":"water","stylers":[{"visibility":"on"},{"saturation":50},{"gamma":0},{"hue":"#50a5d1"}]},{"featureType":"administrative.neighborhood","elementType":"labels.text.fill","stylers":[{"color":"#333333"}]},{"featureType":"road.local","elementType":"labels.text","stylers":[{"weight":0.5},{"color":"#333333"}]},{"featureType":"transit.station","elementType":"labels.icon","stylers":[{"gamma":1},{"saturation":50}]}];
   let nightStyle = [{elementType:"geometry",stylers:[{color:"#242f3e"}]},{elementType:"labels.text.fill",stylers:[{color:"#746855"}]},{elementType:"labels.text.stroke",stylers:[{color:"#242f3e"}]},{featureType:"administrative.locality",elementType:"labels.text.fill",stylers:[{color:"#d59563"}]},{featureType:"poi",elementType:"labels.text.fill",stylers:[{color:"#d59563"}]},{featureType:"poi.park",elementType:"geometry",stylers:[{color:"#263c3f"}]},{featureType:"poi.park",elementType:"labels.text.fill",stylers:[{color:"#6b9a76"}]},{featureType:"road",elementType:"geometry",stylers:[{color:"#38414e"}]},{featureType:"road",elementType:"geometry.stroke",stylers:[{color:"#212a37"}]},{featureType:"road",elementType:"labels.text.fill",stylers:[{color:"#9ca5b3"}]},{featureType:"road.highway",elementType:"geometry",stylers:[{color:"#746855"}]},{featureType:"road.highway",elementType:"geometry.stroke",stylers:[{color:"#1f2835"}]},{featureType:"road.highway",elementType:"labels.text.fill",stylers:[{color:"#f3d19c"}]},{featureType:"transit",elementType:"geometry",stylers:[{color:"#2f3948"}]},{featureType:"transit.station",elementType:"labels.text.fill",stylers:[{color:"#d59563"}]},{featureType:"water",elementType:"geometry",stylers:[{color:"#17263c"}]},{featureType:"water",elementType:"labels.text.fill",stylers:[{color:"#515c6d"}]},{featureType:"water",elementType:"labels.text.stroke",stylers:[{color:"#17263c"}]}];
 
@@ -402,9 +402,9 @@ $(document).ready(function() {
       '<button type="button" class="btn btn-sm btn-default removeAddress">' +
       '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>' +
       '</button>----</td>' +
-      '<td class="b">temp</td>' +
+    //   '<td class="b">temp</td>' +
       '<td class="b">n/a</td>' +
-      '<td class="c">n/a -(' + address + ')</td>' +
+      '<td class="c">temp: (' + address + ')</td>' +
       '<td class="a">----</td>' +
       '<td class="a">----</td>' +
       '<td class="a">----</td>' +
@@ -532,13 +532,13 @@ $(document).ready(function() {
   //drop down seleection made
   $("#dropdownChoice > li").on('click', function() {
     let addressValue = $(this).attr('val');
-    addAddressFromInput(addressValue);
+    addAddressFromInput(addressValue+", Austin, TX");
   });
   //user enter a new address and clicked the add button
   $("#addNewAddress").on('click', function() {
     if ($("#addressInput").val().length >= 5) {
       let addressValue = $("#addressInput").val();
-      addAddressFromInput(addressValue);
+      addAddressFromInput(addressValue+", Austin, TX");
       $("#addressInput").val('');
     }
   });
