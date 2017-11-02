@@ -221,6 +221,14 @@ button#createPDF[disabled]{
     padding: 0;
     font-size: 34px;
 }
+/*	$Map Loading PRogress Bar
+	========================================================================== */
+#progress-group{
+    height: 0px;
+    margin-bottom: 0;
+    border-radius: 0;
+    transition: height 1s;
+}
 /*	$Loader Quadrant
 	========================================================================== */
 .loader-quart {

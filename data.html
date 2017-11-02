@@ -17,7 +17,7 @@
   <body>
 
       <div class="container">
-          <input type="text" placeholder="address" />
+          <input type="text" placeholder="address" id="inspectorID_FullTaskList"/>
           <br />
           Results below:
           <div id="results1"> </div>
@@ -33,12 +33,58 @@
 <script>
 
     $(document).ready(function() {
+
+            let key1 = 'AIzaSyBXAnW9slEyfpkJKdHxnz_29kF8pn14MA0',
+                key2 = 'AIzaSyALPWxESCeijSKpKHoduW0htKA6w0KIJnc',
+                key3 = 'AIzaSyBbnhwYIXT-MBTVIaDxS9kzbqIOmoeqcRU',
+                key4 = 'AIzaSyCRQEeXDjgRjRX7HVyGFLDQXCzlrty1NxI',
+                key5 = 'AIzaSyDgR0LEtKMow--eiBeyiCbypLhDMAKCE8E',
+                key6 = 'AIzaSyC6ag7eWl7tjpaLo94L3w2LYZO41vklZC8';
+
+            let openDataLink = 'https://data.austintexas.gov/resource/czdh-pagu.json';
+            $.ajax({
+              url: openDataLink,
+              type: "GET",
+              data: {
+                "$limit": 7000,
+                "$$app_token": "AmHlGm0OHBl6r4hg0PLvAtJk7"
+              }
+            }).done(function(data) {
+                //when the results are returned...
+                //get inspector names by unique values
+                // let nameArray = _.chain(data).pluck('assigneduser').uniq().value();
+                // let removeArray = ['Todd Wilcox', 'Viola Ruiz', 'Marcus Elliot', 'Tammy Lewis', 'Kendrick Barnett']; //names we don't want to map
+                // let filterArray = nameArray.filter(function(name){
+                //     if (removeArray.indexOf(name) < 0){
+                //         return name;
+                //     }
+                // })
+                // console.log(nameArray.length, filterArray.length);
+                // $("#results1").html(JSON.stringify(filterArray));
+                let filteredData = _.filter(data, function(row) { //filter the data returned by assignedUser
+                  return row.assigneduser == 'Robert Moore';
+                })
+                console.log('filteredData',filteredData.length)
+                $("#results1").html(JSON.stringify(filteredData[0]));
+                $("#results2").html(JSON.stringify(filteredData[1]));
+                $("#results3").html(JSON.stringify(filteredData[2]));
+                $("#results4").html(JSON.stringify(filteredData[3]));
+                let addArray = [];
+                let filteredData2 = filteredData.filter(function(elem){
+                    console.log(elem.foldername);
+                    if (addArray.indexOf(elem.foldername) < 0){
+                        addArray.push(elem.foldername);
+                        return elem.foldername;
+                    }
+                })
+                console.log('filteredData2',filteredData2.length)
+                // uniqueAddressArray = _.chain(data).pluck('assigneduser').uniq().value();
+                // console.log('data',data.length)
+
+
+            });
         /*
             PROCESS FOR APPLICATION function
-            1. CREATE DROPDOWN
-            2. ON DROPDOWN SELECTION, SORT OPENDATA OBJECT BY NAME...
-                2A. CREATE ARRAY OF OBJECTS
-                2B. INCLUDE ADDRESS, PRIORITIES, DUE TO START, FOLDER NUMBER
             3. SEND ARRAY TO GEOCODER USIGN MAP FUNCTION
                 3A. SELECT KEY AT RANDOM TO THROTTLE REQUEST
                 3B. CREATE 0.1 SECOND DELAY
@@ -49,15 +95,8 @@
             7. ENABLE RESET TO CLEAR MAP
             8. CREATE VISUAL DISPLAY OF WHOSE TASK LIST IS BEING VISUALIZED
 
-        */
 
         let key1 = 'AIzaSyBXAnW9slEyfpkJKdHxnz_29kF8pn14MA0';
-        let key2 = 'AIzaSyALPWxESCeijSKpKHoduW0htKA6w0KIJnc';
-        let key3 = 'AIzaSyBbnhwYIXT-MBTVIaDxS9kzbqIOmoeqcRU';
-        let key4 = 'AIzaSyCRQEeXDjgRjRX7HVyGFLDQXCzlrty1NxI';
-        let key5 = 'AIzaSyDgR0LEtKMow--eiBeyiCbypLhDMAKCE8E';
-        let key6 = 'AIzaSyC6ag7eWl7tjpaLo94L3w2LYZO41vklZC8';
-
         let list = [
             {add: '1200 w 40th st', key: key1}
             // {add: '1300 w 40th st', key: key2},
@@ -69,7 +108,7 @@
         list.map(function(elem, idx){
             //construct link
             let link = 'https://maps.googleapis.com/maps/api/geocode/json?address='+elem['add']+'+Austin,+TX'+'&key='+elem['key'];
-            console.log("LOOP: ", elem," ", idx);
+            // console.log("LOOP: ", elem," ", idx);
             $.ajax({
               url: link,
               type: "GET"
@@ -80,9 +119,10 @@
               $("#results"+count+"").html(JSON.stringify(data));
               count++;
               console.log('done: ',count,data);
+              console.log(data['results'][0]['geometry']['location'])
             });
         });
-
+*/
 
     });
 

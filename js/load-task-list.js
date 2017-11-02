@@ -13,9 +13,15 @@ $(document).ready(function() {
     //when the results are returned...
     //get inspector names by unique values
     let nameArray = _.chain(data).pluck('assigneduser').uniq().value();
+    let removeArray = ['Todd Wilcox', 'Viola Ruiz', 'Marcus Elliot', 'Tammy Lewis', 'Kendrick Barnett']; //names we don't want to map
+    let filterArray = nameArray.filter(function(name){
+        if (removeArray.indexOf(name) < 0){
+            return name;
+        }
+    })
     //set up autocomplete w jquery ui plugin
     $("#inspectorID").autocomplete({
-      source: nameArray
+      source: filterArray
     });
     //assign results object to higher variable for search purposes...
     openData = data;
@@ -60,6 +66,7 @@ $(document).ready(function() {
       return row.assigneduser == chosenName;
     })
     //loop through filtered results and append data to table#availableAddressRows
+    let uniqueAddressArray = [], filteredAddressArray = [], addCheck;
     $(filteredData).each(function(i) {
 
       $("#availableAddressRows").append('<tr>' +
@@ -75,7 +82,19 @@ $(document).ready(function() {
         '<td class="c">' + nullCheck(filteredData[i].housenumber) + ' ' + nullCheck(filteredData[i].streetname) + '</td>' +
         '</tr>');
 
+            /*
+                this section will send these items to the map!!!
+            */
+        //make sure address is NOT NULL
+        addCheck = filteredData[i].foldername;
+        if ( (nullCheck(addCheck).length > 1) && (uniqueAddressArray.indexOf(addCheck) < 0) ){
+            uniqueAddressArray.push(addCheck);
+            filteredAddressArray.push(filteredData[i])
+        }
     });
+
+
+    mapTaskListItem(filteredAddressArray);
 
     //a nod to the table sort to let it know to check itself
     $('#availableAddressTable').trigger('update');
@@ -87,6 +106,7 @@ $(document).ready(function() {
       '<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>' +
       '</a>');
     validateAddButton();
+
   });
   //some users prefer "ENTER" instead of button click, this will trigger a button click
   $(document).keypress(function(e) {
