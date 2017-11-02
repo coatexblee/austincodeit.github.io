@@ -19,187 +19,8 @@ $(document).ready(function() {
     let labels = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
     //this is a custom style you can get at snazzymaps.com really easy to create one and add it to your map.
-    let snazzySyle = [{
-        "stylers": [{
-            "saturation": -100
-        }, {
-            "gamma": 1
-        }]
-    }, {
-        "elementType": "labels.text.stroke",
-        "stylers": [{
-            "visibility": "off"
-        }]
-    }, {
-        "featureType": "poi.business",
-        "elementType": "labels.text",
-        "stylers": [{
-            "visibility": "off"
-        }]
-    }, {
-        "featureType": "poi.business",
-        "elementType": "labels.icon",
-        "stylers": [{
-            "visibility": "off"
-        }]
-    }, {
-        "featureType": "poi.place_of_worship",
-        "elementType": "labels.text",
-        "stylers": [{
-            "visibility": "off"
-        }]
-    }, {
-        "featureType": "poi.place_of_worship",
-        "elementType": "labels.icon",
-        "stylers": [{
-            "visibility": "off"
-        }]
-    }, {
-        "featureType": "road",
-        "elementType": "geometry",
-        "stylers": [{
-            "visibility": "simplified"
-        }]
-    }, {
-        "featureType": "water",
-        "stylers": [{
-            "visibility": "on"
-        }, {
-            "saturation": 50
-        }, {
-            "gamma": 0
-        }, {
-            "hue": "#50a5d1"
-        }]
-    }, {
-        "featureType": "administrative.neighborhood",
-        "elementType": "labels.text.fill",
-        "stylers": [{
-            "color": "#333333"
-        }]
-    }, {
-        "featureType": "road.local",
-        "elementType": "labels.text",
-        "stylers": [{
-            "weight": 0.5
-        }, {
-            "color": "#333333"
-        }]
-    }, {
-        "featureType": "transit.station",
-        "elementType": "labels.icon",
-        "stylers": [{
-            "gamma": 1
-        }, {
-            "saturation": 50
-        }]
-    }];
-    let nightStyle = [{
-        elementType: "geometry",
-        stylers: [{
-            color: "#242f3e"
-        }]
-    }, {
-        elementType: "labels.text.fill",
-        stylers: [{
-            color: "#746855"
-        }]
-    }, {
-        elementType: "labels.text.stroke",
-        stylers: [{
-            color: "#242f3e"
-        }]
-    }, {
-        featureType: "administrative.locality",
-        elementType: "labels.text.fill",
-        stylers: [{
-            color: "#d59563"
-        }]
-    }, {
-        featureType: "poi",
-        elementType: "labels.text.fill",
-        stylers: [{
-            color: "#d59563"
-        }]
-    }, {
-        featureType: "poi.park",
-        elementType: "geometry",
-        stylers: [{
-            color: "#263c3f"
-        }]
-    }, {
-        featureType: "poi.park",
-        elementType: "labels.text.fill",
-        stylers: [{
-            color: "#6b9a76"
-        }]
-    }, {
-        featureType: "road",
-        elementType: "geometry",
-        stylers: [{
-            color: "#38414e"
-        }]
-    }, {
-        featureType: "road",
-        elementType: "geometry.stroke",
-        stylers: [{
-            color: "#212a37"
-        }]
-    }, {
-        featureType: "road",
-        elementType: "labels.text.fill",
-        stylers: [{
-            color: "#9ca5b3"
-        }]
-    }, {
-        featureType: "road.highway",
-        elementType: "geometry",
-        stylers: [{
-            color: "#746855"
-        }]
-    }, {
-        featureType: "road.highway",
-        elementType: "geometry.stroke",
-        stylers: [{
-            color: "#1f2835"
-        }]
-    }, {
-        featureType: "road.highway",
-        elementType: "labels.text.fill",
-        stylers: [{
-            color: "#f3d19c"
-        }]
-    }, {
-        featureType: "transit",
-        elementType: "geometry",
-        stylers: [{
-            color: "#2f3948"
-        }]
-    }, {
-        featureType: "transit.station",
-        elementType: "labels.text.fill",
-        stylers: [{
-            color: "#d59563"
-        }]
-    }, {
-        featureType: "water",
-        elementType: "geometry",
-        stylers: [{
-            color: "#17263c"
-        }]
-    }, {
-        featureType: "water",
-        elementType: "labels.text.fill",
-        stylers: [{
-            color: "#515c6d"
-        }]
-    }, {
-        featureType: "water",
-        elementType: "labels.text.stroke",
-        stylers: [{
-            color: "#17263c"
-        }]
-    }];
+    let snazzySyle = [{"stylers":[{"saturation":-100},{"gamma":1}]},{"elementType":"labels.text.stroke","stylers":[{"visibility":"off"}]},{"featureType":"poi.business","elementType":"labels.text","stylers":[{"visibility":"off"}]},{"featureType":"poi.business","elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"poi.place_of_worship","elementType":"labels.text","stylers":[{"visibility":"off"}]},{"featureType":"poi.place_of_worship","elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"road","elementType":"geometry","stylers":[{"visibility":"simplified"}]},{"featureType":"water","stylers":[{"visibility":"on"},{"saturation":50},{"gamma":0},{"hue":"#50a5d1"}]},{"featureType":"administrative.neighborhood","elementType":"labels.text.fill","stylers":[{"color":"#333333"}]},{"featureType":"road.local","elementType":"labels.text","stylers":[{"weight":0.5},{"color":"#333333"}]},{"featureType":"transit.station","elementType":"labels.icon","stylers":[{"gamma":1},{"saturation":50}]}];
+    let nightStyle = [{elementType:"geometry",stylers:[{color:"#242f3e"}]},{elementType:"labels.text.fill",stylers:[{color:"#746855"}]},{elementType:"labels.text.stroke",stylers:[{color:"#242f3e"}]},{featureType:"administrative.locality",elementType:"labels.text.fill",stylers:[{color:"#d59563"}]},{featureType:"poi",elementType:"labels.text.fill",stylers:[{color:"#d59563"}]},{featureType:"poi.park",elementType:"geometry",stylers:[{color:"#263c3f"}]},{featureType:"poi.park",elementType:"labels.text.fill",stylers:[{color:"#6b9a76"}]},{featureType:"road",elementType:"geometry",stylers:[{color:"#38414e"}]},{featureType:"road",elementType:"geometry.stroke",stylers:[{color:"#212a37"}]},{featureType:"road",elementType:"labels.text.fill",stylers:[{color:"#9ca5b3"}]},{featureType:"road.highway",elementType:"geometry",stylers:[{color:"#746855"}]},{featureType:"road.highway",elementType:"geometry.stroke",stylers:[{color:"#1f2835"}]},{featureType:"road.highway",elementType:"labels.text.fill",stylers:[{color:"#f3d19c"}]},{featureType:"transit",elementType:"geometry",stylers:[{color:"#2f3948"}]},{featureType:"transit.station",elementType:"labels.text.fill",stylers:[{color:"#d59563"}]},{featureType:"water",elementType:"geometry",stylers:[{color:"#17263c"}]},{featureType:"water",elementType:"labels.text.fill",stylers:[{color:"#515c6d"}]},{featureType:"water",elementType:"labels.text.stroke",stylers:[{color:"#17263c"}]}];
 
     //initialize function for google maps
     let initialize = function() {
@@ -211,7 +32,6 @@ $(document).ready(function() {
         }
 
         let myLatlng = new google.maps.LatLng(30.3344316, -97.6791038);
-
         let mapOptions = {
             zoom: 14,
             center: myLatlng,
@@ -817,6 +637,11 @@ $(document).ready(function() {
         strokeColor: '#008C80',
         strokeWeight: 1
     };
+    tasklistComplete = function() {
+        $("#progress-group").css("height", "0px");
+        map.panTo(new google.maps.LatLng(30.2709246, -97.7481116));
+        map.setZoom(12);
+    }
     mapTaskListItem = function(obj) {
         let taskListTotal = obj.length;
         let progressNumber = 0;
@@ -829,14 +654,15 @@ $(document).ready(function() {
 
         let list = obj;
         let arrayPos = 0;
-        function addressLoop(){
-            if (arrayPos >= list.length){
-                $("#progress-group").css("height", "0px");
+
+        function addressLoop() {
+            if (arrayPos >= list.length) {
+                tasklistComplete();
                 return;
             }
-            progressNumber = Math.floor((arrayPos/taskListTotal)*100);
-            $("#progress-bar").css("width", ""+progressNumber+"%");
-            $("#progress-value").html(""+progressNumber+"%");
+            progressNumber = Math.floor((arrayPos / taskListTotal) * 100);
+            $("#progress-bar").css("width", "" + progressNumber + "%");
+            $("#progress-value").html("" + progressNumber + "%");
 
             let addressSearch = list[arrayPos]['foldername'];
             if (addressSearch.length > 1) { //if the location is not NULL
@@ -849,7 +675,7 @@ $(document).ready(function() {
                 }).done(function(data) {
                     //when the results are returned...
                     // from the array of alphabetical characters.
-                    if (typeof data.results[0] != 'undefined'){
+                    if (typeof data.results[0] != 'undefined') {
 
                         let newTaskMarker = new google.maps.Marker({
                             position: {
@@ -860,7 +686,7 @@ $(document).ready(function() {
                             map: map,
                             draggable: false //set to false to make items not dragganble
                         })
-                        let popUpWindow = "<div>Folder: "+ list[arrayPos].foldernumber +"<br /> "+"Address: " + list[arrayPos].foldername + "</div>";
+                        let popUpWindow = "<div>Folder: " + list[arrayPos].foldernumber + "<br /> " + "Address: " + list[arrayPos].foldername + "</div>";
                         let infowindow = new google.maps.InfoWindow({
                             content: popUpWindow
                         });
@@ -878,8 +704,8 @@ $(document).ready(function() {
             }
         }
 
-        if (arrayPos >= list.length){
-            $("#progress-group").css("height", "0px");
+        if (arrayPos >= list.length) {
+            tasklistComplete();
             return;
         } else {
             addressLoop();
@@ -887,6 +713,6 @@ $(document).ready(function() {
 
 
 
-        };
+    };
 
-    });
+});
