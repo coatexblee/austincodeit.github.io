@@ -11,7 +11,7 @@ h1, h2, h3, h4, h5, h6 {
   color: #e8e8e8;
 }
 #main {
-    background-color: rgba(255, 255, 255, 0.85);
+    background-color: rgba(255, 255, 255, 0.92);
     margin-top: -40px;
     padding: 60px
 }
@@ -143,6 +143,21 @@ dl.resource-list {
 .district-caption{
     margin-top: -15px;
     text-align: center;
+}
+div.well {
+    background: white;
+    background-color: white;
+}
+
+.pic-label{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: -35px;
+    margin-bottom: 35px;
+    text-shadow: 1px 1px 2px #656565;
+    font-weight: 700;
+    color: black;
 }
 /* previous CSS */
 .box {

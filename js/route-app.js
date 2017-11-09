@@ -2,11 +2,8 @@ let global_pdf = {};
 let global_func = {};
 let $activeElement;
 let mapTaskListItem; //global function for mapping task list items
-////to do
-// update directions display on "Directions change" update
-// set an 'optimize route option with draggable routes'
-//
-$(document).ready(function() {
+
+$(document).ready( function() {
 
     let map,
         directionsService,
@@ -639,19 +636,14 @@ $(document).ready(function() {
     };
     tasklistComplete = function() {
         $("#progress-group").css("height", "0px");
-        map.panTo(new google.maps.LatLng(30.2709246, -97.7481116));
-        map.setZoom(12);
     }
     mapTaskListItem = function(obj) {
         let taskListTotal = obj.length;
         let progressNumber = 0;
         $("#progress-group").css("height", "20px");
-        /*
-            6. CREATE ADD TO QUEUE BUTTON
-            7. ENABLE RESET TO CLEAR MAP
-            8. CREATE VISUAL DISPLAY OF WHOSE TASK LIST IS BEING VISUALIZED
-        */
-
+        
+        map.panTo(new google.maps.LatLng(30.2709246, -97.7481116));
+        map.setZoom(12);
         let list = obj;
         let arrayPos = 0;
 
@@ -685,7 +677,7 @@ $(document).ready(function() {
                             icon: taskIcon,
                             map: map,
                             draggable: false //set to false to make items not dragganble
-                        })
+                        });
                         let popUpWindow = "<div>Folder: " + list[arrayPos].foldernumber + "<br /> " + "Address: " + list[arrayPos].foldername + "</div>";
                         let infowindow = new google.maps.InfoWindow({
                             content: popUpWindow
