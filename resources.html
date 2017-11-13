@@ -458,7 +458,7 @@
             $(sortedMapLinks).each(function(idx, elem) {
                 $("#map-viz").append("" +
                     '<div class="col-lg-3 col-md-4 col-xs-6">' +
-                    '<a href="' + elem["link"] + '" class="d-block mb-4 h-100">' +
+                    '<a target="_blank" href="' + elem["link"] + '" class="d-block mb-4 h-100">' +
                     '<img class="img-fluid img-thumbnail" src="./imgs/maps/' + elem["filename"] + '.png" alt="map of ' + elem["name"] + '">' +
                     '</a>' +
                     '<div class="pic-label text-center">' + elem["name"] + '</div>' +

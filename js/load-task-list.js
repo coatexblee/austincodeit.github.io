@@ -72,7 +72,7 @@ $(document).ready(function() {
       $("#availableAddressRows").append('<tr>' +
         '<td class="first">' + nullCheck(filteredData[i].type) + '</td>' +
         // '<td class="b">' + nullCheck(filteredData[i].subtype) + '</td>' +
-        '<td class="b">' + nullCheck(filteredData[i].foldernumber) + '</td>' +
+        '<td class="b" id='+nullCheck(filteredData[i].foldernumber)+'>' + nullCheck(filteredData[i].foldernumber) + '</td>' +
         '<td class="c" id="location">' + nullCheck(filteredData[i].foldername) + '</td>' +
         '<td class="a">' + nullCheck(filteredData[i].priority1) + '</td>' +
         '<td class="a">' + nullCheck(filteredData[i].priority2) + '</td>' +

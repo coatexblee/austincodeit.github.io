@@ -5,6 +5,19 @@ let mapTaskListItem; //global function for mapping task list items
 
 $(document).ready( function() {
 
+    $("#loading-overlay").fadeIn("slow");
+
+    (function everythingIsLoadedYet(){
+        //if eeverything is loaded remove the overlay and proceed.
+        if (typeof mapTaskListItem !== 'function') {
+            setTimeout(function() {
+                everythingIsLoadedYet();
+            }, 1000)
+        } else {
+            $("#loading-overlay").fadeOut("slow");
+        }
+    }());//an immediately invoked function
+
     let map,
         directionsService,
         directionsDisplay,
@@ -374,7 +387,7 @@ $(document).ready( function() {
                 legDuration = route.legs[routeSegment].duration.text;
                 //update the stats for this particular leg by using a unique ID
                 $(".leg" + i + "").html('<span id="routeTripTime"><b>Est. Trip:</b> ' + legDuration + ' | <b>Distance:</b> ' + legDistance + '</span></b><br>');
-                console.log('new leg??? ' + legDuration);
+                // console.log('new leg??? ' + legDuration);
             }
             //update global_pdf object for printing purposes
             global_pdf.tasks[i].leg_dist = legDistance;
@@ -637,16 +650,16 @@ $(document).ready( function() {
     tasklistComplete = function() {
         $("#progress-group").css("height", "0px");
     }
+
     mapTaskListItem = function(obj) {
         let taskListTotal = obj.length;
         let progressNumber = 0;
         $("#progress-group").css("height", "20px");
-        
+
         map.panTo(new google.maps.LatLng(30.2709246, -97.7481116));
         map.setZoom(12);
         let list = obj;
         let arrayPos = 0;
-
         function addressLoop() {
             if (arrayPos >= list.length) {
                 tasklistComplete();
@@ -678,13 +691,50 @@ $(document).ready( function() {
                             map: map,
                             draggable: false //set to false to make items not dragganble
                         });
-                        let popUpWindow = "<div>Folder: " + list[arrayPos].foldernumber + "<br /> " + "Address: " + list[arrayPos].foldername + "</div>";
+                        let popUpWindow = "<div><p>Folder: " + list[arrayPos].foldernumber + "</p><p>" + "Address: " + list[arrayPos].foldername + "</p><button style='width:100%' id=" + list[arrayPos].foldernumber + " class='popup btn btn-primary btn-sm'>Add</button></div>";
                         let infowindow = new google.maps.InfoWindow({
                             content: popUpWindow
                         });
                         newTaskMarker.addListener('click', function() {
                             infowindow.open(map, newTaskMarker);
+
+                            $("button.popup").unbind('click').bind('click', function(e){
+                                console.log(e);
+                                let id = e.target.id;//folder number of address
+                                if (id.length < 1){
+                                    return;
+                                }
+                                let $tableRow = $("#availableAddressRows tr").children("td#"+id+"").parent()[0];
+                                let newAddress = $($tableRow).children("td#location").text().trim() + ", Austin, TX";
+                                let popUpText = $($tableRow).children("td#location").text().trim();
+                                //get the element so we can add latlngs to it later
+                                $activeElement = $($tableRow).children("td#location");
+                                $("#routableAddressRows").append('<tr>' +
+                                      '<td class="first"><span id="count"></span>' +
+                                      '<button type="button" class="btn btn-sm btn-default removeAddress">' +
+                                      '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>' +
+                                      '</button>' + $($tableRow).children("td:nth-child(1)").text() + '</td>' +
+                                      '<td class="b">' + $($tableRow).children("td:nth-child(2)").text() + '</td>' +
+                                      '<td class="b">' + $($tableRow).children("td:nth-child(3)").text() + '</td>' +
+                                      '<td class="c" id="location">' + $($tableRow).children("td:nth-child(4)").text() + '</td>' +
+                                      '<td class="a">' + $($tableRow).children("td:nth-child(5)").text() + '</td>' +
+                                      '<td class="a">' + $($tableRow).children("td:nth-child(6)").text() + '</td>' +
+                                      '<td class="a">' + $($tableRow).children("td:nth-child(7)").text() + '</td>' +
+                                      '<td class="a">' + $($tableRow).children("td:nth-child(8)").text() + '</td>' +
+                                      '<td class="c">' + $($tableRow).children("td:nth-child(9)").text() + '</td>' +
+                                      '<td class="c">' + $($tableRow).children("td:nth-child(10)").text() + '</td>' +
+                                      '</tr>');
+                                //grab the active element because we want to be able to append to it later...
+                                $activeElement = $("#routableAddressRows > tr:not(.placeholder):last-child").children("td#location");
+                                //theses functions help with updates
+                                global_func.validateRemoveButton();
+                                global_func.adjustRowCount();
+                                global_func.placeAddressOnMap(newAddress, popUpText, false);
+                                infowindow.close();
+                            });
+
                         });
+
                         taskListMarkerArray.push(newTaskMarker);
                     }
                     arrayPos++;
