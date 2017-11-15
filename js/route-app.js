@@ -12,6 +12,7 @@ $(document).ready( function() {
         if (typeof mapTaskListItem !== 'function') {
             setTimeout(function() {
                 everythingIsLoadedYet();
+                initialize();
             }, 1000)
         } else {
             $("#loading-overlay").fadeOut("slow");
