@@ -88,23 +88,34 @@
                       //map through the groups and create new object
                       let duplicateCases = _.map(groups, function(row){
                           // let obj = { address: row.foldername };
+                          let userGroup = _.groupBy(row, function(item) {
+                              return item.assigneduser;
+                          });
+                          let sampleFolder = _.map(userGroup, function(group){
+                              return group[0].foldernumber;
+                          });
+                          let count = _.countBy(row, function(obj) {
+                              return obj.assigneduser;
+                          });
                           let users = _.chain(row).pluck('assigneduser').uniq().value();
-                          
-                          return { address: row[0].foldername, inspectors: users };
+                          return { address: row[0].foldername, inspectors: users, details: count, folder: sampleFolder};
                       });
 
                       let dupeCount = 0;
-                      _.map(duplicateCases, function(row){
-                          if (row.inspectors.length > 1 && row.address !== undefined){
-                              console.log(row.address);
-                              dupeCount = dupeCount + 1;
-                              let string = '<div class="col s12 m6 card-filter"><div class="card blue-grey darken-1"><div class="card-content white-text">'+
-                                      '<span class="card-title">' + row["address"] + '</span><p><ul>';
-
-                              _.map(row["inspectors"], function(b){ string += "<li>" + b + "</li>" });
-                              string += "</ul></p></div></div>";
-                              $("#results").append(string);
-                          }
+                      _.map(duplicateCases, function(row) {
+                        if (row.inspectors.length > 1 && row.address !== undefined) {
+                          // console.log(row.address);
+                          dupeCount = dupeCount + 1;
+                          let string =
+                            '<div class="col s12 m6 card-filter"><div class="card blue-grey darken-1"><div class="card-content white-text"><span class="card-title">' + row["address"] + '</span><table><thead><tr><th>Name</th><th>Cases</th><th>Sample Folder</th></tr></thead><tbody>';
+                          let loopCount = 0;
+                          _.map(row["details"], function(key, idx) {
+                            string += "<tr><td>" + idx + "</td><td>"+key+"</td><td>"+row.folder[loopCount]+"</td></tr>";
+                            loopCount = loopCount + 1;
+                          });
+                          string += "</tbody</table></div></div>";
+                          $("#results").append(string);
+                        }
                       });
 
                       $("#dupeCount").html(dupeCount);
