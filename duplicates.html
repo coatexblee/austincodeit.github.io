@@ -24,7 +24,7 @@
 
              <h2 class="project-name">Duplicate Task List Items by Address</h2>
              <h3>Total Duplicates Found: <span id="dupeCount"></span> out of <span id="totalCount"></span></h3>
-             <h6>Note: Removed the following names <span id="removed"></span></h6>
+             <h6>Removed OL Folders and the following names <span id="removed"></span></h6>
 
              <input placeholder="Type to filter ..." type="text" id="filterKey" onkeyup="filterTheCards()" />
              <div id="results"></div>
@@ -72,7 +72,7 @@
                       let nameArray = _.chain(data).pluck('assigneduser').uniq().value();
                       let removeArray = ['Todd Wilcox', 'Viola Ruiz', 'Marcus Elliott', 'Tammy Lewis', 'Kendrick Barnett', 'Amy Barboza']; //names we don't want to map
                       let filterArray = data.filter(function(row){
-                          if (removeArray.indexOf(row.assigneduser) < 0){
+                          if (removeArray.indexOf(row.assigneduser) < 0 && row.foldernumber.indexOf("OL") < 0){
                               return row;
                           }
                       })
@@ -81,9 +81,9 @@
 
                       //group all rows by address
 
-                      $("#totalCount").html(openData.length);
+                      $("#totalCount").html(filterArray.length);
                       $("#removed").html(removeArray.join(" | "))
-                      console.log(filterArray.length);
+                      // console.log(filterArray.length);
                       let groups = _.groupBy(filterArray, function(row){
                           return row.foldername;
                       });
