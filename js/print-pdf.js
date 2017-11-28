@@ -182,7 +182,7 @@ $(document).ready(function() {
         alert("done!");
       }
       // $("#loading-overlay").fadeOut("slow");
-      pdf.outout( type, options, callback )
+      // pdf.output( type, options, callback )
       pdf.output('datauri', { } , callback); //end of script
 
     }
