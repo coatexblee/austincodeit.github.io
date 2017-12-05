@@ -11,7 +11,7 @@ h1, h2, h3, h4, h5, h6 {
   color: #e8e8e8;
 }
 #main {
-    background-color: rgba(255, 255, 255, 0.92);
+    background-color: rgba(255, 255, 255, 0.95);
     margin-top: -40px;
     padding: 60px
 }
@@ -129,10 +129,14 @@ dl.resource-list {
     border-radius: 5%;
     max-width: 140px;
     margin: 0 auto;
+    text-align: center;
 }
-.dropdown span {
+
+.demo-dropdown div {
     color: white;
     font-weight: 700;
+    padding-top: 3px;
+    padding-bottom: 6px;
 }
 .thumbnail-row{
     margin: 30px 0px -10px 0px;

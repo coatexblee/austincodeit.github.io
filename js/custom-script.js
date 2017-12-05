@@ -6,7 +6,7 @@
 $(document).ready(function() {
   'use strict';
 
-	const DATE_STRING = "May 2017";
+	const DATE_STRING = "Dec 2017";
 
 	console.log("hi! welcome to austin code's github!!!");
 	$("#footnoteInsert").html(''+
