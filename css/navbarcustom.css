@@ -8,3 +8,17 @@ a {
 .label-default {
 	background-color: #333;
 }
+
+.btn.btn-info.btn-circle.text-uppercase{
+	color: black;
+}
+
+
+
+#reslist li {
+	list-style: none;
+}
+
+.demo-dropdown label {
+	color: black;
+}
