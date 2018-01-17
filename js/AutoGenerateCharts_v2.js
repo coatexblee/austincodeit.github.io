@@ -5,9 +5,9 @@ function myFunction(zone) {
     DrawCharts(zone);
 
     //IMAGE OF ZONE
-    // document.getElementById("zone-screenshot").src="./imgs/zones/"+ zones +"-crop.png";
+    document.getElementById("zone-screenshot").src="./imgs/zones/Map_"+ zone +".png";
     //HREF OF ZONE
-    // document.getElementById("zone-link").href="./imgs/zones/"+ zones +"-crop.png";
+    document.getElementById("zone-link").href="./imgs/zones/Map_"+ zone +".png";
     //TEXT OF ZONE
     $.ajax({
         url: "data/textfiles/" + zone + "INTRO.txt",
@@ -48,8 +48,7 @@ function DrawCharts(zone) {
 
     var json1 = d3.csv("data/mdc_v2.csv", function(d) {
         json1 = d;
-        johnnyc = d;
-
+        
         for (var i = 0; i < json1.length; i++) {
             incomeData.push(parseInt(json1[i][zone + "Income"]));
             councilDistData.push(json1[i][zone + "Cdistrict"]);
