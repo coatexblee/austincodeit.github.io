@@ -71,7 +71,7 @@
                     <div class="dropdown demo-dropdown">
                         <label>Service Zone</label>
                         <select id="mapchoice" class="form-control" onchange="myFunction(this.value)">
-                            <script type="text/javascript" src="js/maplist.js"></script>  <!-- JS function for creation of drop down list of map zone. Just call 
+                              <!-- JS function for creation of drop down list of map zone. Just call 
                           the function and paramaters of name and number-->
 							<!-- <option value="C1">C1</option>
                             <option value="C2">C2</option>
@@ -190,18 +190,18 @@
             <div class="row thumbnail-row">
                 <div class="col-xs-6 col-xs-offset-3 col-sm-4 col-sm-offset-4">
                     <h4 align="center">Service Zone Boundary</h4>
-                    <h6 align="center">***coming soon***</h6>
+                    <!-- <h6 align="center">***coming soon***</h6> -->
                      <a href="" target="_blank" class="thumbnail" id="zone-link">
                         <img id="zone-screenshot" />
                     </a>
-                    <p class="zone-caption" align="center"><small class="text-muted">click to enlarge</small></p>
+                    <p class="zone-caption" align="center"><small class="text-muted">Click to enlarge</small></p>
                 </div>
             </div>
             <div class="row">
                 <h2 align="center">About</h2>
-				<p align="center" id="mapabout">text</p>
-                <h6 align="center">***coming soon***</h6>
-                <!-- <span id="about-zone-text"></span> -->
+				<p align="center" id="mapabout"></p>
+                <!--<h6 align="center">***coming soon***</h6> -->
+                <!-- <span id="about-zone-text" align="center"></span> -->
             </div>
         </div>
         <!-- /sm-col -->
@@ -213,6 +213,8 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
     <!-- js files -->
+	<script type="text/javascript" src="js/maplist.js"></script>
+	<script type="text/javascript" src="js/mapdescrip.js"></script>
     <script src="js/chart.js"></script>
     <script src="js/AutoGenerateCharts_v2.js"></script>
     <script type="text/javascript" src="js/custom-script.js"></script>
